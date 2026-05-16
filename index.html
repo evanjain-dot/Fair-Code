@@ -55,6 +55,11 @@
     --scanline-color: transparent;
   }
 
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
 
@@ -254,13 +259,15 @@
   .hero-title {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: clamp(52px, 8vw, 116px);
+    font-size: clamp(44px, 8vw, 116px);
     line-height: 0.92;
     letter-spacing: -0.02em;
     color: var(--white);
     margin-bottom: 28px;
     opacity: 0;
     animation: fadeUp 0.7s 0.35s forwards;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .hero-title .hl { color: var(--accent); }
@@ -411,11 +418,13 @@
   .about-title {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: clamp(32px, 4vw, 52px);
+    font-size: clamp(28px, 6vw, 52px);
     line-height: 0.94;
     letter-spacing: -0.02em;
     color: var(--white);
     margin-bottom: 36px;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .about-quote {
@@ -586,10 +595,11 @@
   .projects-title {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: clamp(36px, 5vw, 60px);
+    font-size: clamp(28px, 5vw, 60px);
     letter-spacing: -0.02em;
     line-height: 0.94;
     color: var(--white);
+    word-break: break-word;
   }
 
   /* Project cards — same structural layout, fresh skin */
@@ -823,12 +833,13 @@
   .impact-title {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: clamp(36px, 5vw, 72px);
+    font-size: clamp(28px, 5vw, 72px);
     line-height: 0.93;
     letter-spacing: -0.02em;
     color: var(--white);
     max-width: 680px;
     margin-bottom: 0;
+    word-break: break-word;
   }
 
   .impact-grid {
@@ -879,11 +890,12 @@
   .roadmap-title {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: clamp(28px, 4vw, 56px);
+    font-size: clamp(24px, 4vw, 56px);
     line-height: 0.93;
     letter-spacing: -0.02em;
     color: var(--white);
     margin-bottom: 12px;
+    word-break: break-word;
   }
 
   .roadmap-sub {
