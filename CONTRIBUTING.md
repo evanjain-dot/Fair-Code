@@ -38,6 +38,7 @@ Fair-Code/
 ├── explainers/
 │   ├── proxy-variables.md         ← existing
 │   ├── sampling-bias.md           ← existing
+│   ├── shap-values.md             ← existing
 │   └── your-concept-name.md       ← your new explainer
 ```
 
@@ -182,7 +183,7 @@ One file per concept. Name it after the concept in lowercase with hyphens: `demo
 
 ### What a good explainer contains
 
-Follow the structure of `proxy-variables.md` and `sampling-bias.md`:
+Follow the structure of `proxy-variables.md`, `sampling-bias.md`, and `shap-values.md`:
 
 **1. One-sentence definition** — what is the concept, stated as plainly as possible. No jargon in the definition itself.
 
@@ -213,7 +214,7 @@ def measure_concept(df, prediction_col, group_col):
 
 ### The standard to hit
 
-The proxy variables and sampling bias explainers are the bar. They define the concept clearly, prove it with real numbers or runnable simulations, give you code to detect it yourself, and explain why it exists structurally. Your explainer should do the same for its concept.
+The proxy variables, sampling bias, and SHAP values explainers are the bar. They define the concept clearly, prove it with real numbers or runnable simulations, give you code to detect or apply it yourself, and explain why it exists structurally. Your explainer should do the same for its concept.
 
 If you can't show the concept with real data from one of the existing audits, use a well-documented external case with a source link. Do not use invented toy examples as the primary illustration.
 
@@ -268,7 +269,7 @@ In the PR description, include:
 - Explainers that only define a concept without demonstrating it with real data or code
 - Explainers that don't acknowledge the limitations or trade-offs of the metric/concept
 - Toy or invented examples as the primary illustration — use real data
-- Explainers on concepts already covered in the folder (check before starting)
+- Explainers on concepts already covered in the folder (check before starting — proxy variables, sampling bias, and SHAP values are done)
 
 ---
 
