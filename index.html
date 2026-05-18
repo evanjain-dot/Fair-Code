@@ -16,13 +16,13 @@
     --accent2: #9b2335;
     --accent3: #4a7c6f;
     --text: #d4cfc0;
-    --muted: #5a5a6a;
+    --muted: #9a98a8;
     --white: #ede8dc;
     --nav-bg: rgba(13,15,20,0.94);
     --terminal-bg: #080a0e;
     --terminal-bar-bg: #0f111a;
     --terminal-label-color: #3a3a50;
-    --terminal-text: #b8b4a0;
+    --terminal-text: #c8c4b0;
     --t-head-color: #2a2a3a;
     --bias-track-bg: #181a26;
     --compare-bg: #0a0c14;
@@ -789,7 +789,24 @@
     font-weight: 400;
   }
 
-  /* Dark mode: boost terminal text weight for legibility */
+  /* Dark mode: boost all muted body text weight for legibility */
+  html:not([data-theme="light"]) .about-body,
+  html:not([data-theme="light"]) .project-desc,
+  html:not([data-theme="light"]) .key-insight p,
+  html:not([data-theme="light"]) .explainer-block-text,
+  html:not([data-theme="light"]) .explainer-def-text,
+  html:not([data-theme="light"]) .explainer-tagline,
+  html:not([data-theme="light"]) .proxy-row > span,
+  html:not([data-theme="light"]) .reading-link,
+  html:not([data-theme="light"]) .impact-desc,
+  html:not([data-theme="light"]) .impact-footnote,
+  html:not([data-theme="light"]) .roadmap-meta,
+  html:not([data-theme="light"]) .method-desc,
+  html:not([data-theme="light"]) .roadmap-sub {
+    font-weight: 500;
+  }
+
+
   html:not([data-theme="light"]) .terminal-body,
   html:not([data-theme="light"]) .terminal-body .t-head,
   html:not([data-theme="light"]) .terminal-body .t-bad,
