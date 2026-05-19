@@ -38,6 +38,7 @@ Fair-Code/
 │   └── fair.png
 ├── explainers/
 │   ├── proxy-variables.md         ← existing
+│   ├── equalized-odds.md          ← existing
 │   ├── sampling-bias.md           ← existing
 │   ├── shap-values.md             ← existing
 │   └── your-concept-name.md       ← your new explainer
@@ -166,7 +167,7 @@ Then add a full section below the existing projects following the same pattern:
 
 All audits use **Demographic Parity** as the primary metric: the difference in positive prediction rates between demographic groups.
 
-If your domain genuinely requires a different metric (equalized odds, predictive parity, etc.), open an Issue to discuss it first before submitting.
+If your domain genuinely requires a different metric (equalized odds, predictive parity, etc.), open an Issue to discuss it first before submitting. See the [Equalized Odds explainer](explainers/equalized-odds.md) for a full breakdown of when and why that metric applies.
 
 ---
 
@@ -177,10 +178,11 @@ You don't have to audit a dataset to contribute. If you can explain a concept in
 Explainers live in the `explainers/` folder at the repo root. The existing ones are:
 
 - `proxy-variables.md` — why AI stays biased even after you remove protected attributes
+- `equalized-odds.md` — the fairness metric that checks both types of errors across demographic groups
 - `sampling-bias.md` — why your training data may not represent the people your model affects
 - `shap-values.md` — how to explain individual AI decisions and use that to catch bias
 
-Future ones might cover demographic parity, equalized odds, predictive parity, disparate impact, or fairness metric trade-offs.
+Future ones might cover demographic parity, predictive parity, disparate impact, or fairness metric trade-offs.
 
 ### File structure
 
@@ -188,12 +190,13 @@ Future ones might cover demographic parity, equalized odds, predictive parity, d
 Fair-Code/
 └── explainers/
     ├── proxy-variables.md          ← existing
+    ├── equalized-odds.md           ← existing
     ├── sampling-bias.md            ← existing
     ├── shap-values.md              ← existing
     └── your-concept-name.md        ← your new explainer
 ```
 
-One file per concept. Name it after the concept in lowercase with hyphens: `demographic-parity.md`, `equalized-odds.md`, etc.
+One file per concept. Name it after the concept in lowercase with hyphens: `demographic-parity.md`, `predictive-parity.md`, etc.
 
 ### What a good explainer contains
 
@@ -283,7 +286,7 @@ In the PR description, include:
 - Explainers that only define a concept without demonstrating it with real data or code
 - Explainers that don't acknowledge the limitations or trade-offs of the metric/concept
 - Toy or invented examples as the primary illustration — use real data
-- Explainers on concepts already covered in the folder (check before starting — proxy variables, sampling bias, and SHAP values are done)
+- Explainers on concepts already covered in the folder (check before starting — proxy variables, equalized odds, sampling bias, and SHAP values are done)
 
 ---
 
