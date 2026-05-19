@@ -1581,6 +1581,7 @@
         <li><a href="#project-compas">01 — COMPAS</a></li>
         <li><a href="#project-hiring">02 — AI Hiring</a></li>
         <li><a href="#project-credit">03 — German Credit</a></li>
+        <li><a href="#project-insurance">04 — Insurance Denial</a></li>
       </ul>
     </li>
     <li class="nav-dropdown-wrap">
@@ -1614,6 +1615,7 @@
     <a href="#project-compas" class="mobile-link mobile-sub">01 — COMPAS</a>
     <a href="#project-hiring" class="mobile-link mobile-sub">02 — AI Hiring</a>
     <a href="#project-credit" class="mobile-link mobile-sub">03 — German Credit</a>
+    <a href="#project-insurance" class="mobile-link mobile-sub">04 — Insurance Denial</a>
     <span class="mobile-section-label">Explainers</span>
     <a href="#explainer-proxy" class="mobile-link mobile-sub">01 — Proxy Variables</a>
     <a href="#explainer-sampling" class="mobile-link mobile-sub">02 — Sampling Bias</a>
@@ -1673,6 +1675,9 @@
     <span class="ticker-item red"><span class="dot"></span>GERMAN CREDIT LENDING BIAS</span>
     <span class="ticker-item"><span class="dot"></span>AGE DISCRIMINATION · 73.6% REDUCTION</span>
     <span class="ticker-item"><span class="dot"></span>OPEN SOURCE · PUBLIC DATA</span>
+    <span class="ticker-item red"><span class="dot"></span>INSURANCE DENIAL BIAS</span>
+    <span class="ticker-item"><span class="dot"></span>BMI + SMOKER + DIABETIC PROXIES</span>
+    <span class="ticker-item"><span class="dot"></span>AGE GAP 7.93% → 3.18% · 60% REDUCTION</span>
     <!-- dupe for infinite scroll -->
     <span class="ticker-item red"><span class="dot"></span>COMPAS CRIMINAL JUSTICE</span>
     <span class="ticker-item"><span class="dot"></span>AI HIRING DISCRIMINATION</span>
@@ -1684,6 +1689,9 @@
     <span class="ticker-item red"><span class="dot"></span>GERMAN CREDIT LENDING BIAS</span>
     <span class="ticker-item"><span class="dot"></span>AGE DISCRIMINATION · 73.6% REDUCTION</span>
     <span class="ticker-item"><span class="dot"></span>OPEN SOURCE · PUBLIC DATA</span>
+    <span class="ticker-item red"><span class="dot"></span>INSURANCE DENIAL BIAS</span>
+    <span class="ticker-item"><span class="dot"></span>BMI + SMOKER + DIABETIC PROXIES</span>
+    <span class="ticker-item"><span class="dot"></span>AGE GAP 7.93% → 3.18% · 60% REDUCTION</span>
   </div>
 </div>
 
@@ -2005,6 +2013,83 @@
         <span class="bias-label">Young · FAIR</span>
         <div class="bias-track"><div class="bias-fill good" style="width: 78.26%; opacity: 0.8;"></div></div>
         <span class="bias-val">78.26%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 4: INSURANCE DENIAL -->
+  <div id="project-insurance" style="position:relative; top:-80px; visibility:hidden;"></div>
+  <div class="project-card reveal" style="margin-top: 2px;">
+    <div class="card-bg-num">04</div>
+    <div class="project-top">
+      <div>
+        <div class="project-num">PROJECT — 04</div>
+        <div class="project-name">INSURANCE DENIAL</div>
+        <p class="project-desc">An insurance AI flags older patients for high-cost claims at 7.93 points higher than younger patients. BMI, smoking status, and diabetic status encode race without naming it.</p>
+      </div>
+      <div class="project-stats">
+        <div class="stat-label">AGE FAIRNESS GAP BEFORE</div>
+        <div class="stat-big bad">7.93<span class="stat-unit">%</span></div>
+        <div class="stat-label" style="margin-top: 8px;">AFTER MITIGATION</div>
+        <div class="stat-big good">3.18<span class="stat-unit good">%</span></div>
+        <span class="reduction-badge">60% reduction · Gender gap: 72% reduction</span>
+      </div>
+    </div>
+
+    <div class="terminals-grid">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="terminal-label">unfair.py — BIASED MODEL</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-head">--- BIASED MODEL RESULTS ---</div>
+          <div class="t-bad">Older (35+) High-Cost Flag Rate: 44.59%</div>
+          <div class="t-normal">Young (&lt;35) High-Cost Flag Rate: 36.67%</div>
+          <div class="t-bad">Age Fairness Gap: 7.93%</div>
+          <div class="t-bad">Gender Fairness Gap: 5.44%</div>
+        </div>
+      </div>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="terminal-label">fair.py — MITIGATED MODEL</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-head">--- MITIGATED (UNBIASED) RESULTS ---</div>
+          <div class="t-good">Older (35+) High-Cost Flag Rate: 50.68%</div>
+          <div class="t-good">Young (&lt;35) High-Cost Flag Rate: 47.50%</div>
+          <div class="t-accent">New Age Fairness Gap: 3.18%</div>
+          <div class="t-accent">New Gender Fairness Gap: 1.54%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="key-insight">
+      <div class="key-insight-label">Key Insight</div>
+      <p>BMI, smoker status, and diabetic diagnosis rates all differ significantly by race and class — so a model trained on them learns to discriminate by race without the word ever appearing. These are the <code class="inline-code">CustodyStatus</code> of health insurance: clinical-sounding features that carry protected-class signal because of structural inequalities baked into American healthcare. Dropping them alongside age and gender reduced the age gap by 60% and the gender gap by 72%.</p>
+    </div>
+
+    <div class="bias-bar-wrap" style="margin-top: 32px;">
+      <div class="bias-row">
+        <span class="bias-label">Older · BIASED</span>
+        <div class="bias-track"><div class="bias-fill bad" style="width: 44.59%;"></div></div>
+        <span class="bias-val">44.59%</span>
+      </div>
+      <div class="bias-row">
+        <span class="bias-label">Young · BIASED</span>
+        <div class="bias-track"><div class="bias-fill bad" style="width: 36.67%; opacity: 0.6;"></div></div>
+        <span class="bias-val">36.67%</span>
+      </div>
+      <div class="bias-row">
+        <span class="bias-label">Older · FAIR</span>
+        <div class="bias-track"><div class="bias-fill good" style="width: 50.68%;"></div></div>
+        <span class="bias-val">50.68%</span>
+      </div>
+      <div class="bias-row">
+        <span class="bias-label">Young · FAIR</span>
+        <div class="bias-track"><div class="bias-fill good" style="width: 47.50%; opacity: 0.8;"></div></div>
+        <span class="bias-val">47.50%</span>
       </div>
     </div>
   </div>
@@ -2641,6 +2726,13 @@
     <div class="roadmap-item">
       <div class="roadmap-status done"></div>
       <div>
+        <div class="roadmap-name">Insurance Denial — Healthcare Bias</div>
+        <div class="roadmap-meta">Kaggle · age + gender + BMI/smoker/diabetic proxies · 60% + 72% reduction</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-status done"></div>
+      <div>
         <div class="roadmap-name">Explainer: Proxy Variables</div>
         <div class="roadmap-meta">Concept deep-dive · detection code · real-world proof</div>
       </div>
@@ -2657,13 +2749,6 @@
       <div>
         <div class="roadmap-name">Explainer: SHAP Values</div>
         <div class="roadmap-meta">Model explainability · bias auditing · Shapley attribution</div>
-      </div>
-    </div>
-    <div class="roadmap-item">
-      <div class="roadmap-status soon"></div>
-      <div>
-        <div class="roadmap-name">Healthcare AI Bias</div>
-        <div class="roadmap-meta">Optum dataset · coming soon</div>
       </div>
     </div>
     <div class="roadmap-item">
