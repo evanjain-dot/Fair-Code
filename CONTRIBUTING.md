@@ -29,6 +29,7 @@ Fair-Code/
 ├── COMPAS/                        ← existing
 ├── Ai Fair recrutment Dataset/    ← existing
 ├── German Credit Lending/         ← existing
+├── Insurance Denial/              ← existing
 ├── Your-Domain-Here/              ← your new audit
 │   ├── unfair.py
 │   ├── fair.py
