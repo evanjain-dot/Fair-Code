@@ -29,6 +29,7 @@ No theory. No hand-waving. Just data, code, and results.
 | [COMPAS](#01--compas--criminal-justice-bias) | Racial | Race + Custody Status (proxy) | 86.77% | 15.69% | **71%** |
 | [AI Recruitment](#02--ai-recruitment--hiring-bias) | Gender | Gender + Age | 4.51% | 0.12% | **97.3%** |
 | [German Credit](#03--german-credit--lending-bias) | Age | Age + Employment Tenure (proxy) | 7.16% | 1.89% | **73.6%** |
+| [Insurance Denial](#04--insurance-denial--healthcare-bias) | Age + Gender | Age + Gender + BMI + Smoker + Diabetic (proxies) | Age: 7.93% / Gender: 5.44% | Age: 3.18% / Gender: 1.54% | **Age: 60% / Gender: 72%** |
 
 ---
 
@@ -197,7 +198,74 @@ features = [
 
 ---
 
-## Repository Structure
+### 04 · Insurance Denial — Healthcare Bias
+
+> *"An insurance AI flags older patients for high-cost claims at 7.93 percentage points higher than younger patients, and flags women at 5.44 percentage points higher than men — using BMI, smoking status, and diabetic status as proxies for race and class."*
+
+**Dataset:** `insurance.csv` — Insurance Claim Analysis: Demographic & Health  
+[Kaggle: thedevastator/insurance-claim-analysis-demographic-and-health](https://www.kaggle.com/datasets/thedevastator/insurance-claim-analysis-demographic-and-health) — 1,340 records. Claim charges binarized at median (above median = high-cost flag).
+
+AI tools screen insurance claims at scale across all major US insurers. The ACA prohibits discrimination by age and sex — but most algorithmic auditing requirements remain voluntary. Zero federal laws require insurance claim AI to be audited for bias.
+
+#### The Problem — `unfair.py`
+
+Biased model trained with `age`, `gender`, `bmi`, `diabetic`, and `smoker` as features.
+
+| Group | High-Cost Claim Flag Rate |
+|---|---|
+| Older (35+) | 44.59% |
+| Young (<35) | 36.67% |
+| **Fairness Gap (Age)** | **7.93%** |
+
+| Group | High-Cost Claim Flag Rate |
+|---|---|
+| Female | 43.85% |
+| Male | 38.41% |
+| **Fairness Gap (Gender)** | **5.44%** |
+
+#### The Fix — `fair.py`
+
+Dropped `age`, `gender`, and three proxy variables. Retained only objective policy-level signals.
+
+```python
+# THE FIX: Policy signals only
+X = pd.get_dummies(df[[
+    'bloodpressure',  # objective clinical measurement
+    'children',       # number of dependants — policy-level fact
+    'region',         # geographic region — policy-level factor
+    # age      removed ✓  (protected attribute)
+    # gender   removed ✓  (protected attribute)
+    # bmi      removed ✓  (proxy: encodes race via population BMI distributions)
+    # smoker   removed ✓  (proxy: encodes income/class → race)
+    # diabetic removed ✓  (proxy: diagnosis rates differ 60–100% by race)
+]])
+```
+
+| Group | High-Cost Claim Flag Rate |
+|---|---|
+| Older (35+) | 50.68% |
+| Young (<35) | 47.50% |
+| **New Fairness Gap (Age)** | **3.18%** |
+
+| Group | High-Cost Claim Flag Rate |
+|---|---|
+| Female | 48.46% |
+| Male | 50.00% |
+| **New Fairness Gap (Gender)** | **1.54%** |
+
+**Result: 60% reduction in age gap. 72% reduction in gender gap.**
+
+#### Proxy Variables
+
+**BMI** — Population-level BMI distributions differ by race and ethnicity. Black and Hispanic Americans are classified as obese at higher rates than white Americans with equivalent metabolic health outcomes. A model that penalises high BMI is partially penalising race, regardless of whether "race" appears in the feature list.
+
+**Smoker status** — Smoking rates are inversely correlated with income and education, which are themselves structurally correlated with race and class. Flagging smokers as high-risk encodes poverty — and therefore race — through an apparently neutral medical variable.
+
+**Diabetic status** — Black and Hispanic Americans are diagnosed with diabetes at 60–100% higher rates than white Americans. Using diabetic status as a feature encodes racial disparities in healthcare access and diagnosis rates, not individual health risk.
+
+**Key Insight:** Insurance AI models don't need to name race to discriminate by race. BMI, smoking, and diabetic status are the `CustodyStatus` of health insurance — clinical-sounding features that carry protected-class signal because of structural inequalities baked into American healthcare.
+
+---
 
 ```
 Fair-Code/
@@ -220,6 +288,13 @@ Fair-Code/
 │   ├── unfair.py                  # Biased model (age + employment tenure included)
 │   ├── fair.py                    # Mitigated model (financial signals only)
 │   ├── credit_customers.csv       # UCI German Credit dataset
+│   ├── unfair.png                 # Terminal output — biased results
+│   └── fair.png                   # Terminal output — mitigated results
+│
+├── Insurance Denial/
+│   ├── unfair.py                  # Biased model (age + gender + BMI + smoker + diabetic)
+│   ├── fair.py                    # Mitigated model (policy signals only)
+│   ├── insurance.csv              # Kaggle Insurance Claim dataset (1,340 records)
 │   ├── unfair.png                 # Terminal output — biased results
 │   └── fair.png                   # Terminal output — mitigated results
 │
@@ -322,6 +397,10 @@ python fair.py
 
 ## What's Next
 
+- [x] COMPAS Criminal Justice Bias
+- [x] AI Recruitment Bias
+- [x] German Credit Lending Bias
+- [x] Insurance Denial — Healthcare Bias
 - [ ] Facial recognition accuracy gaps (MIT Gender Shades methodology)
 - [ ] HMDA mortgage lending bias
 - [ ] LLM bias audit
