@@ -68,6 +68,7 @@ Fair-Code/
 │
 ├── explainers/
 │   ├── proxy-variables.md         # What is a proxy variable? (concept + detection code)
+│   ├── equalized-odds.md          # What is equalized odds? (concept + detection code)
 │   ├── sampling-bias.md           # What is sampling bias? (concept + simulation + mitigation)
 │   └── shap-values.md             # What are SHAP values? (explainability + bias auditing)
 │
@@ -263,10 +264,10 @@ Dropped `age`, `gender`, `bmi`, `smoker`, and `diabetic`. Retained only objectiv
 
 | Explainer | Concept |
 |---|---|
-| [What is a Proxy Variable?](explainers/proxy-variables.md) | Why AI stays biased even after you remove race from the data |
+| [What is a Proxy Variable?](explainers/proxy-variables.md) | Why AI stays biased even after you remove protected attributes from the data |
+| [What is Equalized Odds?](explainers/equalized-odds.md) | The fairness metric that catches a model treating two groups differently — even when overall accuracy looks fine |
 | [What is Sampling Bias?](explainers/sampling-bias.md) | Why your AI works great in the lab and fails on the people who need it most |
 | [What Are SHAP Values?](explainers/shap-values.md) | How to see exactly what drove an AI decision — and use that to catch bias |
-| Equalized Odds | Fairness metric requiring equal TPR and FPR across groups | explainers/equalized-odds.md |
 | Coming soon | What is demographic parity? |
 | Coming soon | Why fairness metrics conflict with each other |
 
@@ -348,7 +349,7 @@ python fair.py
 | Component | Details |
 |---|---|
 | Language | Python 3 |
-| Libraries | `pandas`, `scikit-learn` |
+| Libraries | `pandas`, `scikit-learn`, `fairlearn` |
 | Datasets | ProPublica COMPAS (public domain), AI Fair Recruitment (Kaggle), UCI German Credit / Statlog (Kaggle), Insurance Claims (Kaggle) |
 
 ---
@@ -360,6 +361,7 @@ python fair.py
 - [x] German Credit Lending Bias
 - [x] Insurance Denial — Healthcare Bias
 - [x] Explainer: Proxy Variables
+- [x] Explainer: Equalized Odds
 - [x] Explainer: Sampling Bias
 - [x] Explainer: SHAP Values
 - [ ] Facial recognition accuracy gaps (MIT Gender Shades methodology)
