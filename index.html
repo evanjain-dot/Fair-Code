@@ -1366,6 +1366,15 @@
     align-items: center;
     gap: 24px;
     flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .explainer-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    flex: 1;
   }
 
   .explainer-footer-label {
@@ -1604,6 +1613,7 @@
     .explainer-body { padding: 28px 20px; gap: 36px; }
     .proxy-row { grid-template-columns: 130px 110px 1fr; }
     .explainer-footer { padding: 24px 20px; }
+    .explainer-footer-left { gap: 16px; }
   }
 
   @media (min-width: 901px) {
@@ -4009,6 +4019,82 @@
 
     actionsDiv.appendChild(shareBtn);
     card.appendChild(actionsDiv);
+  });
+
+  // ── SHARE EXPLAINER BUTTONS ─────────────────────────────────────────────
+
+  const explainerMeta = {
+    'explainer-proxy': {
+      title: 'What Is a Proxy Variable? — Fair Code',
+      desc: 'The sneaky reason AI stays biased even after you remove race from the data. With real COMPAS proof and detection code.',
+    },
+    'explainer-sampling': {
+      title: 'What Is Sampling Bias? — Fair Code',
+      desc: 'Why your AI works great in the lab and fails on the people who need it most. MIT Gender Shades proof + audit code.',
+    },
+    'explainer-shap': {
+      title: 'What Are SHAP Values? — Fair Code',
+      desc: 'How to see exactly what drove an AI decision — and use that to catch bias before deployment.',
+    },
+    'explainer-equalized-odds': {
+      title: 'What Is Equalized Odds? — Fair Code',
+      desc: 'The fairness metric that catches a model treating two groups differently — even when overall accuracy looks fine.',
+    },
+    'explainer-disparate-impact': {
+      title: 'What Is Disparate Impact (The 80% Rule)? — Fair Code',
+      desc: 'The legal threshold that flags AI hiring and lending decisions as discriminatory under US employment law.',
+    },
+    'explainer-metric-conflicts': {
+      title: 'Why Fairness Metrics Conflict — Fair Code',
+      desc: 'The proven mathematical impossibility of satisfying demographic parity, equalized odds, and predictive parity simultaneously.',
+    },
+  };
+
+  document.querySelectorAll('.explainer-card[data-explainer-tags]').forEach(card => {
+    const anchor = card.previousElementSibling;
+    const id = anchor ? anchor.id : null;
+    const meta = id ? explainerMeta[id] : null;
+    const titleEl = card.querySelector('.explainer-title');
+    const name = titleEl ? titleEl.textContent.trim() : 'this explainer';
+
+    const footer = card.querySelector('.explainer-footer');
+    if (!footer) return;
+
+    // Wrap existing footer children in a left div
+    const left = document.createElement('div');
+    left.className = 'explainer-footer-left';
+    while (footer.firstChild) left.appendChild(footer.firstChild);
+    footer.appendChild(left);
+
+    // Build share button
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'share-audit-btn';
+    shareBtn.innerHTML = `${SHARE_SVG}<span>Share</span>`;
+    shareBtn.style.flexShrink = '0';
+
+    shareBtn.addEventListener('click', () => {
+      const url = window.location.origin + window.location.pathname + (id ? '#' + id : '');
+      const title = meta ? meta.title : `Fair Code — ${name}`;
+      const text = meta ? meta.desc : `${name} — Fair Code explainer.`;
+
+      if (navigator.share) {
+        navigator.share({ title, text, url }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(url).then(() => {
+          shareBtn.classList.add('shared');
+          const sp = shareBtn.querySelector('span');
+          sp.textContent = 'Copied!';
+          setTimeout(() => {
+            shareBtn.classList.remove('shared');
+            sp.textContent = 'Share';
+          }, 2500);
+        }).catch(() => {
+          prompt('Copy this link:', url);
+        });
+      }
+    });
+
+    footer.appendChild(shareBtn);
   });
 
   // ── END COPY + SHARE ──────────────────────────────────────────────────────
