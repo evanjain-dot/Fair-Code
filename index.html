@@ -4,7 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fair Code: Algorithmic Bias Detection</title>
+<meta name="description" content="Fair Code exposes and fixes bias in real-world AI systems — criminal justice, hiring, lending, healthcare. Open-source audits with measurable results.">
+<meta property="og:title" content="Fair Code: Algorithmic Bias Detection">
+<meta property="og:description" content="Bias in AI is real, measurable, and fixable. Open-source audits showing up to 97% bias reduction across criminal justice, hiring, lending, and healthcare AI.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fair Code: Algorithmic Bias Detection">
+<meta name="twitter:description" content="Bias in AI is real, measurable, and fixable. Open-source audits with up to 97% bias reduction.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d0f14'/><circle cx='50' cy='50' r='12' fill='%23c9a84c'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -61,7 +70,11 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+
+  /* ── SCROLL BEHAVIOR — respect reduced-motion ─── */
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
 
   /* ── FOCUS STYLES ──────────────────────────────── */
   :focus-visible {
@@ -86,6 +99,7 @@
   }
 
   input, textarea { cursor: text; }
+  a, button { cursor: pointer; }
 
   /* ── COPY BUTTON ───────────────────────────────── */
   .copy-btn {
@@ -107,7 +121,10 @@
     line-height: 1.6;
   }
   .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
-  .copy-btn.copied { color: var(--accent3); border-color: var(--accent3); background: color-mix(in srgb, var(--accent3) 8%, transparent); }
+  .copy-btn.copied { color: var(--accent3); border-color: var(--accent3); background: rgba(74,124,111,0.08); }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .copy-btn.copied { background: color-mix(in srgb, var(--accent3) 8%, transparent); }
+  }
   .copy-btn svg { width: 10px; height: 10px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   .code-block-header-left { display: flex; align-items: center; gap: 8px; }
@@ -286,7 +303,10 @@
     flex-shrink: 0;
   }
 
-  .nav-social-link:hover { color: var(--accent); border-color: var(--border2); background: color-mix(in srgb, var(--accent) 5%, transparent); }
+  .nav-social-link:hover { color: var(--accent); border-color: var(--border2); background: rgba(201,168,76,0.05); }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .nav-social-link:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+  }
 
   .theme-toggle {
     width: 36px; height: 36px;
@@ -308,6 +328,7 @@
   /* HERO */
   .hero {
     min-height: 100vh;
+    min-height: 100dvh;
     display: grid;
     grid-template-rows: 1fr auto;
     padding-top: 52px;
@@ -471,6 +492,10 @@
     display: flex;
     animation: ticker 30s linear infinite;
     white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
   }
 
   .ticker-item {
@@ -1051,7 +1076,10 @@
     flex-shrink: 0;
   }
 
-  .roadmap-status.done { background: var(--accent); box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 60%, transparent); }
+  .roadmap-status.done { background: var(--accent); box-shadow: 0 0 8px rgba(201,168,76,0.6); }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .roadmap-status.done { box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 60%, transparent); }
+  }
   .roadmap-status.soon { background: transparent; border: 1px solid var(--border2); }
 
   .roadmap-name {
@@ -1137,6 +1165,14 @@
   .reveal.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 
   /* COMPARE BLOCKS */
@@ -1342,13 +1378,19 @@
 
   .explainer-callout {
     margin-top: 20px;
-    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    border: 1px solid rgba(201,168,76,0.25);
     padding: 16px 20px;
     font-size: 11px;
     color: var(--accent);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    background: color-mix(in srgb, var(--accent) 4%, transparent);
+    background: rgba(201,168,76,0.04);
+  }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .explainer-callout {
+      border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+      background: color-mix(in srgb, var(--accent) 4%, transparent);
+    }
   }
 
   .reading-links {
@@ -1424,7 +1466,8 @@
     line-height: 1;
   }
 
-  .nav-dropdown-wrap:hover .nav-caret {
+  .nav-dropdown-wrap:hover .nav-caret,
+  .nav-dropdown-wrap:focus-within .nav-caret {
     transform: rotate(180deg);
     opacity: 1;
   }
@@ -1447,7 +1490,8 @@
     z-index: 200;
   }
 
-  .nav-dropdown-wrap:hover .nav-dropdown {
+  .nav-dropdown-wrap:hover .nav-dropdown,
+  .nav-dropdown-wrap:focus-within .nav-dropdown {
     opacity: 1;
     pointer-events: all;
     transform: translateY(0);
@@ -1478,8 +1522,11 @@
 
   .nav-dropdown li a:hover {
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 5%, transparent);
+    background: rgba(201,168,76,0.05);
     padding-left: 24px;
+  }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .nav-dropdown li a:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
   }
 
   /* RESPONSIVE */
@@ -1541,7 +1588,10 @@
       border-bottom: 1px solid var(--border);
       transition: color 0.15s, background 0.15s;
     }
-    .mobile-nav a:hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 4%, transparent); }
+    .mobile-nav a:hover { color: var(--accent); background: rgba(201,168,76,0.04); }
+    @supports (background: color-mix(in srgb, red 1%, transparent)) {
+      .mobile-nav a:hover { background: color-mix(in srgb, var(--accent) 4%, transparent); }
+    }
     .mobile-nav a:last-child { border-bottom: none; }
     .mobile-nav .mobile-section-label {
       display: block;
@@ -1683,6 +1733,31 @@
 
   /* back-to-top visible on all screen sizes via JS */
 
+  .search-bar-hint {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--terminal-label-color);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0 12px;
+    flex-shrink: 0;
+    pointer-events: none;
+    user-select: none;
+    align-self: center;
+    transition: opacity 0.15s;
+  }
+
+  /* Hide hint while the bar is focused */
+  .search-bar-inner:focus-within .search-bar-hint { opacity: 0; pointer-events: none; }
+  /* Hide hint when there is text (JS adds .has-query to the inner wrap) */
+  .search-bar-inner.has-query .search-bar-hint { display: none; }
+
+  /* Also hide on mobile where space is tight */
+  @media (max-width: 600px) {
+    .search-bar-hint { display: none; }
+  }
+
   /* SEARCH BAR */
   .search-bar-wrap {
     margin-bottom: 40px;
@@ -1772,7 +1847,10 @@
     flex-shrink: 0;
   }
 
-  .search-bar-clear:hover { color: var(--accent2); background: color-mix(in srgb, var(--accent2) 6%, transparent); }
+  .search-bar-clear:hover { color: var(--accent2); background: rgba(155,35,53,0.06); }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .search-bar-clear:hover { background: color-mix(in srgb, var(--accent2) 6%, transparent); }
+  }
   .search-bar-clear.visible { display: flex; }
 
   .search-filter-row {
@@ -1806,7 +1884,10 @@
   }
 
   .search-filter-btn:hover { color: var(--accent); border-color: var(--accent); }
-  .search-filter-btn.active { color: var(--accent); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  .search-filter-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(201,168,76,0.06); }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .search-filter-btn.active { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  }
 
   .search-count {
     font-size: 9px;
@@ -1845,15 +1926,24 @@
   }
 
   .search-highlight {
-    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    background: rgba(201,168,76,0.18);
     color: var(--accent);
     border-radius: 0;
+  }
+  @supports (background: color-mix(in srgb, red 1%, transparent)) {
+    .search-highlight { background: color-mix(in srgb, var(--accent) 18%, transparent); }
   }
 
   /* hide items that don't match search */
   .project-card.search-hidden,
   .explainer-card.search-hidden {
     display: none;
+  }
+
+  /* Accent-bordered terminal (replaces inline color-mix) */
+  .terminal--accent { border-color: var(--accent); opacity: 0.5; }
+  @supports (border-color: color-mix(in srgb, red 1%, red)) {
+    .terminal--accent { border-color: color-mix(in srgb, var(--accent) 30%, var(--border)); opacity: 1; }
   }
 
   @media (max-width: 900px) {
@@ -1876,32 +1966,32 @@
     <li><a href="#about">About</a></li>
     <li><a href="#methodology">Method</a></li>
     <li class="nav-dropdown-wrap">
-      <a href="#projects" class="nav-dropdown-trigger">Experiments <span class="nav-caret">▾</span></a>
-      <ul class="nav-dropdown">
-        <li><a href="#project-compas">01 — COMPAS</a></li>
-        <li><a href="#project-hiring">02 — AI Hiring</a></li>
-        <li><a href="#project-credit">03 — German Credit</a></li>
-        <li><a href="#project-insurance">04 — Insurance Denial</a></li>
+      <a href="#projects" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">Experiments <span class="nav-caret">▾</span></a>
+      <ul class="nav-dropdown" role="menu">
+        <li role="none"><a href="#project-compas" role="menuitem">01 — COMPAS</a></li>
+        <li role="none"><a href="#project-hiring" role="menuitem">02 — AI Hiring</a></li>
+        <li role="none"><a href="#project-credit" role="menuitem">03 — German Credit</a></li>
+        <li role="none"><a href="#project-insurance" role="menuitem">04 — Insurance Denial</a></li>
       </ul>
     </li>
     <li class="nav-dropdown-wrap">
-      <a href="#explainers" class="nav-dropdown-trigger">Explainers <span class="nav-caret">▾</span></a>
-      <ul class="nav-dropdown">
-        <li><a href="#explainer-proxy">01 — Proxy Variables</a></li>
-        <li><a href="#explainer-sampling">02 — Sampling Bias</a></li>
-        <li><a href="#explainer-shap">03 — SHAP Values</a></li>
-        <li><a href="#explainer-equalized-odds">04 — Equalized Odds</a></li>
-        <li><a href="#explainer-disparate-impact">05 — Disparate Impact</a></li>
-        <li><a href="#explainer-metric-conflicts">06 — Metric Conflicts</a></li>
+      <a href="#explainers" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">Explainers <span class="nav-caret">▾</span></a>
+      <ul class="nav-dropdown" role="menu">
+        <li role="none"><a href="#explainer-proxy" role="menuitem">01 — Proxy Variables</a></li>
+        <li role="none"><a href="#explainer-sampling" role="menuitem">02 — Sampling Bias</a></li>
+        <li role="none"><a href="#explainer-shap" role="menuitem">03 — SHAP Values</a></li>
+        <li role="none"><a href="#explainer-equalized-odds" role="menuitem">04 — Equalized Odds</a></li>
+        <li role="none"><a href="#explainer-disparate-impact" role="menuitem">05 — Disparate Impact</a></li>
+        <li role="none"><a href="#explainer-metric-conflicts" role="menuitem">06 — Metric Conflicts</a></li>
       </ul>
     </li>
     <li><a href="#impact">Impact</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
   </ul>
   <div class="nav-social">
-    <a href="https://github.com/yakew7/Fair-Code" target="_blank" class="nav-github">↗ GitHub</a>
-    <a href="https://instagram.com/thefaircodeproject" target="_blank" class="nav-social-link">↗ Insta</a>
-    <a href="https://www.linkedin.com/in/yash-kewlani-7ab090357" target="_blank" class="nav-social-link">↗ LinkedIn</a>
+    <a href="https://github.com/yakew7/Fair-Code" target="_blank" rel="noopener noreferrer" class="nav-github">↗ GitHub</a>
+    <a href="https://instagram.com/thefaircodeproject" target="_blank" rel="noopener noreferrer" class="nav-social-link">↗ Insta</a>
+    <a href="https://www.linkedin.com/in/yash-kewlani-7ab090357" target="_blank" rel="noopener noreferrer" class="nav-social-link">↗ LinkedIn</a>
   </div>
   <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">☀</button>
   <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
@@ -1929,9 +2019,9 @@
     <a href="#impact" class="mobile-link">Impact</a>
     <a href="#roadmap" class="mobile-link">Roadmap</a>
     <div class="mobile-social-row">
-      <a href="https://github.com/yakew7/Fair-Code" target="_blank">↗ GitHub</a>
-      <a href="https://instagram.com/thefaircodeproject" target="_blank">↗ Insta</a>
-      <a href="https://www.linkedin.com/in/yash-kewlani-7ab090357" target="_blank">↗ LinkedIn</a>
+      <a href="https://github.com/yakew7/Fair-Code" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+      <a href="https://instagram.com/thefaircodeproject" target="_blank" rel="noopener noreferrer">↗ Insta</a>
+      <a href="https://www.linkedin.com/in/yash-kewlani-7ab090357" target="_blank" rel="noopener noreferrer">↗ LinkedIn</a>
     </div>
   </div>
 </div>
@@ -2029,7 +2119,7 @@
       <p class="about-body">Fair Code is a research and engineering project that exposes bias in real-world AI systems and demonstrates concrete mitigation strategies. Both projects follow the same structure.</p>
       <p class="about-body" style="margin-top: 14px;">Train a biased model. Measure the fairness gap. Engineer a fair model. Measure again. No theory. Just data, code, and results.</p>
       <p class="about-body" style="margin-top: 14px;">The bias in these systems is documented, measurable, and fixable. Removing a protected attribute isn't enough. Proxy variables carry the same signal through. Both must go.</p>
-      <a href="https://github.com/yakew7/Fair-Code" target="_blank" class="gh-badge">
+      <a href="https://github.com/yakew7/Fair-Code" target="_blank" rel="noopener noreferrer" class="gh-badge">
         <span class="gh-dot"></span> yakew7/Fair-Code
       </a>
     </div>
@@ -2102,7 +2192,7 @@
   <div class="section-eyebrow"><span class="num">03</span>Projects</div>
   <div class="projects-header">
     <h2 id="projects-heading" class="projects-title">THE EXPERIMENTS</h2>
-    <a href="https://github.com/yakew7/Fair-Code" target="_blank" class="gh-badge">↗ View All Code</a>
+    <a href="https://github.com/yakew7/Fair-Code" target="_blank" rel="noopener noreferrer" class="gh-badge">↗ View All Code</a>
   </div>
 
   <!-- SEARCH BAR: PROJECTS -->
@@ -2110,6 +2200,7 @@
     <div class="search-bar-inner">
       <span class="search-bar-prefix">$ grep --</span>
       <input type="text" class="search-bar-input" id="projects-search-input" placeholder="search experiments… e.g. race, hiring, 97%, COMPAS" autocomplete="off" spellcheck="false" aria-label="Search experiments">
+      <span class="search-bar-hint" aria-hidden="true">press / to search</span>
       <button class="search-bar-clear" id="projects-search-clear" aria-label="Clear search">✕</button>
     </div>
     <div class="search-filter-row">
@@ -2119,7 +2210,7 @@
       <button class="search-filter-btn" data-filter-group="projects" data-filter="hiring" aria-label="Filter by Hiring" aria-pressed="false">Hiring</button>
       <button class="search-filter-btn" data-filter-group="projects" data-filter="lending" aria-label="Filter by Lending" aria-pressed="false">Lending</button>
       <button class="search-filter-btn" data-filter-group="projects" data-filter="healthcare" aria-label="Filter by Healthcare" aria-pressed="false">Healthcare</button>
-      <span class="search-count" id="projects-count"><span id="projects-count-num">4</span> of <span id="projects-total-num">4</span></span>
+      <span class="search-count" id="projects-count"><span id="projects-count-num">—</span> of <span id="projects-total-num">—</span></span>
     </div>
   </div>
   <div id="projects-no-results" class="search-no-results">
@@ -2435,7 +2526,7 @@
   <div class="section-eyebrow"><span class="num">04</span>Explainers</div>
   <div class="projects-header">
     <h2 id="explainers-heading" class="projects-title reveal">THE CONCEPTS</h2>
-    <a href="https://github.com/yakew7/Fair-Code/tree/main/explainers" target="_blank" class="gh-badge">↗ View on GitHub</a>
+    <a href="https://github.com/yakew7/Fair-Code/tree/main/explainers" target="_blank" rel="noopener noreferrer" class="gh-badge">↗ View on GitHub</a>
   </div>
 
   <!-- SEARCH BAR: EXPLAINERS -->
@@ -2443,6 +2534,7 @@
     <div class="search-bar-inner">
       <span class="search-bar-prefix">$ grep --</span>
       <input type="text" class="search-bar-input" id="explainers-search-input" placeholder="search concepts… e.g. proxy, SHAP, equalized odds, sampling" autocomplete="off" spellcheck="false" aria-label="Search explainers">
+      <span class="search-bar-hint" aria-hidden="true">press / to search</span>
       <button class="search-bar-clear" id="explainers-search-clear" aria-label="Clear search">✕</button>
     </div>
     <div class="search-filter-row">
@@ -2452,7 +2544,7 @@
       <button class="search-filter-btn" data-filter-group="explainers" data-filter="metrics" aria-label="Filter by Metrics" aria-pressed="false">Metrics</button>
       <button class="search-filter-btn" data-filter-group="explainers" data-filter="data" aria-label="Filter by Data Bias" aria-pressed="false">Data Bias</button>
       <button class="search-filter-btn" data-filter-group="explainers" data-filter="explainability" aria-label="Filter by Explainability" aria-pressed="false">Explainability</button>
-      <span class="search-count" id="explainers-count"><span id="explainers-count-num">5</span> of <span id="explainers-total-num">5</span></span>
+      <span class="search-count" id="explainers-count"><span id="explainers-count-num">—</span> of <span id="explainers-total-num">—</span></span>
     </div>
   </div>
   <div id="explainers-no-results" class="search-no-results">
@@ -2483,41 +2575,41 @@
 
       <div class="proxy-table-wrap">
         <div class="explainer-block-label" style="margin-bottom: 16px;">Common Proxy Variables</div>
-        <div class="proxy-table">
-          <div class="proxy-row proxy-row-head">
-            <span>Feature</span>
-            <span>Encodes</span>
-            <span>Why</span>
+        <div class="proxy-table" role="table" aria-label="Common proxy variables in algorithmic bias">
+          <div class="proxy-row proxy-row-head" role="row">
+            <span role="columnheader">Feature</span>
+            <span role="columnheader">Encodes</span>
+            <span role="columnheader">Why</span>
           </div>
-          <div class="proxy-row">
-            <span><code class="inline-code">zip_code</code></span>
-            <span class="proxy-attr">Race</span>
-            <span>Historical redlining segregated neighbourhoods. Zip codes still reflect this.</span>
+          <div class="proxy-row" role="row">
+            <span role="cell"><code class="inline-code">zip_code</code></span>
+            <span class="proxy-attr" role="cell">Race</span>
+            <span role="cell">Historical redlining segregated neighbourhoods. Zip codes still reflect this.</span>
           </div>
-          <div class="proxy-row">
-            <span><code class="inline-code">custody_status</code></span>
-            <span class="proxy-attr">Race</span>
-            <span>Over-policing of Black communities leads to disproportionate pretrial detention.</span>
+          <div class="proxy-row" role="row">
+            <span role="cell"><code class="inline-code">custody_status</code></span>
+            <span class="proxy-attr" role="cell">Race</span>
+            <span role="cell">Over-policing of Black communities leads to disproportionate pretrial detention.</span>
           </div>
-          <div class="proxy-row">
-            <span><code class="inline-code">name</code></span>
-            <span class="proxy-attr">Gender / Ethnicity</span>
-            <span>Names encode gender and ethnicity with high accuracy.</span>
+          <div class="proxy-row" role="row">
+            <span role="cell"><code class="inline-code">name</code></span>
+            <span class="proxy-attr" role="cell">Gender / Ethnicity</span>
+            <span role="cell">Names encode gender and ethnicity with high accuracy.</span>
           </div>
-          <div class="proxy-row">
-            <span><code class="inline-code">college_attended</code></span>
-            <span class="proxy-attr">Socioeconomic class</span>
-            <span>Elite colleges remain heavily stratified by class and race.</span>
+          <div class="proxy-row" role="row">
+            <span role="cell"><code class="inline-code">college_attended</code></span>
+            <span class="proxy-attr" role="cell">Socioeconomic class</span>
+            <span role="cell">Elite colleges remain heavily stratified by class and race.</span>
           </div>
-          <div class="proxy-row">
-            <span><code class="inline-code">prior_arrests</code></span>
-            <span class="proxy-attr">Race</span>
-            <span>Arrest records reflect over-policing, not actual crime rates.</span>
+          <div class="proxy-row" role="row">
+            <span role="cell"><code class="inline-code">prior_arrests</code></span>
+            <span class="proxy-attr" role="cell">Race</span>
+            <span role="cell">Arrest records reflect over-policing, not actual crime rates.</span>
           </div>
-          <div class="proxy-row">
-            <span><code class="inline-code">employment_tenure</code></span>
-            <span class="proxy-attr">Age</span>
-            <span>A 24-year-old structurally cannot have 10 years of work history.</span>
+          <div class="proxy-row" role="row">
+            <span role="cell"><code class="inline-code">employment_tenure</code></span>
+            <span class="proxy-attr" role="cell">Age</span>
+            <span role="cell">A 24-year-old structurally cannot have 10 years of work history.</span>
           </div>
         </div>
       </div>
@@ -2557,7 +2649,7 @@
             <div class="proof-step-num">STEP 02</div>
             <div class="proof-step-label">Fair model — race AND proxy removed</div>
             <div class="terminals-grid" style="margin-top: 12px;">
-              <div class="terminal" style="border-color: color-mix(in srgb, var(--accent) 30%, var(--border));">
+              <div class="terminal terminal--accent">
                 <div class="terminal-bar">
                   <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
                   <span class="terminal-label">fair.py — race + CustodyStatus dropped</span>
@@ -2616,9 +2708,9 @@
       <div class="explainer-reading">
         <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
         <div class="reading-links">
-          <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank" class="reading-link">↗ ProPublica: Machine Bias (2016)</a>
-          <a href="https://fairmlbook.org/" target="_blank" class="reading-link">↗ Barocas & Hardt: Fairness and Machine Learning</a>
-          <a href="https://science.sciencemag.org/content/366/6464/447" target="_blank" class="reading-link">↗ Obermeyer et al.: Dissecting racial bias in a health algorithm (Science, 2019)</a>
+          <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank" rel="noopener noreferrer" class="reading-link">↗ ProPublica: Machine Bias (2016)</a>
+          <a href="https://fairmlbook.org/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Barocas & Hardt: Fairness and Machine Learning</a>
+          <a href="https://science.sciencemag.org/content/366/6464/447" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Obermeyer et al.: Dissecting racial bias in a health algorithm (Science, 2019)</a>
         </div>
       </div>
     </div>
@@ -2765,7 +2857,7 @@
             <div class="proof-step-num">STEP 02</div>
             <div class="proof-step-label">Fix — oversample the underrepresented group</div>
             <div class="terminals-grid" style="margin-top: 12px;">
-              <div class="terminal" style="border-color: color-mix(in srgb, var(--accent) 30%, var(--border));">
+              <div class="terminal terminal--accent">
                 <div class="terminal-bar">
                   <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
                   <span class="terminal-label">fix.py — Group B oversampled to match A</span>
@@ -2831,9 +2923,9 @@
       <div class="explainer-reading">
         <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
         <div class="reading-links">
-          <a href="http://proceedings.mlr.press/v81/buolamwini18a.html" target="_blank" class="reading-link">↗ Buolamwini &amp; Gebru: Gender Shades (2018)</a>
-          <a href="https://science.sciencemag.org/content/366/6464/447" target="_blank" class="reading-link">↗ Obermeyer et al.: Dissecting racial bias in a health algorithm (Science, 2019)</a>
-          <a href="https://dl.acm.org/doi/10.1145/3442188.3445922" target="_blank" class="reading-link">↗ Bender et al.: On the Dangers of Stochastic Parrots (2021)</a>
+          <a href="http://proceedings.mlr.press/v81/buolamwini18a.html" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Buolamwini &amp; Gebru: Gender Shades (2018)</a>
+          <a href="https://science.sciencemag.org/content/366/6464/447" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Obermeyer et al.: Dissecting racial bias in a health algorithm (Science, 2019)</a>
+          <a href="https://dl.acm.org/doi/10.1145/3442188.3445922" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Bender et al.: On the Dangers of Stochastic Parrots (2021)</a>
         </div>
       </div>
     </div>
@@ -2942,7 +3034,7 @@
           <div class="proof-step-num">STEP 02</div>
           <div class="proof-step-label">SHAP audit of fair model — race gone, influence redistributed</div>
           <div class="terminals-grid" style="margin-top: 12px;">
-            <div class="terminal" style="border-color: color-mix(in srgb, var(--accent) 30%, var(--border));">
+            <div class="terminal terminal--accent">
               <div class="terminal-bar">
                 <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
                 <span class="terminal-label">shap_audit_fair.py — fair model</span>
@@ -3012,9 +3104,9 @@
       <div class="explainer-reading">
         <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
         <div class="reading-links">
-          <a href="https://arxiv.org/abs/1705.07874" target="_blank" class="reading-link">↗ Lundberg &amp; Lee: A Unified Approach to Interpreting Model Predictions (NeurIPS 2017)</a>
-          <a href="https://shap.readthedocs.io/" target="_blank" class="reading-link">↗ SHAP Documentation and Examples</a>
-          <a href="https://fairmlbook.org/" target="_blank" class="reading-link">↗ Barocas &amp; Hardt: Fairness and Machine Learning — Chapter 6</a>
+          <a href="https://arxiv.org/abs/1705.07874" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Lundberg &amp; Lee: A Unified Approach to Interpreting Model Predictions (NeurIPS 2017)</a>
+          <a href="https://shap.readthedocs.io/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ SHAP Documentation and Examples</a>
+          <a href="https://fairmlbook.org/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Barocas &amp; Hardt: Fairness and Machine Learning — Chapter 6</a>
         </div>
       </div>
     </div>
@@ -3155,10 +3247,10 @@
       <div class="explainer-reading">
         <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
         <div class="reading-links">
-          <a href="https://arxiv.org/abs/1610.02413" target="_blank" class="reading-link">↗ Hardt, Price, Srebro: Equality of Opportunity in Supervised Learning (2016)</a>
-          <a href="https://arxiv.org/abs/1703.00056" target="_blank" class="reading-link">↗ Chouldechova: Fair Prediction with Disparate Impact — the calibration conflict proof (2017)</a>
-          <a href="https://fairlearn.org/v0.8/user_guide/fairness_in_machine_learning.html" target="_blank" class="reading-link">↗ Fairlearn: Fairness in Machine Learning</a>
-          <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank" class="reading-link">↗ ProPublica: Machine Bias (2016)</a>
+          <a href="https://arxiv.org/abs/1610.02413" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Hardt, Price, Srebro: Equality of Opportunity in Supervised Learning (2016)</a>
+          <a href="https://arxiv.org/abs/1703.00056" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Chouldechova: Fair Prediction with Disparate Impact — the calibration conflict proof (2017)</a>
+          <a href="https://fairlearn.org/v0.8/user_guide/fairness_in_machine_learning.html" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Fairlearn: Fairness in Machine Learning</a>
+          <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank" rel="noopener noreferrer" class="reading-link">↗ ProPublica: Machine Bias (2016)</a>
         </div>
       </div>
     </div>
@@ -3261,7 +3353,7 @@
             <div class="proof-step-num">STEP 02</div>
             <div class="proof-step-label">Fair model — drop gender and age, retain Experience + Test Score only</div>
             <div class="terminals-grid" style="margin-top: 12px;">
-              <div class="terminal" style="border-color: color-mix(in srgb, var(--accent) 30%, var(--border));">
+              <div class="terminal terminal--accent">
                 <div class="terminal-bar">
                   <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
                   <span class="terminal-label">fair.py — MITIGATED MODEL</span>
@@ -3368,11 +3460,11 @@
       <div class="explainer-reading">
         <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
         <div class="reading-links">
-          <a href="https://www.ecfr.gov/current/title-29/subtitle-B/chapter-XIV/part-1607" target="_blank" class="reading-link">↗ EEOC Uniform Guidelines on Employee Selection Procedures, 29 CFR Part 1607</a>
-          <a href="https://supreme.justia.com/cases/federal/us/401/424/" target="_blank" class="reading-link">↗ Griggs v. Duke Power Co., 401 U.S. 424 (1971) — establishing the disparate-impact doctrine</a>
-          <a href="https://www.californialawreview.org/print/2-big-datas-disparate-impact" target="_blank" class="reading-link">↗ Barocas &amp; Selbst: Big Data's Disparate Impact, 104 Calif. L. Rev. 671 (2016)</a>
-          <a href="https://arxiv.org/abs/1703.00056" target="_blank" class="reading-link">↗ Chouldechova: Fair Prediction with Disparate Impact — the impossibility result (2017)</a>
-          <a href="https://fairlearn.org/main/user_guide/assessment/common_fairness_metrics.html" target="_blank" class="reading-link">↗ Fairlearn: demographic_parity_ratio documentation</a>
+          <a href="https://www.ecfr.gov/current/title-29/subtitle-B/chapter-XIV/part-1607" target="_blank" rel="noopener noreferrer" class="reading-link">↗ EEOC Uniform Guidelines on Employee Selection Procedures, 29 CFR Part 1607</a>
+          <a href="https://supreme.justia.com/cases/federal/us/401/424/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Griggs v. Duke Power Co., 401 U.S. 424 (1971) — establishing the disparate-impact doctrine</a>
+          <a href="https://www.californialawreview.org/print/2-big-datas-disparate-impact" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Barocas &amp; Selbst: Big Data's Disparate Impact, 104 Calif. L. Rev. 671 (2016)</a>
+          <a href="https://arxiv.org/abs/1703.00056" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Chouldechova: Fair Prediction with Disparate Impact — the impossibility result (2017)</a>
+          <a href="https://fairlearn.org/main/user_guide/assessment/common_fairness_metrics.html" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Fairlearn: demographic_parity_ratio documentation</a>
         </div>
       </div>
     </div>
@@ -3566,10 +3658,10 @@
       <div class="explainer-reading">
         <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
         <div class="reading-links">
-          <a href="https://arxiv.org/abs/1703.00056" target="_blank" class="reading-link">↗ Chouldechova: Fair Prediction with Disparate Impact (2017) — formal proof of the incompatibility</a>
-          <a href="https://arxiv.org/abs/1609.05807" target="_blank" class="reading-link">↗ Kleinberg, Mullainathan &amp; Raghavan: Inherent Trade-offs in the Fair Determination of Risk Scores (2016)</a>
-          <a href="https://fairmlbook.org/" target="_blank" class="reading-link">↗ Barocas &amp; Hardt: Fairness and Machine Learning — Chapter 2 &amp; 4</a>
-          <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank" class="reading-link">↗ ProPublica: Machine Bias (2016) — the audit that made this conflict visible to the public</a>
+          <a href="https://arxiv.org/abs/1703.00056" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Chouldechova: Fair Prediction with Disparate Impact (2017) — formal proof of the incompatibility</a>
+          <a href="https://arxiv.org/abs/1609.05807" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Kleinberg, Mullainathan &amp; Raghavan: Inherent Trade-offs in the Fair Determination of Risk Scores (2016)</a>
+          <a href="https://fairmlbook.org/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Barocas &amp; Hardt: Fairness and Machine Learning — Chapter 2 &amp; 4</a>
+          <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank" rel="noopener noreferrer" class="reading-link">↗ ProPublica: Machine Bias (2016) — the audit that made this conflict visible to the public</a>
         </div>
       </div>
     </div>
@@ -3710,15 +3802,15 @@
 <button id="back-to-top" aria-label="Back to top"></button>
 
 <!-- FOOTER -->
-<footer>
+<footer role="contentinfo">
   <div>
     <div class="footer-logo">FAIR<span>_</span>CODE</div>
     <div class="footer-by">by Yash Kewlani · @thefaircodeproject</div>
   </div>
   <div class="footer-links">
-    <a href="https://github.com/yakew7/Fair-Code" target="_blank">↗ GitHub</a>
-    <a href="https://instagram.com/thefaircodeproject" target="_blank">↗ Instagram</a>
-    <a href="https://www.linkedin.com/in/yash-kewlani-7ab090357" target="_blank">↗ Linkedin</a>
+    <a href="https://github.com/yakew7/Fair-Code" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+    <a href="https://instagram.com/thefaircodeproject" target="_blank" rel="noopener noreferrer">↗ Instagram</a>
+    <a href="https://www.linkedin.com/in/yash-kewlani-7ab090357" target="_blank" rel="noopener noreferrer">↗ Linkedin</a>
   </div>
 </footer>
 
@@ -3726,15 +3818,31 @@
   // Hamburger menu
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('mobileNav');
+
+  function openMobileNav() {
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    mobileNav.classList.add('open');
+    mobileNav.removeAttribute('inert');
+  }
+
+  function closeMobileNav() {
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileNav.classList.remove('open');
+    mobileNav.setAttribute('inert', '');
+  }
+
+  // Set initial inert state
+  hamburger.setAttribute('aria-expanded', 'false');
+  mobileNav.setAttribute('inert', '');
+
   hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileNav.classList.toggle('open');
+    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
   });
+
   mobileNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileNav.classList.remove('open');
-    });
+    link.addEventListener('click', closeMobileNav);
   });
 
   // Close mobile nav when tapping outside
@@ -3742,8 +3850,7 @@
     if (mobileNav.classList.contains('open') &&
         !mobileNav.contains(e.target) &&
         !hamburger.contains(e.target)) {
-      hamburger.classList.remove('open');
-      mobileNav.classList.remove('open');
+      closeMobileNav();
     }
   });
 
@@ -3775,9 +3882,9 @@
 
   // Animate bias bars on scroll
   const bars = document.querySelectorAll('.bias-fill');
-  const widths = {};
-  bars.forEach((bar, i) => {
-    widths[i] = bar.style.width;
+  const barWidths = new WeakMap();
+  bars.forEach(bar => {
+    barWidths.set(bar, bar.style.width);
     bar.style.width = '0%';
   });
 
@@ -3785,10 +3892,9 @@
     entries.forEach(e => {
       if (e.isIntersecting) {
         const bar = e.target;
-        const idx = Array.from(bars).indexOf(bar);
         setTimeout(() => {
           bar.style.transition = 'width 1.1s cubic-bezier(0.25, 1, 0.5, 1)';
-          bar.style.width = widths[idx];
+          bar.style.width = barWidths.get(bar) || '0%';
         }, 200);
         barObserver.unobserve(bar);
       }
@@ -3825,12 +3931,8 @@
     countNum.textContent = total;
     if (totalNum) totalNum.textContent = total;
 
-    function getCards() {
-      return document.querySelectorAll(cardSelector);
-    }
-
     function normalise(str) {
-      return str.toLowerCase().replace(/[^a-z0-9\s%.]/g, ' ');
+      return str.toLowerCase().replace(/→/g, ' ').replace(/[^a-z0-9\s%.]/g, ' ');
     }
 
     function applyFilters() {
@@ -3861,9 +3963,12 @@
       }
     }
 
+    const inner = input.closest('.search-bar-inner');
+
     input.addEventListener('input', () => {
       currentQuery = input.value.trim();
       clearBtn.classList.toggle('visible', currentQuery.length > 0);
+      if (inner) inner.classList.toggle('has-query', currentQuery.length > 0);
       applyFilters();
     });
 
@@ -3871,6 +3976,7 @@
       input.value = '';
       currentQuery = '';
       clearBtn.classList.remove('visible');
+      if (inner) inner.classList.remove('has-query');
       applyFilters();
       input.focus();
     });
@@ -3910,23 +4016,61 @@
     filterGroup: 'explainers'
   });
 
-  // ── SEARCH KEYBOARD SHORTCUT ─────────────────────────────────────────────
-  // Press '/' to focus the search input nearest to current scroll position
+  // ── DROPDOWN aria-expanded MANAGEMENT ────────────────────────────────────
+  document.querySelectorAll('.nav-dropdown-trigger').forEach(trigger => {
+    const wrap = trigger.closest('.nav-dropdown-wrap');
+    // Update aria-expanded when focus enters/leaves the dropdown wrap
+    wrap.addEventListener('focusin', () => trigger.setAttribute('aria-expanded', 'true'));
+    wrap.addEventListener('focusout', (e) => {
+      // Only collapse when focus leaves the entire wrap
+      if (!wrap.contains(e.relatedTarget)) {
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+    // Also toggle on pointer enter/leave for consistency
+    wrap.addEventListener('mouseenter', () => trigger.setAttribute('aria-expanded', 'true'));
+    wrap.addEventListener('mouseleave', () => trigger.setAttribute('aria-expanded', 'false'));
+  });
+
+  // ── GLOBAL KEYBOARD HANDLER ───────────────────────────────────────────────
   document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+    const active = document.activeElement;
+    const tag = active ? active.tagName : '';
+
+    // Escape: close mobile nav, close open dropdowns, or clear focused search
+    if (e.key === 'Escape') {
+      // Close mobile nav
+      if (mobileNav.classList.contains('open')) {
+        closeMobileNav();
+        hamburger.focus();
+        return;
+      }
+      // Close any open nav dropdown
+      document.querySelectorAll('.nav-dropdown-trigger').forEach(t => {
+        t.setAttribute('aria-expanded', 'false');
+        t.blur();
+      });
+      // Clear focused search input (Fix 19)
+      if (tag === 'INPUT' && active.classList.contains('search-bar-input')) {
+        active.value = '';
+        active.dispatchEvent(new Event('input'));
+        active.blur();
+      }
+      return;
+    }
+
+    // '/': focus nearest search input (Fix 20)
+    if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA') {
       e.preventDefault();
-      // Focus whichever search input is closer to the current scroll position
       const projectsInput = document.getElementById('projects-search-input');
       const explainersInput = document.getElementById('explainers-search-input');
       if (!projectsInput || !explainersInput) return;
-      const projectsRect = projectsInput.getBoundingClientRect();
-      const explainersRect = explainersInput.getBoundingClientRect();
-      const projectsDist = Math.abs(projectsRect.top);
-      const explainersDist = Math.abs(explainersRect.top);
-      (projectsDist <= explainersDist ? projectsInput : explainersInput).focus();
+      const pDist = Math.abs(projectsInput.getBoundingClientRect().top);
+      const eDist = Math.abs(explainersInput.getBoundingClientRect().top);
+      (pDist <= eDist ? projectsInput : explainersInput).focus();
     }
   });
-  // ── END SEARCH KEYBOARD SHORTCUT ─────────────────────────────────────────
+  // ── END KEYBOARD HANDLER ──────────────────────────────────────────────────
 
   // ── COPY BUTTONS ─────────────────────────────────────────────────────────
 
@@ -3936,42 +4080,28 @@
   function makeCopyBtn(textFn, label) {
     const btn = document.createElement('button');
     btn.className = 'copy-btn';
-    btn.setAttribute('aria-label', label || 'Copy code to clipboard');
+    const baseLabel = label || 'Copy code to clipboard';
+    const copiedLabel = baseLabel.replace(/^Copy/, 'Copied —');
+    btn.setAttribute('aria-label', baseLabel);
     btn.innerHTML = `${COPY_SVG}<span>Copy</span>`;
     btn.addEventListener('click', () => {
       const text = textFn();
+      if (!navigator.clipboard) {
+        // Clipboard API unavailable (non-HTTPS or very old browser) — show prompt
+        prompt('Copy this text:', text);
+        return;
+      }
       navigator.clipboard.writeText(text).then(() => {
         btn.classList.add('copied');
         btn.innerHTML = `${CHECK_SVG}<span>Copied</span>`;
-        btn.setAttribute('aria-label', (label || 'Copy code to clipboard').replace('Copy', 'Copied —'));
+        btn.setAttribute('aria-label', copiedLabel);
         setTimeout(() => {
           btn.classList.remove('copied');
           btn.innerHTML = `${COPY_SVG}<span>Copy</span>`;
-          btn.setAttribute('aria-label', label || 'Copy code to clipboard');
+          btn.setAttribute('aria-label', baseLabel);
         }, 2000);
       }).catch(() => {
-        // Fallback: create a temporary input and use selection
-        try {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.setAttribute('readonly', '');
-          ta.style.cssText = 'position:fixed;top:-999px;left:-999px;opacity:0';
-          document.body.appendChild(ta);
-          ta.focus();
-          ta.setSelectionRange(0, ta.value.length);
-          const ok = document.execCommand('copy');
-          document.body.removeChild(ta);
-          if (ok) {
-            btn.classList.add('copied');
-            btn.innerHTML = `${CHECK_SVG}<span>Copied</span>`;
-            setTimeout(() => {
-              btn.classList.remove('copied');
-              btn.innerHTML = `${COPY_SVG}<span>Copy</span>`;
-            }, 2000);
-          }
-        } catch (e) {
-          // nothing we can do silently
-        }
+        prompt('Copy this text:', text);
       });
     });
     return btn;
@@ -4049,7 +4179,7 @@
     // Share button
     const shareBtn = document.createElement('button');
     shareBtn.className = 'share-audit-btn';
-    shareBtn.setAttribute('aria-label', `Share ${meta ? meta.title : name} audit`);
+    shareBtn.setAttribute('aria-label', `Share ${meta ? meta.title : name + ' audit'}`);
     shareBtn.innerHTML = `${SHARE_SVG}<span>Share this audit</span>`;
 
     shareBtn.addEventListener('click', () => {
