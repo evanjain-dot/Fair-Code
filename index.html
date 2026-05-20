@@ -1577,6 +1577,164 @@
   @media (min-width: 901px) {
   #back-to-top { display: none !important; }
   }
+
+  /* SEARCH BAR */
+  .search-bar-wrap {
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .search-bar-inner {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border2);
+    background: var(--terminal-bg);
+    transition: border-color 0.2s;
+  }
+
+  .search-bar-inner:focus-within {
+    border-color: var(--accent);
+  }
+
+  .search-bar-prefix {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    white-space: nowrap;
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .search-bar-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    padding: 14px 18px;
+    caret-color: var(--accent);
+    cursor: crosshair;
+  }
+
+  .search-bar-input::placeholder {
+    color: var(--code-comment);
+    font-style: italic;
+  }
+
+  .search-bar-clear {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 14px;
+    cursor: crosshair;
+    transition: color 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+
+  .search-bar-clear:hover { color: var(--accent2); background: color-mix(in srgb, var(--accent2) 6%, transparent); }
+  .search-bar-clear.visible { display: flex; }
+
+  .search-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    align-items: center;
+  }
+
+  .search-filter-label {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+
+  .search-filter-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: crosshair;
+    transition: all 0.15s;
+  }
+
+  .search-filter-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .search-filter-btn.active { color: var(--accent); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+
+  .search-count {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-left: auto;
+    flex-shrink: 0;
+    align-self: center;
+    padding-top: 2px;
+  }
+
+  .search-count span { color: var(--accent); }
+
+  .search-no-results {
+    display: none;
+    padding: 64px 48px;
+    text-align: center;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .search-no-results.visible { display: block; }
+
+  .search-no-results-label {
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .search-no-results-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .search-highlight {
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--accent);
+    border-radius: 0;
+  }
+
+  /* hide items that don't match search */
+  .project-card.search-hidden,
+  .explainer-card.search-hidden {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .search-bar-prefix { display: none; }
+    .search-no-results { padding: 40px 20px; }
+  }
+
+  @media (max-width: 600px) {
+    .search-count { display: none; }
+  }
   
 </style>
 </head>
@@ -1816,9 +1974,31 @@
     <a href="https://github.com/yakew7/Fair-Code" target="_blank" class="gh-badge">↗ View All Code</a>
   </div>
 
+  <!-- SEARCH BAR: PROJECTS -->
+  <div class="search-bar-wrap" id="projects-search-wrap">
+    <div class="search-bar-inner">
+      <span class="search-bar-prefix">$ grep --</span>
+      <input type="text" class="search-bar-input" id="projects-search-input" placeholder="search experiments… e.g. race, hiring, 97%, COMPAS" autocomplete="off" spellcheck="false">
+      <button class="search-bar-clear" id="projects-search-clear" aria-label="Clear search">✕</button>
+    </div>
+    <div class="search-filter-row">
+      <span class="search-filter-label">Filter:</span>
+      <button class="search-filter-btn active" data-filter-group="projects" data-filter="all">All</button>
+      <button class="search-filter-btn" data-filter-group="projects" data-filter="criminal-justice">Criminal Justice</button>
+      <button class="search-filter-btn" data-filter-group="projects" data-filter="hiring">Hiring</button>
+      <button class="search-filter-btn" data-filter-group="projects" data-filter="lending">Lending</button>
+      <button class="search-filter-btn" data-filter-group="projects" data-filter="healthcare">Healthcare</button>
+      <span class="search-count" id="projects-count"><span id="projects-count-num">4</span> of 4</span>
+    </div>
+  </div>
+  <div id="projects-no-results" class="search-no-results">
+    <div class="search-no-results-label">No results</div>
+    <div class="search-no-results-text">No experiments match that query. Try a different term or clear the filter.</div>
+  </div>
+
   <!-- PROJECT 1: COMPAS -->
   <div id="project-compas" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="project-card reveal">
+  <div class="project-card reveal" data-project-tags="criminal-justice" data-project-text="compas criminal justice race racial bias black white defendant high-risk recidivism propublica proPublica 71% 86.77% 15.69% custody status proxy variable pre-processing">
     <div class="card-bg-num">01</div>
     <div class="project-top">
       <div>
@@ -1893,7 +2073,7 @@
 
   <!-- PROJECT 2: HIRING -->
   <div id="project-hiring" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="project-card red reveal" style="margin-top: 2px;">
+  <div class="project-card red reveal" style="margin-top: 2px;" data-project-tags="hiring" data-project-text="ai hiring gender women men recruitment kaggle demographic parity 97.3% 4.51% 0.12% experience technical test score age proxy merit">
     <div class="card-bg-num">02</div>
     <div class="project-top">
       <div>
@@ -1968,7 +2148,7 @@
 
   <!-- PROJECT 3: GERMAN CREDIT -->
   <div id="project-credit" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="project-card reveal" style="margin-top: 2px;">
+  <div class="project-card reveal" style="margin-top: 2px;" data-project-tags="lending" data-project-text="german credit lending age young older applicants UCI statlog job tenure proxy 73.6% 7.16% 1.89% financial profiles credit risk">
     <div class="card-bg-num">03</div>
     <div class="project-top">
       <div>
@@ -2043,7 +2223,7 @@
 
   <!-- PROJECT 4: INSURANCE DENIAL -->
   <div id="project-insurance" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="project-card reveal" style="margin-top: 2px;">
+  <div class="project-card reveal" style="margin-top: 2px;" data-project-tags="healthcare" data-project-text="insurance denial healthcare age gender BMI smoker diabetic proxies kaggle 60% 72% 7.93% 3.18% high-cost claims older younger patients race">
     <div class="card-bg-num">04</div>
     <div class="project-top">
       <div>
@@ -2127,9 +2307,31 @@
     <a href="https://github.com/yakew7/Fair-Code/tree/main/explainers" target="_blank" class="gh-badge">↗ View on GitHub</a>
   </div>
 
+  <!-- SEARCH BAR: EXPLAINERS -->
+  <div class="search-bar-wrap" id="explainers-search-wrap">
+    <div class="search-bar-inner">
+      <span class="search-bar-prefix">$ grep --</span>
+      <input type="text" class="search-bar-input" id="explainers-search-input" placeholder="search concepts… e.g. proxy, SHAP, equalized odds, sampling" autocomplete="off" spellcheck="false">
+      <button class="search-bar-clear" id="explainers-search-clear" aria-label="Clear search">✕</button>
+    </div>
+    <div class="search-filter-row">
+      <span class="search-filter-label">Filter:</span>
+      <button class="search-filter-btn active" data-filter-group="explainers" data-filter="all">All</button>
+      <button class="search-filter-btn" data-filter-group="explainers" data-filter="detection">Detection</button>
+      <button class="search-filter-btn" data-filter-group="explainers" data-filter="metrics">Metrics</button>
+      <button class="search-filter-btn" data-filter-group="explainers" data-filter="data">Data Bias</button>
+      <button class="search-filter-btn" data-filter-group="explainers" data-filter="explainability">Explainability</button>
+      <span class="search-count" id="explainers-count"><span id="explainers-count-num">5</span> of 5</span>
+    </div>
+  </div>
+  <div id="explainers-no-results" class="search-no-results">
+    <div class="search-no-results-label">No results</div>
+    <div class="search-no-results-text">No explainers match that query. Try a different term or clear the filter.</div>
+  </div>
+
   <!-- EXPLAINER 01: PROXY VARIABLES -->
   <div id="explainer-proxy" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="explainer-card reveal">
+  <div class="explainer-card reveal" data-explainer-tags="detection data" data-explainer-text="proxy variable correlated protected attribute race gender class zip code custody status name college employment tenure proxy discrimination pre-processing COMPAS detection mitigation">
     <div class="explainer-header">
       <div class="explainer-meta">
         <div class="explainer-num">EXPLAINER — 01</div>
@@ -2303,7 +2505,7 @@
 
   <!-- EXPLAINER 02: SAMPLING BIAS -->
   <div id="explainer-sampling" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="explainer-card reveal" style="margin-top: 2px;">
+  <div class="explainer-card reveal" style="margin-top: 2px;" data-explainer-tags="data" data-explainer-text="sampling bias underrepresentation selection historical survivorship measurement training data representativeness gender shades MIT facial recognition skin tone Joy Buolamwini Timnit Gebru NLP clinical">
     <div class="explainer-header">
       <div class="explainer-meta">
         <div class="explainer-num">EXPLAINER — 02</div>
@@ -2517,7 +2719,7 @@
 
   <!-- EXPLAINER 03: SHAP VALUES -->
   <div id="explainer-shap" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="explainer-card reveal" style="margin-top: 2px;">
+  <div class="explainer-card reveal" style="margin-top: 2px;" data-explainer-tags="explainability" data-explainer-text="SHAP values shapley game theory model explainability feature importance attribution black box decision bias audit TreeExplainer explainability fairness XAI">
     <div class="explainer-header">
       <div class="explainer-meta">
         <div class="explainer-num">EXPLAINER — 03</div>
@@ -2697,7 +2899,7 @@
 
   <!-- EXPLAINER 04: EQUALIZED ODDS -->
   <div id="explainer-equalized-odds" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="explainer-card reveal" style="margin-top: 2px;">
+  <div class="explainer-card reveal" style="margin-top: 2px;" data-explainer-tags="metrics" data-explainer-text="equalized odds true positive rate false positive rate TPR FPR parity demographic groups calibration accuracy fairlearn COMPAS fairness metric Hardt Peters Price Srebro impossibility">
     <div class="explainer-header">
       <div class="explainer-meta">
         <div class="explainer-num">EXPLAINER — 04</div>
@@ -2841,7 +3043,7 @@
 
   <!-- EXPLAINER 05: DISPARATE IMPACT -->
   <div id="explainer-disparate-impact" style="position:relative; top:-80px; visibility:hidden;"></div>
-  <div class="explainer-card reveal">
+  <div class="explainer-card reveal" data-explainer-tags="metrics detection" data-explainer-text="disparate impact 80% rule four-fifths EEOC standard hiring legal test employment discrimination Griggs Duke Power adverse impact ratio selection rate demographic parity fairlearn Chouldechova Barocas Selbst">
     <div class="explainer-header">
       <div class="explainer-meta">
         <div class="explainer-num">EXPLAINER — 05</div>
@@ -3247,6 +3449,109 @@
   bars.forEach(bar => barObserver.observe(bar));
 
   const btt = document.getElementById('back-to-top');
+
+  // ── SEARCH & FILTER ──────────────────────────────────────────────────────
+
+  function initSearch(config) {
+    const {
+      inputId, clearId, noResultsId, countNumId,
+      cardSelector, tagAttr, textAttr, filterGroup, totalCount
+    } = config;
+
+    const input = document.getElementById(inputId);
+    const clearBtn = document.getElementById(clearId);
+    const noResults = document.getElementById(noResultsId);
+    const countNum = document.getElementById(countNumId);
+    const filterBtns = document.querySelectorAll(`[data-filter-group="${filterGroup}"]`);
+
+    let currentFilter = 'all';
+    let currentQuery = '';
+
+    function getCards() {
+      return document.querySelectorAll(cardSelector);
+    }
+
+    function normalise(str) {
+      return str.toLowerCase().replace(/[^a-z0-9\s%.]/g, ' ');
+    }
+
+    function applyFilters() {
+      const cards = getCards();
+      let visible = 0;
+
+      cards.forEach(card => {
+        const tags = (card.getAttribute(tagAttr) || '').toLowerCase();
+        const text = normalise(card.getAttribute(textAttr) || '') + ' ' + normalise(card.textContent);
+
+        const tagMatch = currentFilter === 'all' || tags.includes(currentFilter);
+        const queryMatch = !currentQuery || normalise(text).includes(normalise(currentQuery));
+
+        if (tagMatch && queryMatch) {
+          card.classList.remove('search-hidden');
+          visible++;
+        } else {
+          card.classList.add('search-hidden');
+        }
+      });
+
+      countNum.textContent = visible;
+
+      if (visible === 0) {
+        noResults.classList.add('visible');
+      } else {
+        noResults.classList.remove('visible');
+      }
+    }
+
+    input.addEventListener('input', () => {
+      currentQuery = input.value.trim();
+      clearBtn.classList.toggle('visible', currentQuery.length > 0);
+      applyFilters();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      currentQuery = '';
+      clearBtn.classList.remove('visible');
+      applyFilters();
+      input.focus();
+    });
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        applyFilters();
+      });
+    });
+  }
+
+  initSearch({
+    inputId: 'projects-search-input',
+    clearId: 'projects-search-clear',
+    noResultsId: 'projects-no-results',
+    countNumId: 'projects-count-num',
+    cardSelector: '.project-card[data-project-tags]',
+    tagAttr: 'data-project-tags',
+    textAttr: 'data-project-text',
+    filterGroup: 'projects',
+    totalCount: 4
+  });
+
+  initSearch({
+    inputId: 'explainers-search-input',
+    clearId: 'explainers-search-clear',
+    noResultsId: 'explainers-no-results',
+    countNumId: 'explainers-count-num',
+    cardSelector: '.explainer-card[data-explainer-tags]',
+    tagAttr: 'data-explainer-tags',
+    textAttr: 'data-explainer-text',
+    filterGroup: 'explainers',
+    totalCount: 5
+  });
+
+  // ── END SEARCH ────────────────────────────────────────────────────────────
 
   function toggleBtt() {
     if (window.innerWidth > 900) return;
