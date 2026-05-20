@@ -75,6 +75,89 @@
 
   input, textarea { cursor: text; }
 
+  /* ── COPY BUTTON ───────────────────────────────── */
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border2);
+    padding: 3px 9px;
+    cursor: crosshair;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    flex-shrink: 0;
+    white-space: nowrap;
+    line-height: 1.6;
+  }
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .copy-btn.copied { color: var(--accent3); border-color: var(--accent3); background: color-mix(in srgb, var(--accent3) 8%, transparent); }
+  .copy-btn svg { width: 10px; height: 10px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  .code-block-header-left { display: flex; align-items: center; gap: 8px; }
+
+  .terminal-bar-left { display: flex; align-items: center; gap: 6px; }
+
+  /* ── SHARE BUTTON ──────────────────────────────── */
+  .share-audit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border2);
+    padding: 6px 14px;
+    cursor: crosshair;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+  .share-audit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+    z-index: 0;
+  }
+  .share-audit-btn span, .share-audit-btn svg { position: relative; z-index: 1; }
+  .share-audit-btn:hover { color: var(--bg); border-color: var(--accent); }
+  .share-audit-btn:hover::before { transform: scaleX(1); }
+  .share-audit-btn.shared { color: var(--accent3); border-color: var(--accent3); }
+  .share-audit-btn.shared::before { background: var(--accent3); transform: scaleX(1); color: var(--bg); }
+  .share-audit-btn svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  .project-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .project-actions-label {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  @media (max-width: 480px) {
+    .copy-btn { font-size: 8px; padding: 2px 7px; }
+    .share-audit-btn { font-size: 8px; padding: 5px 10px; }
+  }
+
   body::before {
     content: '';
     position: fixed;
@@ -560,8 +643,9 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     display: flex;
-    gap: 8px;
     align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
 
   .code-block-body {
@@ -757,6 +841,7 @@
     padding: 8px 14px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 6px;
     border-bottom: 1px solid var(--border);
   }
@@ -3578,6 +3663,144 @@
   });
 
   // ── END SEARCH ────────────────────────────────────────────────────────────
+
+  // ── COPY BUTTONS ─────────────────────────────────────────────────────────
+
+  const COPY_SVG = `<svg viewBox="0 0 16 16"><rect x="5" y="5" width="8" height="9" rx="1"/><path d="M3 11V3a1 1 0 0 1 1-1h7"/></svg>`;
+  const CHECK_SVG = `<svg viewBox="0 0 16 16"><polyline points="3,8 6.5,12 13,4"/></svg>`;
+
+  function makeCopyBtn(textFn) {
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.innerHTML = `${COPY_SVG}<span>Copy</span>`;
+    btn.addEventListener('click', () => {
+      const text = textFn();
+      navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('copied');
+        btn.innerHTML = `${CHECK_SVG}<span>Copied</span>`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `${COPY_SVG}<span>Copy</span>`;
+        }, 2000);
+      }).catch(() => {
+        // fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;top:-999px;left:-999px;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.classList.add('copied');
+        btn.innerHTML = `${CHECK_SVG}<span>Copied</span>`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `${COPY_SVG}<span>Copy</span>`;
+        }, 2000);
+      });
+    });
+    return btn;
+  }
+
+  // Inject copy buttons into .code-block-header
+  document.querySelectorAll('.code-block-header').forEach(header => {
+    const body = header.nextElementSibling;
+    // Wrap existing children in a left div
+    const left = document.createElement('div');
+    left.className = 'code-block-header-left';
+    while (header.firstChild) left.appendChild(header.firstChild);
+    header.appendChild(left);
+    // Add copy button
+    const btn = makeCopyBtn(() => body ? body.innerText.trim() : '');
+    header.appendChild(btn);
+  });
+
+  // Inject copy buttons into .terminal-bar
+  document.querySelectorAll('.terminal-bar').forEach(bar => {
+    const terminal = bar.closest('.terminal');
+    const body = terminal ? terminal.querySelector('.terminal-body') : null;
+    // Wrap existing children in a left div
+    const left = document.createElement('div');
+    left.className = 'terminal-bar-left';
+    while (bar.firstChild) left.appendChild(bar.firstChild);
+    bar.appendChild(left);
+    // Add copy button
+    const btn = makeCopyBtn(() => body ? body.innerText.trim() : '');
+    bar.appendChild(btn);
+  });
+
+  // ── SHARE AUDIT BUTTONS ──────────────────────────────────────────────────
+
+  const SHARE_SVG = `<svg viewBox="0 0 16 16"><circle cx="12" cy="3" r="1.5"/><circle cx="4" cy="8" r="1.5"/><circle cx="12" cy="13" r="1.5"/><line x1="4" y1="8" x2="10.5" y2="3.7"/><line x1="4" y1="8" x2="10.5" y2="12.3"/></svg>`;
+
+  const projectMeta = {
+    'project-compas': {
+      title: 'COMPAS Criminal Justice Audit',
+      desc: 'Black defendants flagged high-risk at 87% vs 0.4% for white defendants. 71% bias reduction achieved.',
+    },
+    'project-hiring': {
+      title: 'AI Hiring Bias Audit',
+      desc: 'Women hired 20.9% less than equally qualified men. 97.3% bias reduction by removing gender/age proxies.',
+    },
+    'project-credit': {
+      title: 'German Credit Lending Bias Audit',
+      desc: 'Young applicants rated bad credit 6+ pts higher than older ones with identical profiles. 73.6% reduction.',
+    },
+    'project-insurance': {
+      title: 'Insurance Denial Healthcare Bias Audit',
+      desc: 'Age fairness gap 7.93% → 3.18% (60% reduction). Gender gap 72% reduction. BMI/smoker proxies identified.',
+    },
+  };
+
+  document.querySelectorAll('.project-card[data-project-tags]').forEach(card => {
+    // Find which project this is by looking at the preceding anchor
+    const anchor = card.previousElementSibling;
+    const id = anchor ? anchor.id : null;
+    const meta = id ? projectMeta[id] : null;
+    const projectName = card.querySelector('.project-name');
+    const name = projectName ? projectName.textContent.trim() : 'this audit';
+
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'project-actions';
+
+    const label = document.createElement('span');
+    label.className = 'project-actions-label';
+    label.textContent = 'Share:';
+    actionsDiv.appendChild(label);
+
+    // Share button
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'share-audit-btn';
+    shareBtn.innerHTML = `${SHARE_SVG}<span>Share this audit</span>`;
+
+    shareBtn.addEventListener('click', () => {
+      const url = window.location.origin + window.location.pathname + (id ? '#' + id : '');
+      const title = meta ? meta.title : `Fair Code — ${name} Bias Audit`;
+      const text = meta ? meta.desc : `Bias audit for ${name} — Fair Code project.`;
+
+      if (navigator.share) {
+        navigator.share({ title, text, url }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(url).then(() => {
+          shareBtn.classList.add('shared');
+          const sp = shareBtn.querySelector('span');
+          sp.textContent = 'Link copied!';
+          setTimeout(() => {
+            shareBtn.classList.remove('shared');
+            sp.textContent = 'Share this audit';
+          }, 2500);
+        }).catch(() => {
+          // ultimate fallback
+          prompt('Copy this link:', url);
+        });
+      }
+    });
+
+    actionsDiv.appendChild(shareBtn);
+    card.appendChild(actionsDiv);
+  });
+
+  // ── END COPY + SHARE ──────────────────────────────────────────────────────
 
   function toggleBtt() {
     if (window.innerWidth > 900) return;
