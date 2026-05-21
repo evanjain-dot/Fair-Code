@@ -81,6 +81,7 @@ Fair-Code/
 ├── LICENSE
 ├── README.md
 ├── SECURITY.md
+├── CITATION.cff
 ├── index.html                     # Project website (also live at fair-code-five.vercel.app)
 └── requirements.txt
 ```
