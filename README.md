@@ -8,6 +8,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange?style=flat-square&logo=scikit-learn)
+![Jupyter](https://img.shields.io/badge/Jupyter-Notebooks-F37626?style=flat-square&logo=jupyter)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 ![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-blueviolet?style=flat-square)
@@ -21,6 +22,8 @@ Fair Code is an ongoing research and engineering project that exposes bias in re
 **train a biased model → measure the fairness gap → engineer a fair model → measure again**
 
 No theory. No hand-waving. Just data, code, and results.
+
+Each audit ships as both a pair of Python scripts (`unfair.py` / `fair.py`) for direct execution and a Jupyter notebook (`notebooks/`) that walks through the full pipeline step by step — with visualisations, proxy detection, and annotated findings.
 
 ---
 
@@ -67,6 +70,12 @@ Fair-Code/
 │   ├── insurance.csv              # Kaggle Insurance Claim dataset (1,340 records)
 │   ├── unfair.png                 # Terminal output — biased results
 │   └── fair.png                   # Terminal output — mitigated results
+│
+├── notebooks/
+│   ├── 01_compas_bias_audit.ipynb           # Full walkthrough: COMPAS criminal justice bias
+│   ├── 02_hiring_bias_audit.ipynb           # Full walkthrough: AI hiring bias
+│   ├── 03_german_credit_bias_audit.ipynb    # Full walkthrough: German credit lending bias
+│   └── 04_insurance_denial_bias_audit.ipynb # Full walkthrough: Insurance denial bias
 │
 ├── explainers/
 │   ├── proxy-variables.md         # What is a proxy variable? (concept + detection code)
@@ -132,6 +141,8 @@ X = pd.get_dummies(df[[
 
 **Key Insight:** Removing race alone isn't enough. Proxy variables like custody status carry the same racial signal because of historical over-policing of Black communities. Both the protected attribute and its proxies must be removed.
 
+📓 **[Full notebook walkthrough →](notebooks/01_compas_bias_audit.ipynb)**
+
 ---
 
 ### 02 · AI Fair Recruitment — Hiring Bias
@@ -173,6 +184,8 @@ X = df[['experience_years', 'test_score']]
 
 **Key Insight:** The model was never explicitly told to discriminate by gender. It inferred a gender penalty from historical hiring patterns in the training data — patterns reflecting human bias, not merit. Restricting inputs to demonstrated ability eliminates the channel through which that bias flows.
 
+📓 **[Full notebook walkthrough →](notebooks/02_hiring_bias_audit.ipynb)**
+
 ---
 
 ### 03 · German Credit Lending — Lending Bias
@@ -201,11 +214,11 @@ print(pd.crosstab(df['employment'], df['is_young'], normalize='columns').round(3
 # Result:
 # is_young          0      1
 # employment
-# <1yr           0.113  0.272   ← young applicants have short tenure at 2.4x the rate
-# >=7yr          0.359  0.073   ← older applicants have long tenure at 4.9x the rate
+# <1yr           0.113  0.272   ← young applicants over-represented
+# 1-4yr          0.294  0.455
+# 4-7yr          0.253  0.200
+# >=7yr          0.359  0.073   ← older applicants over-represented
 ```
-
-Employment tenure is not an independent signal — it is structurally determined by age. A 24-year-old cannot have 10 years of employment history.
 
 #### The Fix — `fair.py`
 
@@ -220,6 +233,8 @@ Dropped `age` and `employment`. Retained only objective financial signals.
 **Result: 73.6% reduction in the fairness gap.**
 
 **Key Insight:** Employment tenure looks like a legitimate financial signal, and in isolation it is. But it's also a near-perfect proxy for age. A model that penalizes short tenure is partially penalizing youth, regardless of whether the word "age" appears anywhere in the feature list.
+
+📓 **[Full notebook walkthrough →](notebooks/03_german_credit_bias_audit.ipynb)**
 
 ---
 
@@ -264,6 +279,8 @@ Dropped `age`, `gender`, `bmi`, `smoker`, and `diabetic`. Retained only objectiv
 
 **Key Insight:** Insurance AI models don't need to name race to discriminate by race. BMI, smoking, and diabetic status are the `CustodyStatus` of health insurance — clinical-sounding features that carry protected-class signal because of structural inequalities baked into American healthcare.
 
+📓 **[Full notebook walkthrough →](notebooks/04_insurance_denial_bias_audit.ipynb)**
+
 ---
 
 ## Explainers
@@ -299,6 +316,8 @@ All projects use the same bias detection and mitigation pipeline:
 **Split:** 80/20 train/test, `random_state=42`  
 **Fairness Metric:** Demographic Parity — difference in positive prediction rates across groups  
 **Mitigation Strategy:** Pre-processing attribute dropping (protected attributes + proxy variables)
+
+Each audit is available as a standalone Python script pair (`unfair.py` / `fair.py`) and as a self-contained Jupyter notebook in `notebooks/` with inline visualisations and annotated code.
 
 ---
 
@@ -349,6 +368,14 @@ python unfair.py
 python fair.py
 ```
 
+**Run the notebooks:**
+```bash
+pip install jupyter
+jupyter notebook notebooks/
+```
+
+Or open any `.ipynb` file directly in VS Code, JupyterLab, or Google Colab.
+
 ---
 
 ## Tech Stack
@@ -356,7 +383,8 @@ python fair.py
 | Component | Details |
 |---|---|
 | Language | Python 3 |
-| Libraries | `pandas`, `scikit-learn`, `fairlearn` |
+| Libraries | `pandas`, `scikit-learn`, `fairlearn`, `matplotlib`, `scipy` |
+| Notebooks | Jupyter (`.ipynb`) — one per audit, in `notebooks/` |
 | Datasets | ProPublica COMPAS (public domain), AI Fair Recruitment (Kaggle), UCI German Credit / Statlog (Kaggle), Insurance Claims (Kaggle) |
 
 ---
@@ -367,6 +395,7 @@ python fair.py
 - [x] AI Fair Recruitment Bias
 - [x] German Credit Lending Bias
 - [x] Insurance Denial — Healthcare Bias
+- [x] Jupyter notebook walkthroughs for all four audits
 - [x] Explainer: Proxy Variables
 - [x] Explainer: Equalized Odds
 - [x] Explainer: Sampling Bias
