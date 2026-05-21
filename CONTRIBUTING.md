@@ -22,7 +22,7 @@ or
 
 ## Folder Structure
 
-Every audit lives in its own top-level folder. Name it after the domain, not the dataset.
+Every audit lives in its own top-level folder. Name it after the domain, not the dataset. Each audit also has a corresponding notebook in `notebooks/`.
 
 ```
 Fair-Code/
@@ -36,6 +36,12 @@ Fair-Code/
 │   ├── your-dataset.csv
 │   ├── unfair.png
 │   └── fair.png
+├── notebooks/
+│   ├── 01_compas_bias_audit.ipynb           ← existing
+│   ├── 02_hiring_bias_audit.ipynb           ← existing
+│   ├── 03_german_credit_bias_audit.ipynb    ← existing
+│   ├── 04_insurance_denial_bias_audit.ipynb ← existing
+│   └── 05_your_domain_bias_audit.ipynb      ← your new notebook (optional but appreciated)
 ├── explainers/
 │   ├── proxy-variables.md           ← existing
 │   ├── equalized-odds.md            ← existing
@@ -101,6 +107,42 @@ New Fairness Gap: XX.XX%
 
 ---
 
+## The Notebook (Optional but Appreciated)
+
+If you can, add a Jupyter notebook to the `notebooks/` folder that walks through your full audit step by step. It's not required to get your PR merged, but it makes the audit significantly more useful for people who want to understand the reasoning, not just run the scripts.
+
+Number it sequentially after the existing ones: `05_your_domain_bias_audit.ipynb`.
+
+### What a good audit notebook contains
+
+Follow the structure of the existing notebooks:
+
+**1. Title cell** — audit number, domain, and the one-sentence hook (the stat that makes it real).
+
+**2. Setup** — imports and consistent plot styling. Copy the `plt.rcParams` block from an existing notebook — all notebooks use the same colour palette (`ACCENT`, `DANGER`, `SAFE`, `MUTED`) so the repo looks coherent.
+
+**3. Load and explore the dataset** — load the CSV, print shape and columns, show the raw disparity with a plot before any model is trained.
+
+**4. Proxy variable identification** — run the chi-squared test (for categorical features) or Pearson correlation (for continuous) and show the cross-tabulation that proves the correlation. This is the most important section. Don't skip it.
+
+**5. Train the biased model** — use the same `random_state=42` and 80/20 split as the scripts. Print the same output format as `unfair.py`.
+
+**6. Train the fair model** — remove the protected attribute(s) and proxy variable(s). Print the same output format as `fair.py`.
+
+**7. Compare results** — side-by-side bar charts using the project colour palette. Print the before/after summary with reduction percentage.
+
+**8. Key Insight cell** — a markdown cell, not code. One short paragraph answering: *why did the bias exist, and why does the fix work?* Plain language. No jargon.
+
+### Notebook file naming
+
+```
+notebooks/05_your_domain_bias_audit.ipynb
+```
+
+Lowercase, underscores, sequential number prefix. Match the existing naming convention exactly.
+
+---
+
 ## Proxy Variables
 
 This is the most important part of the audit. Removing the protected attribute alone is rarely enough.
@@ -162,6 +204,7 @@ Then add a full section below the existing projects following the same pattern:
 4. Code snippet showing what you dropped and why
 5. **The Fix** — mitigated results table
 6. **Key Insight** paragraph (required — see below)
+7. A link to your notebook: `📓 **[Full notebook walkthrough →](notebooks/05_your_domain_bias_audit.ipynb)**` (if you wrote one)
 
 **The Key Insight paragraph is required.** It must answer: *why did the bias exist, and why does the fix work?* One short paragraph, plain language, no jargon.
 
@@ -268,8 +311,9 @@ In the PR description, briefly state what concept you're explaining and why it's
 1. Fork the repo
 2. Create a branch: `git checkout -b audit/your-domain`
 3. Add your folder with both scripts, the dataset, and both screenshots
-4. Update `README.md`
-5. Open a Pull Request titled: `Audit: HMDA Mortgage Lending Bias`
+4. If you wrote a notebook, add it to `notebooks/` as `05_your_domain_bias_audit.ipynb`
+5. Update `README.md`
+6. Open a Pull Request titled: `Audit: HMDA Mortgage Lending Bias`
 
 In the PR description, include:
 
@@ -277,6 +321,7 @@ In the PR description, include:
 - What the bias type is
 - The before and after fairness gap numbers
 - What proxy variables you found and why you dropped them
+- Whether you included a notebook walkthrough
 
 ---
 
@@ -289,6 +334,11 @@ In the PR description, include:
 - Audits without identified proxy variables (unless you document why none exist)
 - Screenshots saved as `.jpg` or `.jpeg` — use `.png`
 - Any dataset that isn't publicly accessible without login or payment
+
+**Notebooks:**
+- Notebooks that skip the proxy variable identification section
+- Notebooks that use a different colour palette or styling from the rest of the repo
+- Notebooks that don't follow the sequential numbering convention
 
 **Explainers:**
 - Explainers that only define a concept without demonstrating it with real data or code
