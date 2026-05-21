@@ -26,28 +26,29 @@ Every audit lives in its own top-level folder. Name it after the domain, not the
 
 ```
 Fair-Code/
-├── COMPAS/                        ← existing
-├── AI Fair Recruitment/           ← existing
-├── German Credit Lending/         ← existing
-├── Insurance Denial/              ← existing
-├── Your-Domain-Here/              ← your new audit
+├── COMPAS/                          ← existing
+├── AI Fair Recruitment/             ← existing
+├── German Credit Lending/           ← existing
+├── Insurance Denial/                ← existing
+├── Your-Domain-Here/                ← your new audit
 │   ├── unfair.py
 │   ├── fair.py
 │   ├── your-dataset.csv
 │   ├── unfair.png
 │   └── fair.png
 ├── explainers/
-│   ├── proxy-variables.md         ← existing
-│   ├── equalized-odds.md          ← existing
-│   ├── sampling-bias.md           ← existing
-│   ├── shap-values.md             ← existing
-│   ├── disparate-impact.md        ← existing
+│   ├── proxy-variables.md           ← existing
+│   ├── equalized-odds.md            ← existing
+│   ├── sampling-bias.md             ← existing
+│   ├── shap-values.md               ← existing
+│   ├── disparate-impact.md          ← existing
 │   ├── fairness-metric-conflicts.md ← existing
-│   └── your-concept-name.md       ← your new explainer
+│   └── your-concept-name.md         ← your new explainer
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── LICENSE
 ├── README.md
+├── SECURITY.md
 ├── index.html
 └── requirements.txt
 ```
@@ -193,13 +194,13 @@ Future ones might cover demographic parity or predictive parity.
 ```
 Fair-Code/
 └── explainers/
-    ├── proxy-variables.md          ← existing
-    ├── equalized-odds.md           ← existing
-    ├── sampling-bias.md            ← existing
-    ├── shap-values.md              ← existing
-    ├── disparate-impact.md         ← existing
+    ├── proxy-variables.md           ← existing
+    ├── equalized-odds.md            ← existing
+    ├── sampling-bias.md             ← existing
+    ├── shap-values.md               ← existing
+    ├── disparate-impact.md          ← existing
     ├── fairness-metric-conflicts.md ← existing
-    └── your-concept-name.md        ← your new explainer
+    └── your-concept-name.md         ← your new explainer
 ```
 
 One file per concept. Name it after the concept in lowercase with hyphens: `demographic-parity.md`, `predictive-parity.md`, etc.
