@@ -29,13 +29,16 @@ Each audit ships as both a pair of Python scripts (`unfair.py` / `fair.py`) for 
 
 ## Results at a Glance
 
-| Project | Bias Type | Protected Attribute | Gap Before | Gap After | Reduction |
-|---|---|---|---|---|---|
-| [COMPAS](#01--compas--criminal-justice-bias) | Racial | Race + Custody Status (proxy) | 86.77% | 15.69% | **71%** |
-| [AI Fair Recruitment](#02--ai-fair-recruitment--hiring-bias) | Gender | Gender + Age | 4.51% | 0.12% | **97.3%** |
-| [German Credit Lending](#03--german-credit-lending--lending-bias) | Age | Age + Employment Tenure (proxy) | 7.16% | 1.89% | **73.6%** |
-| [Insurance Denial](#04--insurance-denial--healthcare-bias) | Age + Gender | Age + Gender + BMI + Smoker + Diabetic (proxies) | Age: 7.93% / Gender: 5.44% | Age: 3.18% / Gender: 1.54% | **Age: 60% / Gender: 72%** |
-| [Benefits Denial](#05--benefits-denial--welfare-eligibility-bias) | Sex + Race + Origin + Age | Sex + Race + Origin + Age + Relationship + Marital Status + Hours + Occupation (proxies) | Sex: 18.00% / Race: 12.75% / Origin: 4.40% | Sex: 8.52% / Race: 6.90% / Origin: 0.52% | **Sex: 53% / Race: 46% / Origin: 88%** |
+| Project | Protected Attribute | Proxies Removed | Gap Before → After | Reduction |
+|---|---|---|---|---|
+| [COMPAS](#01--compas--criminal-justice-bias) | Race | Custody Status | 86.77% → 15.69% | **71%** |
+| [AI Fair Recruitment](#02--ai-fair-recruitment--hiring-bias) | Gender | Age | 4.51% → 0.12% | **97.3%** |
+| [German Credit Lending](#03--german-credit-lending--lending-bias) | Age | Employment Tenure | 7.16% → 1.89% | **73.6%** |
+| [Insurance Denial](#04--insurance-denial--healthcare-bias) | Age, Gender | BMI, Smoker, Diabetic | Age: 7.93% → 3.18% | **60%** |
+| ↳ | | | Gender: 5.44% → 1.54% | **72%** |
+| [Benefits Denial](#05--benefits-denial--welfare-eligibility-bias) | Sex, Race, Origin, Age | Relationship, Marital Status, Hours, Occupation | Sex: 18.00% → 8.52% | **53%** |
+| ↳ | | | Race: 12.75% → 6.90% | **46%** |
+| ↳ | | | Origin: 4.40% → 0.52% | **88%** |
 
 ---
 
@@ -413,12 +416,20 @@ All projects use the same bias detection and mitigation pipeline:
 8. Compare
 ```
 
-**Model:** Random Forest Classifier (`sklearn.ensemble.RandomForestClassifier`)  
-**Split:** 80/20 train/test, `random_state=42`  
-**Fairness Metric:** Demographic Parity — difference in positive prediction rates across groups  
-**Mitigation Strategy:** Pre-processing attribute dropping (protected attributes + proxy variables)
+**Model:** Random Forest Classifier (`sklearn.ensemble.RandomForestClassifier`, `n_estimators=100`)  
+Random Forest was chosen for its resistance to overfitting on tabular data, feature importance interpretability, and compatibility with SHAP-based post-hoc explanation — making it well-suited for bias auditing where transparency in feature attribution is required alongside predictive performance.
 
-Each audit is available as a standalone Python script pair (`unfair.py` / `fair.py`) and as a self-contained Jupyter notebook in `notebooks/` with inline visualisations and annotated code.
+**Split:** 80/20 train/test, `random_state=42` (fixed for reproducibility)  
+
+**Primary Fairness Metric:** Demographic Parity — the difference in positive prediction rates across demographic groups. Chosen because it directly measures whether the model's outputs are distributed unequally across protected groups, independent of ground-truth labels.
+
+**Secondary Metrics:** Equalized Odds (TPR + FPR parity), Disparate Impact Ratio (Four-Fifths Rule / EEOC threshold), and SHAP feature attribution are computed per audit to surface error-rate disparities and identify which features are driving predictions.
+
+**Mitigation Strategy:** Pre-processing attribute removal — protected attributes and their identified proxy variables are dropped from the feature set before training. This is the most interpretable mitigation strategy and the most defensible under employment and lending law: the model is explicitly not permitted to see the attributes it must not use.
+
+**Proxy Detection:** Chi-squared test of independence (`scipy.stats.chi2_contingency`) between each feature and each protected attribute. Features with `p < 0.05` are flagged as proxies and removed alongside the protected attributes. See [`explainers/proxy-variables.md`](explainers/proxy-variables.md) for methodology.
+
+Each audit ships as a standalone Python script pair (`unfair.py` / `fair.py`) and as a self-contained Jupyter notebook in `notebooks/` with inline visualisations, annotated code, and SHAP plots.
 
 ---
 
@@ -491,7 +502,7 @@ Or open any `.ipynb` file directly in VS Code, JupyterLab, or Google Colab.
 | Component | Details |
 |---|---|
 | Language | Python 3 |
-| Libraries | `pandas`, `scikit-learn`, `fairlearn`, `matplotlib`, `scipy` |
+| Libraries | `pandas`, `scikit-learn`, `fairlearn`, `shap`, `matplotlib`, `scipy` |
 | Notebooks | Jupyter (`.ipynb`) — one per audit, in `notebooks/` |
 | Datasets | ProPublica COMPAS (public domain), AI Fair Recruitment (Kaggle), UCI German Credit / Statlog (Kaggle), Insurance Claims (Kaggle), UCI Adult Census Income (Kaggle) |
 
