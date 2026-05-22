@@ -30,6 +30,7 @@ Fair-Code/
 ├── AI Fair Recruitment/             ← existing
 ├── German Credit Lending/           ← existing
 ├── Insurance Denial/                ← existing
+├── Benefits Denial/                 ← existing
 ├── Your-Domain-Here/                ← your new audit
 │   ├── unfair.py
 │   ├── fair.py
@@ -41,7 +42,8 @@ Fair-Code/
 │   ├── 02_hiring_bias_audit.ipynb           ← existing
 │   ├── 03_german_credit_bias_audit.ipynb    ← existing
 │   ├── 04_insurance_denial_bias_audit.ipynb ← existing
-│   └── 05_your_domain_bias_audit.ipynb      ← your new notebook (optional but appreciated)
+│   ├── 05_benefits_denial_bias_audit.ipynb  ← existing
+│   └── 06_your_domain_bias_audit.ipynb      ← your new notebook (optional but appreciated)
 ├── explainers/
 │   ├── proxy-variables.md           ← existing
 │   ├── equalized-odds.md            ← existing
@@ -111,7 +113,7 @@ New Fairness Gap: XX.XX%
 
 If you can, add a Jupyter notebook to the `notebooks/` folder that walks through your full audit step by step. It's not required to get your PR merged, but it makes the audit significantly more useful for people who want to understand the reasoning, not just run the scripts.
 
-Number it sequentially after the existing ones: `05_your_domain_bias_audit.ipynb`.
+Number it sequentially after the existing ones: `06_your_domain_bias_audit.ipynb`.
 
 ### What a good audit notebook contains
 
@@ -136,7 +138,7 @@ Follow the structure of the existing notebooks:
 ### Notebook file naming
 
 ```
-notebooks/05_your_domain_bias_audit.ipynb
+notebooks/06_your_domain_bias_audit.ipynb
 ```
 
 Lowercase, underscores, sequential number prefix. Match the existing naming convention exactly.
@@ -147,7 +149,7 @@ Lowercase, underscores, sequential number prefix. Match the existing naming conv
 
 This is the most important part of the audit. Removing the protected attribute alone is rarely enough.
 
-A proxy variable is a feature that correlates with the protected attribute strongly enough to smuggle the bias back through the model — even after you've dropped race or gender directly. In the COMPAS audit, `CustodyStatus` was a proxy for race because of historical over-policing patterns. In the German Credit Lending audit, `employment` (tenure) was a proxy for age because a 24-year-old structurally cannot have 10 years of work history. In the Insurance Denial audit, `bmi`, `smoker`, and `diabetic` were proxies for race and class because of structural disparities in American healthcare.
+A proxy variable is a feature that correlates with the protected attribute strongly enough to smuggle the bias back through the model — even after you've dropped race or gender directly. In the COMPAS audit, `CustodyStatus` was a proxy for race because of historical over-policing patterns. In the German Credit Lending audit, `employment` (tenure) was a proxy for age because a 24-year-old structurally cannot have 10 years of work history. In the Insurance Denial audit, `bmi`, `smoker`, and `diabetic` were proxies for race and class because of structural disparities in American healthcare. In the Benefits Denial audit, `relationship` (Husband/Wife), `marital.status`, `hours.per.week`, and `occupation` were all proxies for sex or race — family roles encode sex perfectly, the spousal rate reconstructs sex through marriage patterns, the hours gap reflects caregiving burdens not work capacity, and occupational segregation encodes race through labour market history.
 
 You must identify and document your proxy variables. To find them:
 
@@ -311,7 +313,7 @@ In the PR description, briefly state what concept you're explaining and why it's
 1. Fork the repo
 2. Create a branch: `git checkout -b audit/your-domain`
 3. Add your folder with both scripts, the dataset, and both screenshots
-4. If you wrote a notebook, add it to `notebooks/` as `05_your_domain_bias_audit.ipynb`
+4. If you wrote a notebook, add it to `notebooks/` as `06_your_domain_bias_audit.ipynb`
 5. Update `README.md`
 6. Open a Pull Request titled: `Audit: HMDA Mortgage Lending Bias`
 
