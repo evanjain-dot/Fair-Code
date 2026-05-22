@@ -36,7 +36,6 @@ Each audit ships as both a pair of Python scripts (`unfair.py` / `fair.py`) for 
 | [German Credit Lending](#03--german-credit-lending--lending-bias) | Age | Age + Employment Tenure (proxy) | 7.16% | 1.89% | **73.6%** |
 | [Insurance Denial](#04--insurance-denial--healthcare-bias) | Age + Gender | Age + Gender + BMI + Smoker + Diabetic (proxies) | Age: 7.93% / Gender: 5.44% | Age: 3.18% / Gender: 1.54% | **Age: 60% / Gender: 72%** |
 | [Benefits Denial](#05--benefits-denial--welfare-eligibility-bias) | Sex + Race + Origin + Age | Sex + Race + Origin + Age + Relationship + Marital Status + Hours + Occupation (proxies) | Sex: 18.00% / Race: 12.75% / Origin: 4.40% | Sex: 8.52% / Race: 6.90% / Origin: 0.52% | **Sex: 53% / Race: 46% / Origin: 88%** |
-| [Benefits Denial](#05--benefits-denial--welfare-eligibility-bias) | Sex + Race + Origin | Sex, Race, Origin, Age + Relationship, Marital Status, Hours/wk, Occupation (proxies) | Sex: 18.00% / Race: 12.75% | Sex: 8.52% / Race: 6.90% | **Sex: 53% / Race: 46%** |
 
 ---
 
@@ -80,19 +79,11 @@ Fair-Code/
 │   ├── unfair.png                 # Terminal output — biased results
 │   └── fair.png                   # Terminal output — mitigated results
 │
-├── Benefits Denial/
-│   ├── unfair.py                  # Biased model (sex + race + age + origin + proxies included)
-│   ├── fair.py                    # Mitigated model (economic signals only)
-│   ├── adult.csv                  # UCI Adult Census Income dataset (48,842 records)
-│   ├── unfair.png                 # Terminal output — biased results
-│   └── fair.png                   # Terminal output — mitigated results
-│
 ├── notebooks/
 │   ├── 01_compas_bias_audit.ipynb           # Full walkthrough: COMPAS criminal justice bias
 │   ├── 02_hiring_bias_audit.ipynb           # Full walkthrough: AI hiring bias
 │   ├── 03_german_credit_bias_audit.ipynb    # Full walkthrough: German credit lending bias
 │   ├── 04_insurance_denial_bias_audit.ipynb # Full walkthrough: Insurance denial bias
-│   └── 05_benefits_denial_bias_audit.ipynb  # Full walkthrough: Benefits denial welfare bias
 │   └── 05_benefits_denial_bias_audit.ipynb  # Full walkthrough: Benefits denial welfare bias
 │
 ├── explainers/
