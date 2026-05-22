@@ -35,6 +35,7 @@ Each audit ships as both a pair of Python scripts (`unfair.py` / `fair.py`) for 
 | [AI Fair Recruitment](#02--ai-fair-recruitment--hiring-bias) | Gender | Gender + Age | 4.51% | 0.12% | **97.3%** |
 | [German Credit Lending](#03--german-credit-lending--lending-bias) | Age | Age + Employment Tenure (proxy) | 7.16% | 1.89% | **73.6%** |
 | [Insurance Denial](#04--insurance-denial--healthcare-bias) | Age + Gender | Age + Gender + BMI + Smoker + Diabetic (proxies) | Age: 7.93% / Gender: 5.44% | Age: 3.18% / Gender: 1.54% | **Age: 60% / Gender: 72%** |
+| [Benefits Denial](#05--benefits-denial--welfare-eligibility-bias) | Sex + Race + Origin | Sex, Race, Origin, Age + Relationship, Marital Status, Hours/wk, Occupation (proxies) | Sex: 18.00% / Race: 12.75% | Sex: 8.52% / Race: 6.90% | **Sex: 53% / Race: 46%** |
 
 ---
 
@@ -71,11 +72,19 @@ Fair-Code/
 │   ├── unfair.png                 # Terminal output — biased results
 │   └── fair.png                   # Terminal output — mitigated results
 │
+├── Benefits Denial/
+│   ├── unfair.py                  # Biased model (sex, race, age, national origin + 4 proxies)
+│   ├── fair.py                    # Mitigated model (education, workclass, capital assets only)
+│   ├── adult.csv                  # UCI Adult Census Income dataset (48,842 records)
+│   ├── unfair.png                 # Terminal output — biased results
+│   └── fair.png                   # Terminal output — mitigated results
+│
 ├── notebooks/
 │   ├── 01_compas_bias_audit.ipynb           # Full walkthrough: COMPAS criminal justice bias
 │   ├── 02_hiring_bias_audit.ipynb           # Full walkthrough: AI hiring bias
 │   ├── 03_german_credit_bias_audit.ipynb    # Full walkthrough: German credit lending bias
 │   └── 04_insurance_denial_bias_audit.ipynb # Full walkthrough: Insurance denial bias
+│   └── 05_benefits_denial_bias_audit.ipynb  # Full walkthrough: Benefits denial welfare bias
 │
 ├── explainers/
 │   ├── proxy-variables.md         # What is a proxy variable? (concept + detection code)
@@ -283,6 +292,86 @@ Dropped `age`, `gender`, `bmi`, `smoker`, and `diabetic`. Retained only objectiv
 
 ---
 
+### 05 · Benefits Denial — Welfare Eligibility Bias
+
+> *"An automated means-test flags male applicants as ineligible at 18 percentage points higher than female applicants — not because of what they earn, but because of who they're married to."*
+
+**Dataset:** `adult.csv` — UCI Adult Census Income dataset (48,842 records). [Kaggle source](https://www.kaggle.com/datasets/wenruliu/adult-income-dataset) — public domain, no login required.
+
+Automated welfare and benefits systems use income-prediction models to screen applicants for housing assistance, food support, and healthcare subsidies. This audit replicates that logic: the model predicts whether an applicant earns above a means-test threshold ($50K) and flags them as ineligible. The audit then measures how unfairly that flag falls across four protected groups — sex, race, national origin, and age.
+
+#### The Problem — `unfair.py`
+
+Trained with sex, race, age, and national origin directly, plus four proxy variables that reconstruct those attributes even after the protected columns are removed.
+
+| Group | Ineligibility Flag Rate |
+|---|---|
+| Male applicants | 25.71% |
+| Female applicants | 7.71% |
+| **Fairness Gap (Sex)** | **18.00%** |
+
+| Group | Ineligibility Flag Rate |
+|---|---|
+| White/Asian-PI | 21.22% |
+| Other minorities | 8.47% |
+| **Fairness Gap (Race)** | **12.75%** |
+
+| Group | Ineligibility Flag Rate |
+|---|---|
+| US-born | 20.20% |
+| Foreign-born | 15.81% |
+| **Fairness Gap (Origin)** | **4.40%** |
+
+#### The Fix — `fair.py`
+
+Dropped all four protected attributes and all four proxy variables. Retained only the features a means-tested programme can legitimately consult under equality law.
+
+```python
+# THE FIX: Policy-defined economic signals only
+features = [
+    'workclass',       # employment sector
+    'education',       # education level
+    'education.num',   # education years
+    'capital.gain',    # financial assets
+    'capital.loss',    # financial assets
+    # age            removed ✓ (protected attribute)
+    # sex            removed ✓ (protected attribute)
+    # race           removed ✓ (protected attribute)
+    # native.country removed ✓ (protected attribute)
+    # relationship   removed ✓ (proxy: Husband=0% female, Wife=0% male)
+    # marital.status removed ✓ (proxy: encodes sex via spousal status)
+    # hours.per.week removed ✓ (proxy: encodes sex via caregiving gap)
+    # occupation     removed ✓ (proxy: encodes race via occupational segregation)
+    # fnlwgt         removed ✓ (census weight artefact — no causal eligibility link)
+]
+```
+
+| Group | Ineligibility Flag Rate |
+|---|---|
+| Male applicants | 14.84% |
+| Female applicants | 6.32% |
+| **New Fairness Gap (Sex)** | **8.52%** |
+
+| Group | Ineligibility Flag Rate |
+|---|---|
+| White/Asian-PI | 12.81% |
+| Other minorities | 5.91% |
+| **New Fairness Gap (Race)** | **6.90%** |
+
+| Group | Ineligibility Flag Rate |
+|---|---|
+| US-born | 12.08% |
+| Foreign-born | 11.55% |
+| **New Fairness Gap (Origin)** | **0.52%** |
+
+**Result: 53% reduction in sex gap. 46% reduction in race gap. 88% reduction in national-origin gap.**
+
+**Key Insight:** Automated benefits systems don't need to name sex or race to discriminate by them. `relationship` (Husband/Wife), `marital.status`, `hours.per.week`, and `occupation` are the `CustodyStatus` of welfare AI — features that sound purely economic but carry protected-class signal because of how work, caregiving, and labour markets are structurally organised. The fix is to ask only what the law actually permits: education, employment sector, and capital assets.
+
+📓 **[Full notebook walkthrough →](notebooks/05_benefits_denial_bias_audit.ipynb)**
+
+---
+
 ## Explainers
 
 | Explainer | Concept |
@@ -368,6 +457,13 @@ python unfair.py
 python fair.py
 ```
 
+**Run the Benefits Denial project:**
+```bash
+cd "Benefits Denial"
+python unfair.py
+python fair.py
+```
+
 **Run the notebooks:**
 ```bash
 pip install jupyter
@@ -395,6 +491,7 @@ Or open any `.ipynb` file directly in VS Code, JupyterLab, or Google Colab.
 - [x] AI Fair Recruitment Bias
 - [x] German Credit Lending Bias
 - [x] Insurance Denial — Healthcare Bias
+- [x] Benefits Denial — Welfare Eligibility Bias
 - [x] Jupyter notebook walkthroughs for all four audits
 - [x] Explainer: Proxy Variables
 - [x] Explainer: Equalized Odds
