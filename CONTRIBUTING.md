@@ -26,6 +26,12 @@ Every audit lives in its own top-level folder. Name it after the domain, not the
 
 ```
 Fair-Code/
+├── .github/
+│   ├── PULL_REQUEST_TEMPLATE.md         ← fill this out when opening a PR
+│   └── ISSUE_TEMPLATE/
+│       ├── bug_report.yml               ← report a broken script or wrong result
+│       ├── new_audit.yml                ← claim a new audit before you start
+│       └── new_explainer.yml            ← claim a new explainer before you start
 ├── COMPAS/                          ← existing
 ├── AI Fair Recruitment/             ← existing
 ├── German Credit Lending/           ← existing
