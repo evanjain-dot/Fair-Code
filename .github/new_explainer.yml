@@ -1,0 +1,53 @@
+name: New explainer proposal
+description: I want to write an explainer on an algorithmic fairness concept
+labels: ["explainer"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open this before writing anything. Check the `explainers/` folder first — proxy variables, equalized odds, sampling bias, SHAP values, disparate impact, fairness metric conflicts, and calibration are already done.
+
+  - type: input
+    id: concept
+    attributes:
+      label: Concept
+      placeholder: e.g. Demographic parity, Predictive parity, Individual fairness
+    validations:
+      required: true
+
+  - type: textarea
+    id: one-line
+    attributes:
+      label: One-sentence definition
+      description: State the concept as plainly as possible. No jargon in the definition itself.
+      placeholder: e.g. Demographic parity requires that a model's positive prediction rate is equal across demographic groups, regardless of ground truth.
+    validations:
+      required: true
+
+  - type: textarea
+    id: real-data
+    attributes:
+      label: What real data or case will you use to illustrate it?
+      description: Toy examples won't be merged. Use one of the existing audits in this repo, or a well-documented external case with a source link.
+      placeholder: e.g. I'll use the COMPAS audit data to show how demographic parity is calculated and where it conflicts with predictive parity.
+    validations:
+      required: true
+
+  - type: textarea
+    id: limitations
+    attributes:
+      label: What are the limitations or trade-offs of this concept?
+      description: Every fairness metric has them. This is what separates a good explainer from a shallow one.
+      placeholder: e.g. Demographic parity can be satisfied by a model that's equally bad for everyone. It also conflicts mathematically with equalized odds when base rates differ across groups.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before you start
+      options:
+        - label: I've checked the explainers/ folder — this concept isn't already covered
+          required: true
+        - label: I have real data or a documented external case to illustrate the concept (not a toy example)
+          required: true
