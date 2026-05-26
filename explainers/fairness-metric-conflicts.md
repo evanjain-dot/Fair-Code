@@ -305,6 +305,7 @@ This is why choosing a metric is not sufficient. You must also audit the data th
 
 - [`COMPAS/`](../COMPAS/) — The ProPublica / Northpointe conflict is a direct illustration of this metric incompatibility
 - [`explainers/equalized-odds.md`](equalized-odds.md) — Deep dive on the error-rate fairness metric
+- [`explainers/demographic-parity.md`](demographic-parity.md) — Deep dive on the equal-outcome-rate metric (the third leg of the impossibility triangle)
 - [`explainers/proxy-variables.md`](proxy-variables.md) — How corrupted base rates flow into metric calculations
 - [`explainers/disparate-impact.md`](disparate-impact.md) — The legal metric (demographic parity under the 80% rule) and its limits
 - [`explainers/sampling-bias.md`](sampling-bias.md) — Why ground truth in training data may not be true
