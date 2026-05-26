@@ -1985,6 +1985,7 @@
         <li role="none"><a href="#explainer-disparate-impact" role="menuitem">05 — Disparate Impact</a></li>
         <li role="none"><a href="#explainer-metric-conflicts" role="menuitem">06 — Metric Conflicts</a></li>
         <li role="none"><a href="#explainer-calibration" role="menuitem">07 — Calibration</a></li>
+        <li role="none"><a href="#explainer-demographic-parity" role="menuitem">08 — Demographic Parity</a></li>
       </ul>
     </li>
     <li><a href="#impact">Impact</a></li>
@@ -2020,6 +2021,7 @@
     <a href="#explainer-disparate-impact" class="mobile-link mobile-sub">05 — Disparate Impact</a>
     <a href="#explainer-metric-conflicts" class="mobile-link mobile-sub">06 — Metric Conflicts</a>
     <a href="#explainer-calibration" class="mobile-link mobile-sub">07 — Calibration</a>
+    <a href="#explainer-demographic-parity" class="mobile-link mobile-sub">08 — Demographic Parity</a>
     <a href="#impact" class="mobile-link">Impact</a>
     <a href="#roadmap" class="mobile-link">Roadmap</a>
     <div class="mobile-social-row">
@@ -3940,6 +3942,247 @@
     </div>
   </div>
 
+  <!-- EXPLAINER 08: DEMOGRAPHIC PARITY -->
+  <div id="explainer-demographic-parity" style="position:relative; top:-80px; visibility:hidden;"></div>
+  <div class="explainer-card reveal" style="margin-top: 2px;" data-explainer-tags="metrics" data-explainer-text="demographic parity fairness metric positive prediction rate EEOC four-fifths 80% rule adverse impact disparate impact hiring lending admissions equal outcome base rate equalized odds predictive parity impossibility proxy variables intersectionality calibration bias detection audit">
+    <div class="explainer-header">
+      <div class="explainer-meta">
+        <div class="explainer-num">EXPLAINER — 08</div>
+        <h3 class="explainer-title">WHAT IS DEMOGRAPHIC PARITY?</h3>
+        <p class="explainer-tagline">Equal outcomes, not equal treatment — and that distinction is everything.</p>
+      </div>
+      <div class="explainer-definition">
+        <div class="explainer-def-label">One-Sentence Definition</div>
+        <p class="explainer-def-text">Demographic parity requires a model to produce positive predictions at <em>equal rates</em> across demographic groups — regardless of whether those groups have different underlying rates of the outcome being predicted.</p>
+      </div>
+    </div>
+
+    <div class="explainer-body">
+      <div class="explainer-block">
+        <div class="explainer-block-label">Why This Matters</div>
+        <p class="explainer-block-text">Demographic parity is the most widely used fairness metric in practice. It underlies US employment discrimination law (the EEOC's 80% rule), EU AI Act high-risk system audits, and most corporate fairness dashboards. When someone says an algorithm is "biased," they are usually — whether they know it or not — pointing at a demographic parity violation.</p>
+        <p class="explainer-block-text" style="margin-top: 12px;">A model can be highly accurate overall and still produce systematically unequal outcomes for different groups — demographic parity is the only metric that directly measures this. It is also the legal threshold in hiring, lending, and admissions in most jurisdictions — violating it exposes organisations to disparate impact liability.</p>
+      </div>
+
+      <div class="proxy-table-wrap">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">The Formal Definition</div>
+        <div class="proxy-table">
+          <div class="proxy-row proxy-row-head">
+            <span>Form</span>
+            <span>Expression</span>
+            <span>What It Means</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Perfect parity</code></span>
+            <span class="proxy-attr">P(Ŷ=1 | Group=A) = P(Ŷ=1 | Group=B)</span>
+            <span>Positive prediction rate must be exactly equal across groups</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Four-Fifths Rule (EEOC)</code></span>
+            <span class="proxy-attr">P(Ŷ=1 | B) / P(Ŷ=1 | A) ≥ 0.80</span>
+            <span>Legal threshold — a ratio below 0.80 triggers adverse impact scrutiny</span>
+          </div>
+        </div>
+        <div class="explainer-callout" style="margin-top: 16px;">The metric makes no claim about whether the predictions are correct — only that the <em>rate</em> of positive predictions is equalised. The 80% threshold is a legal convention set in 1978, not a mathematical optimum. Treat it as a trigger for scrutiny, not a verdict.</div>
+      </div>
+
+      <div class="explainer-proof">
+        <div class="explainer-block-label" style="margin-bottom: 24px;">Real-World Proof: Hiring Bias</div>
+        <p class="explainer-block-text" style="margin-bottom: 20px;">The AI Fair Recruitment audit in this repo is a direct illustration of a demographic parity violation — and its fix. A model trained with gender and age as features assigned hire recommendations at sharply different rates.</p>
+        <div class="proof-steps">
+          <div class="proof-step">
+            <div class="proof-step-num">STEP 01</div>
+            <div class="proof-step-label">Biased model — gender + age included as features</div>
+            <div class="terminals-grid" style="margin-top: 12px;">
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">unfair_hiring.py — gender + age included</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head">--- HIRE RATE BY GENDER ---</div>
+                  <div class="t-normal">Male applicants:&nbsp;&nbsp;&nbsp;&nbsp;~71%</div>
+                  <div class="t-bad">Female applicants:&nbsp;&nbsp;~50%</div>
+                  <div class="t-bad">Fairness gap:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~20.9 pp ✗ fails</div>
+                </div>
+              </div>
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">root_cause.py</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head"># Model not told to discriminate.</div>
+                  <div class="t-bad"># Age = proxy for gender in dataset</div>
+                  <div class="t-normal"># Women had more career gaps →</div>
+                  <div class="t-normal"># age correlated with gender →</div>
+                  <div class="t-accent"># proxy smuggled the bias back in</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="proof-step" style="margin-top: 24px;">
+            <div class="proof-step-num">STEP 02</div>
+            <div class="proof-step-label">Fair model — gender and age proxy dropped</div>
+            <div class="terminals-grid" style="margin-top: 12px;">
+              <div class="terminal terminal--accent">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">fair_hiring.py — gender + age removed</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head">--- HIRE RATE BY GENDER ---</div>
+                  <div class="t-good">Male applicants:&nbsp;&nbsp;&nbsp;&nbsp;~67%</div>
+                  <div class="t-good">Female applicants:&nbsp;&nbsp;~67%</div>
+                  <div class="t-accent">New fairness gap: ~0.12 pp ✓ passes</div>
+                  <div class="t-accent">→ 97.3% bias reduction</div>
+                </div>
+              </div>
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">interpretation.py</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head"># Gap wasn't in candidate merit.</div>
+                  <div class="t-normal"># It was in which features the</div>
+                  <div class="t-normal"># model was permitted to see.</div>
+                  <div class="t-accent"># Remove the signal → remove the bias</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="explainer-detection">
+        <div class="explainer-block-label">Detection Code</div>
+        <div class="code-block" style="margin-top: 16px;">
+          <div class="code-block-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            demographic_parity_audit.py
+          </div>
+          <div class="code-block-body" style="font-size: 11px;">
+            <span class="k">import</span> <span class="v">pandas as pd</span><br><br>
+            <span class="k">def</span> <span class="v">demographic_parity_audit</span>(df, prediction_col, group_col, positive_label=<span class="v">1</span>):<br>
+            &nbsp;&nbsp;<span class="c">"""Compute positive prediction rate per group and the parity gap."""</span><br>
+            &nbsp;&nbsp;rates = (<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;df.groupby(group_col)[prediction_col]<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.apply(<span class="k">lambda</span> x: (x == positive_label).mean())<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.round(<span class="v">4</span>).rename(<span class="v">'positive_rate'</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.reset_index().sort_values(<span class="v">'positive_rate'</span>, ascending=<span class="v">False</span>)<br>
+            &nbsp;&nbsp;)<br>
+            &nbsp;&nbsp;max_rate = rates[<span class="v">'positive_rate'</span>].max()<br>
+            &nbsp;&nbsp;min_rate = rates[<span class="v">'positive_rate'</span>].min()<br>
+            &nbsp;&nbsp;gap = round(max_rate - min_rate, <span class="v">4</span>)<br>
+            &nbsp;&nbsp;ratio = round(min_rate / max_rate, <span class="v">4</span>) <span class="k">if</span> max_rate &gt; <span class="v">0</span> <span class="k">else</span> <span class="v">None</span><br>
+            &nbsp;&nbsp;status = <span class="v">'✓ passes'</span> <span class="k">if</span> ratio &gt;= <span class="v">0.8</span> <span class="k">else</span> <span class="v">'✗ fails'</span><br>
+            &nbsp;&nbsp;print(<span class="v">f"Parity gap: {gap:.4f} — Four-fifths ratio: {ratio:.4f} {status}"</span>)<br>
+            &nbsp;&nbsp;<span class="k">return</span> rates, gap, ratio<br><br>
+            <span class="c"># Example — using the AI Fair Recruitment dataset</span><br>
+            df[<span class="v">'predicted_hire'</span>] = model.predict(X_test)<br>
+            demographic_parity_audit(df_test, <span class="v">'predicted_hire'</span>, <span class="v">'Gender'</span>)
+          </div>
+        </div>
+        <div class="code-block" style="margin-top: 12px;">
+          <div class="code-block-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            multi_group_parity_audit.py
+          </div>
+          <div class="code-block-body" style="font-size: 11px;">
+            <span class="k">def</span> <span class="v">multi_group_parity_audit</span>(y_pred, groups_df, positive_label=<span class="v">1</span>):<br>
+            &nbsp;&nbsp;<span class="c">"""Run demographic parity audit for every column simultaneously."""</span><br>
+            &nbsp;&nbsp;results = {}<br>
+            &nbsp;&nbsp;<span class="k">for</span> col <span class="k">in</span> groups_df.columns:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;temp = groups_df[[col]].copy()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;temp[<span class="v">'y_pred'</span>] = y_pred<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;rates = temp.groupby(col)[<span class="v">'y_pred'</span>].apply(<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">lambda</span> x: (x == positive_label).mean()).round(<span class="v">4</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;max_r, min_r = rates.max(), rates.min()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;results[col] = {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="v">'gap'</span>: round(max_r - min_r, <span class="v">4</span>),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="v">'four_fifths_ratio'</span>: round(min_r / max_r, <span class="v">4</span>) <span class="k">if</span> max_r &gt; <span class="v">0</span> <span class="k">else</span> <span class="v">None</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="v">'passes_eeoc'</span>: (min_r / max_r) &gt;= <span class="v">0.8</span> <span class="k">if</span> max_r &gt; <span class="v">0</span> <span class="k">else</span> <span class="v">None</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+            &nbsp;&nbsp;<span class="k">return</span> results<br><br>
+            <span class="c"># Audit gender, race, and age group in a single pass</span><br>
+            protected = test_df[[<span class="v">'Gender'</span>, <span class="v">'Race'</span>, <span class="v">'AgeGroup'</span>]]<br>
+            audit = multi_group_parity_audit(y_pred, protected)<br>
+            <span class="k">for</span> attr, r <span class="k">in</span> audit.items():<br>
+            &nbsp;&nbsp;status = <span class="v">'✓'</span> <span class="k">if</span> r[<span class="v">'passes_eeoc'</span>] <span class="k">else</span> <span class="v">'✗'</span><br>
+            &nbsp;&nbsp;print(<span class="v">f"{attr}: gap={r['gap']:.4f}, 4/5={r['four_fifths_ratio']:.4f} {status}"</span>)
+          </div>
+        </div>
+      </div>
+
+      <div class="proxy-table-wrap" style="margin-top: 32px;">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">What Demographic Parity Catches — and What It Doesn't</div>
+        <div class="proxy-table">
+          <div class="proxy-row proxy-row-head">
+            <span>Limitation</span>
+            <span>The Problem</span>
+            <span>What to Use Instead</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Parity in mediocrity</code></span>
+            <span class="proxy-attr">Gap can close by reducing the advantaged group's rate, not raising the disadvantaged group's</span>
+            <span>Always inspect absolute rates, not just the gap</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Ignores error types</code></span>
+            <span class="proxy-attr">Equal prediction rates can coexist with disparate false positive or false negative rates</span>
+            <span>Pair with Equalized Odds — see Explainer 04</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Calibration failures</code></span>
+            <span class="proxy-attr">Scores can mean different things for each group even when rates are equal</span>
+            <span>Pair with calibration audit — see Explainer 07</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Impossibility result</code></span>
+            <span class="proxy-attr">When base rates differ, demographic parity cannot be satisfied simultaneously with equalized odds and predictive parity</span>
+            <span>See Explainer 06 — Metric Conflicts</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Intersectionality blind</code></span>
+            <span class="proxy-attr">Auditing race alone and gender alone can both pass while Black women face a combined disparity neither detects</span>
+            <span>Disaggregate by all relevant combinations when data permits</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explainer-takeaway">
+        <div class="explainer-block-label">The Bigger Picture</div>
+        <p class="explainer-block-text">Demographic parity ignores the ground truth. A perfectly accurate model trained on data where Group A has a genuinely higher rate of the positive outcome will violate demographic parity — not because it is biased, but because it is accurate. This is the core tension between parity-based and accuracy-based fairness, and it has no clean technical resolution.</p>
+        <p class="explainer-block-text" style="margin-top: 14px;">The 80% rule is a legal convention, not a scientific threshold. The EEOC chose 80% pragmatically in 1978. There is no statistical basis for treating 79% as discriminatory and 81% as fair. Courts have found discrimination below and above this threshold. The baseline can also be corrupted: if the positive prediction rate you are equalising is built on biased historical data — arrest rates instead of actual crime rates, for example — equalising it embeds the historical bias into the fair model.</p>
+        <div class="explainer-callout">Demographic parity is the legal and practical standard for bias detection in high-stakes systems. Run it first. But it is a floor, not a ceiling — pass it, then audit error rates, calibration, and proxies too.</div>
+      </div>
+
+      <div class="explainer-reading">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
+        <div class="reading-links">
+          <a href="https://arxiv.org/abs/1412.3756" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Feldman et al.: Certifying and Removing Disparate Impact (2015) — foundational paper on measuring and removing parity violations</a>
+          <a href="https://www.eeoc.gov/laws/guidance/questions-and-answers-clarify-and-provide-common-interpretation-uniform-guidelines" target="_blank" rel="noopener noreferrer" class="reading-link">↗ EEOC: Uniform Guidelines on Employee Selection Procedures (1978) — the original four-fifths rule</a>
+          <a href="https://fairmlbook.org/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Barocas &amp; Hardt: Fairness and Machine Learning — Chapter 2 — formal treatment of demographic parity</a>
+          <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank" rel="noopener noreferrer" class="reading-link">↗ ProPublica: Machine Bias (2016) — the audit that brought parity-based fairness into public view</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="explainer-footer">
+      <div class="explainer-footer-label">Also in this series</div>
+      <div class="coming-soon-pills">
+        <a href="#explainer-proxy" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Proxy Variables</a>
+        <a href="#explainer-sampling" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Sampling Bias</a>
+        <a href="#explainer-shap" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ SHAP Values</a>
+        <a href="#explainer-equalized-odds" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Equalized Odds</a>
+        <a href="#explainer-disparate-impact" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Disparate Impact</a>
+        <a href="#explainer-metric-conflicts" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Metric Conflicts</a>
+        <a href="#explainer-calibration" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Calibration</a>
+      </div>
+    </div>
+  </div>
+
 </section>
 <section id="impact" style="background: var(--surface);" aria-labelledby="impact-heading">
   <div class="section-eyebrow"><span class="num">05</span>Why This Matters</div>
@@ -4050,6 +4293,13 @@
       <div>
         <div class="roadmap-name">Explainer: Calibration</div>
         <div class="roadmap-meta">Differential calibration · COMPAS score bands · MACE detection code · Chouldechova trade-off</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-status done"></div>
+      <div>
+        <div class="roadmap-name">Explainer: Demographic Parity</div>
+        <div class="roadmap-meta">EEOC 80% rule · hiring bias proof · multi-group audit code · impossibility trade-offs</div>
       </div>
     </div>
     <div class="roadmap-item">
