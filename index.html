@@ -1987,6 +1987,7 @@
         <li role="none"><a href="#explainer-calibration" role="menuitem">07 — Calibration</a></li>
         <li role="none"><a href="#explainer-demographic-parity" role="menuitem">08 — Demographic Parity</a></li>
         <li role="none"><a href="#explainer-feedback-loop" role="menuitem">09 — Feedback Loop Bias</a></li>
+        <li role="none"><a href="#explainer-disparate-treatment" role="menuitem">10 — Disparate Treatment</a></li>
       </ul>
     </li>
     <li><a href="#impact">Impact</a></li>
@@ -2024,6 +2025,7 @@
     <a href="#explainer-calibration" class="mobile-link mobile-sub">07 — Calibration</a>
     <a href="#explainer-demographic-parity" class="mobile-link mobile-sub">08 — Demographic Parity</a>
     <a href="#explainer-feedback-loop" class="mobile-link mobile-sub">09 — Feedback Loop Bias</a>
+    <a href="#explainer-disparate-treatment" class="mobile-link mobile-sub">10 — Disparate Treatment</a>
     <a href="#impact" class="mobile-link">Impact</a>
     <a href="#roadmap" class="mobile-link">Roadmap</a>
     <div class="mobile-social-row">
@@ -4376,6 +4378,291 @@
         <a href="#explainer-metric-conflicts" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Metric Conflicts</a>
         <a href="#explainer-calibration" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Calibration</a>
         <a href="#explainer-demographic-parity" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Demographic Parity</a>
+        <a href="#explainer-disparate-treatment" class="coming-pill" style="text-decoration:none; cursor:pointer;">↓ Disparate Treatment</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLAINER 10: DISPARATE TREATMENT -->
+  <div id="explainer-disparate-treatment" style="position:relative; top:-80px; visibility:hidden;"></div>
+  <div class="explainer-card reveal" style="margin-top: 2px;" data-explainer-tags="metrics detection" data-explainer-text="disparate treatment intentional discrimination protected attribute feature set direct treatment indirect treatment proxy Title VII EEOC McDonnell Douglas burden shifting BFOQ bona fide occupational qualification hiring recruitment race gender age audit feature audit two-stage treatment impact Watson Fort Worth employment law civil rights">
+    <div class="explainer-header">
+      <div class="explainer-meta">
+        <div class="explainer-num">EXPLAINER — 10</div>
+        <h3 class="explainer-title">WHAT IS DISPARATE TREATMENT?</h3>
+        <p class="explainer-tagline">Disparate impact is accidental discrimination. Disparate treatment is deliberate — and the law treats them very differently.</p>
+      </div>
+      <div class="explainer-definition">
+        <div class="explainer-def-label">One-Sentence Definition</div>
+        <p class="explainer-def-text">Disparate treatment is intentional discrimination: a decision-making process that treats an individual differently <em>because of</em> a protected characteristic — regardless of whether that characteristic is named explicitly or encoded through a feature that serves as a stand-in for it.</p>
+      </div>
+    </div>
+
+    <div class="explainer-body">
+      <div class="explainer-block">
+        <div class="explainer-block-label">Why This Matters</div>
+        <p class="explainer-block-text">Most algorithmic fairness work focuses on disparate impact — unequal outcomes produced by a model that never explicitly uses a protected attribute. Disparate treatment is the other half of discrimination law, and it's the half that's harder to escape in court.</p>
+        <p class="explainer-block-text" style="margin-top: 12px;">Where disparate impact asks <em>"did outcomes differ across groups?"</em>, disparate treatment asks <em>"was the protected attribute a factor in the decision?"</em> A model that directly includes <code class="inline-code">Gender</code>, <code class="inline-code">Race</code>, or <code class="inline-code">Age</code> as input features is, by definition, engaging in disparate treatment — even if the resulting outcome gap is small. The intent is embedded in the design. Every <code class="inline-code">unfair.py</code> script in this repo is a disparate treatment example before it becomes a disparate impact one.</p>
+      </div>
+
+      <div class="proxy-table-wrap">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">Disparate Treatment vs. Disparate Impact</div>
+        <div class="proxy-table">
+          <div class="proxy-row proxy-row-head">
+            <span></span>
+            <span>Disparate Treatment</span>
+            <span>Disparate Impact</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Definition</code></span>
+            <span class="proxy-attr">Protected attribute used as a factor in the decision</span>
+            <span>Neutral process produces unequal outcomes across groups</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Intent required?</code></span>
+            <span style="color: var(--accent2);">Yes — attribute must have been used, by design</span>
+            <span>No — outcome gap is the evidence</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Legal standard</code></span>
+            <span class="proxy-attr">Title VII §703(a) — treating someone differently <em>because of</em> race, sex, etc.</span>
+            <span>Title VII §703(k) — neutral practice with unjustified disparate effect</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Proof</code></span>
+            <span class="proxy-attr">Show the attribute was an input or determinative factor</span>
+            <span>Show the statistical outcome gap (four-fifths rule, etc.)</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Defence</code></span>
+            <span class="proxy-attr">BFOQ — narrow, rarely succeeds</span>
+            <span>Business necessity + job-relatedness</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Algorithmic form</code></span>
+            <span style="color: var(--accent2);">Protected attribute included as a model feature</span>
+            <span>Attribute excluded but proxies remain; outcome gap persists</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Fix</code></span>
+            <span style="color: var(--accent3);">Remove the protected attribute from the feature set</span>
+            <span style="color: var(--accent3);">Remove the attribute <em>and</em> its proxy variables</span>
+          </div>
+        </div>
+        <div class="explainer-callout" style="margin-top: 16px;">You can have disparate treatment <em>without</em> disparate impact (attribute used but outcomes happen to be equal), and disparate impact <em>without</em> disparate treatment (no protected attribute used but proxies recreated the gap). In practice, disparate treatment usually produces disparate impact — but the legal exposure exists independently.</div>
+      </div>
+
+      <div class="explainer-proof">
+        <div class="explainer-block-label" style="margin-bottom: 24px;">Real-World Proof: Every unfair.py in This Repo</div>
+        <p class="explainer-block-text" style="margin-bottom: 20px;">Every biased model in this repo is a disparate treatment example. The protected attribute is a direct model input. The outcome gap is the downstream disparate impact. Same model — two different legal lenses.</p>
+
+        <div class="proof-steps">
+          <div class="proof-step">
+            <div class="proof-step-num">STEP 01</div>
+            <div class="proof-step-label">Disparate treatment — protected attributes as direct features</div>
+            <div class="terminals-grid" style="margin-top: 12px;">
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">compas/unfair.py — race as direct feature</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head"># DISPARATE TREATMENT</div>
+                  <div class="t-bad">X = pd.get_dummies(df[[</div>
+                  <div class="t-bad">&nbsp;&nbsp;&nbsp;&nbsp;'race',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ← protected attribute</div>
+                  <div class="t-bad">&nbsp;&nbsp;&nbsp;&nbsp;'CustodyStatus',&nbsp;&nbsp;&nbsp;# ← race proxy</div>
+                  <div class="t-normal">&nbsp;&nbsp;&nbsp;&nbsp;'Sex_Code_Text',</div>
+                  <div class="t-normal">&nbsp;&nbsp;&nbsp;&nbsp;'MaritalStatus'</div>
+                  <div class="t-bad">]])</div>
+                  <div class="t-bad"># Result: 86.77pp Black/White gap</div>
+                </div>
+              </div>
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">hiring/unfair.py — gender as direct feature</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head"># DISPARATE TREATMENT</div>
+                  <div class="t-bad">features = [</div>
+                  <div class="t-bad">&nbsp;&nbsp;&nbsp;&nbsp;'Gender',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ← protected</div>
+                  <div class="t-bad">&nbsp;&nbsp;&nbsp;&nbsp;'Age',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ← gender proxy</div>
+                  <div class="t-normal">&nbsp;&nbsp;&nbsp;&nbsp;'Experience_Years',</div>
+                  <div class="t-normal">&nbsp;&nbsp;&nbsp;&nbsp;'Technical_Test_Score'</div>
+                  <div class="t-bad">]</div>
+                  <div class="t-bad"># Result: 20.9pp Male/Female gap</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proof-step" style="margin-top: 24px;">
+            <div class="proof-step-num">STEP 02</div>
+            <div class="proof-step-label">The fix — removing disparate treatment ends direct discrimination</div>
+            <div class="terminals-grid" style="margin-top: 12px;">
+              <div class="terminal terminal--accent">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">hiring/fair.py — protected attributes removed</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head"># DISPARATE TREATMENT REMOVED</div>
+                  <div class="t-good">features = [</div>
+                  <div class="t-good">&nbsp;&nbsp;&nbsp;&nbsp;'Experience_Years',</div>
+                  <div class="t-good">&nbsp;&nbsp;&nbsp;&nbsp;'Technical_Test_Score'</div>
+                  <div class="t-good">]</div>
+                  <div class="t-accent"># Gender removed ✓</div>
+                  <div class="t-accent"># Age (proxy) removed ✓</div>
+                  <div class="t-good"># Result: 0.12pp gap — 97.3% reduction</div>
+                </div>
+              </div>
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">audit_note.py</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head"># Removing treatment is step 1.</div>
+                  <div class="t-head"># Step 2: check for proxies.</div>
+                  <div class="t-bad"># A model with no protected attrs</div>
+                  <div class="t-bad"># can still fail the 80% rule</div>
+                  <div class="t-bad"># if correlated features remain.</div>
+                  <div class="t-normal"># Always run a proxy audit next.</div>
+                  <div class="t-normal"># → see Explainer 01</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="explainer-detection">
+        <div class="explainer-block-label">Detection Code — Two-Stage Audit</div>
+        <div class="code-block" style="margin-top: 16px;">
+          <div class="code-block-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            disparate_treatment_audit.py
+          </div>
+          <div class="code-block-body" style="font-size: 11px;">
+            <span class="c"># Standard protected attributes under US federal law</span><br>
+            PROTECTED_ATTRIBUTES = {<br>
+            &nbsp;&nbsp;<span class="v">'race'</span>, <span class="v">'ethnicity'</span>, <span class="v">'color'</span>, <span class="v">'national_origin'</span>,<br>
+            &nbsp;&nbsp;<span class="v">'sex'</span>, <span class="v">'gender'</span>, <span class="v">'pregnancy'</span>,<br>
+            &nbsp;&nbsp;<span class="v">'age'</span>, <span class="v">'religion'</span>, <span class="v">'disability'</span>,<br>
+            &nbsp;&nbsp;<span class="v">'marital_status'</span>, <span class="v">'family_status'</span>,<br>
+            }<br><br>
+            <span class="k">def</span> <span class="v">disparate_treatment_audit</span>(feature_columns, protected=PROTECTED_ATTRIBUTES):<br>
+            &nbsp;&nbsp;<span class="c">"""Flag any feature that is or contains a protected attribute."""</span><br>
+            &nbsp;&nbsp;flagged = []<br>
+            &nbsp;&nbsp;cols_lower = {col: col.lower().replace(<span class="v">' '</span>, <span class="v">'_'</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.replace(<span class="v">'-'</span>, <span class="v">'_'</span>) <span class="k">for</span> col <span class="k">in</span> feature_columns}<br>
+            &nbsp;&nbsp;<span class="k">for</span> original, normalised <span class="k">in</span> cols_lower.items():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">for</span> attr <span class="k">in</span> protected:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">if</span> attr <span class="k">in</span> normalised:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flagged.append(original); <span class="k">break</span><br>
+            &nbsp;&nbsp;<span class="k">if</span> flagged:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="v">f"⚠ Disparate treatment — protected attrs in feature set:"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">for</span> f <span class="k">in</span> flagged: print(<span class="v">f"  · {f}"</span>)<br>
+            &nbsp;&nbsp;<span class="k">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="v">"✓ No protected attributes in feature set."</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="v">"  Run proxy audit next — see Explainer 01"</span>)<br>
+            &nbsp;&nbsp;<span class="k">return</span> flagged<br><br>
+            <span class="c"># Example — AI Hiring biased model</span><br>
+            features_unfair = [<span class="v">'Gender'</span>, <span class="v">'Age'</span>, <span class="v">'Experience_Years'</span>, <span class="v">'Technical_Test_Score'</span>]<br>
+            disparate_treatment_audit(features_unfair)<br>
+            <span class="c"># ⚠ Disparate treatment — protected attrs in feature set:</span><br>
+            <span class="c">#   · Gender</span><br>
+            <span class="c">#   · Age</span>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top: 16px;">
+          <div class="code-block-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            full_discrimination_audit.py
+          </div>
+          <div class="code-block-body" style="font-size: 11px;">
+            <span class="k">def</span> <span class="v">full_discrimination_audit</span>(feature_columns, y_pred, group_series):<br>
+            &nbsp;&nbsp;<span class="c">"""</span><br>
+            &nbsp;&nbsp;<span class="c">Stage 1: Disparate treatment — protected attrs in feature set?</span><br>
+            &nbsp;&nbsp;<span class="c">Stage 2: Disparate impact   — outcome gap &gt; four-fifths threshold?</span><br>
+            &nbsp;&nbsp;<span class="c">Run both: treatment can exist without impact, and vice versa.</span><br>
+            &nbsp;&nbsp;<span class="c">"""</span><br>
+            &nbsp;&nbsp;print(<span class="v">"=== Stage 1: Disparate Treatment ==="</span>)<br>
+            &nbsp;&nbsp;flagged = disparate_treatment_audit(feature_columns)<br><br>
+            &nbsp;&nbsp;print(<span class="v">"\n=== Stage 2: Disparate Impact ==="</span>)<br>
+            &nbsp;&nbsp;results = pd.DataFrame({<span class="v">'y_pred'</span>: y_pred, <span class="v">'group'</span>: group_series})<br>
+            &nbsp;&nbsp;rates = results.groupby(<span class="v">'group'</span>)[<span class="v">'y_pred'</span>].mean()<br>
+            &nbsp;&nbsp;ratio = rates.min() / rates.max()<br>
+            &nbsp;&nbsp;passes = ratio &gt;= <span class="v">0.80</span><br>
+            &nbsp;&nbsp;print(<span class="v">f"DI ratio: {ratio:.3f} — {'✓ passes' if passes else '✗ fails'} four-fifths rule"</span>)<br><br>
+            &nbsp;&nbsp;<span class="k">return</span> {<span class="v">'disparate_treatment'</span>: flagged, <span class="v">'di_ratio'</span>: round(ratio, <span class="v">3</span>), <span class="v">'passes_eeoc'</span>: passes}
+          </div>
+        </div>
+      </div>
+
+      <div class="proxy-table-wrap" style="margin-top: 32px;">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">Limitations</div>
+        <div class="proxy-table">
+          <div class="proxy-row proxy-row-head">
+            <span>Limitation</span>
+            <span>The Problem</span>
+            <span>What to Do</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Intent is invisible</code></span>
+            <span class="proxy-attr">Legally requires attribute was <em>used</em> — in ML that means it was in the feature set</span>
+            <span>Feature set audit is the proxy for intent — run it before every training job</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">BFOQ is narrow</code></span>
+            <span class="proxy-attr">Bona Fide Occupational Qualification exception applies to almost nothing in practice</span>
+            <span>Do not rely on BFOQ as a general defence for including protected attributes</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Removing attrs ≠ done</code></span>
+            <span class="proxy-attr">A model with no protected attrs can still fail the 80% rule via proxy variables</span>
+            <span>Always follow treatment audit with proxy audit — see Explainer 01</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Intersectionality blind</code></span>
+            <span class="proxy-attr">Single-attribute audits miss discrimination against intersecting identities</span>
+            <span>Audit all relevant combinations where sample size allows</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explainer-takeaway">
+        <div class="explainer-block-label">The Bigger Picture</div>
+        <p class="explainer-block-text">Disparate impact and disparate treatment are not alternative explanations for the same thing — they are independent legal claims with independent remedies. A model can fail both, or either one alone. Clearing the treatment audit (no protected attributes in the feature set) is step one of a two-step process. Step two is clearing the impact audit (the 80% rule) — which requires proxy detection, since proxies reconstruct the same signal from correlated features even after the protected column is gone.</p>
+        <p class="explainer-block-text" style="margin-top: 14px;">The practical implication: every model that makes decisions about jobs, loans, housing, credit, or benefits needs to pass both audits before deployment. Passing one is not a defence against failing the other. The EEOC's enforcement practice and Title VII case law treat them as two separate gatekeeping steps — and so should your pre-deployment checklist.</p>
+        <div class="explainer-callout">Check your feature set for protected attributes before training. Then check your outcome rates for disparate impact after training. Both must clear. Neither alone is enough.</div>
+      </div>
+
+      <div class="explainer-reading">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
+        <div class="reading-links">
+          <a href="https://www.eeoc.gov/statutes/title-vii-civil-rights-act-1964" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Title VII of the Civil Rights Act of 1964, 42 U.S.C. §2000e-2 — statutory basis for both doctrines</a>
+          <a href="https://supreme.justia.com/cases/federal/us/411/792/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ McDonnell Douglas Corp. v. Green, 411 U.S. 792 (1973) — burden-shifting framework for disparate treatment claims</a>
+          <a href="https://supreme.justia.com/cases/federal/us/487/977/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Watson v. Fort Worth Bank &amp; Trust, 487 U.S. 977 (1988) — extends disparate impact analysis to subjective/proxy criteria</a>
+          <a href="https://www.californialawreview.org/print/2-big-datas-disparate-impact" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Barocas &amp; Selbst: Big Data's Disparate Impact, 104 Calif. L. Rev. 671 (2016) — maps both doctrines onto algorithmic decision-making</a>
+          <a href="https://www.eeoc.gov/prohibited-employment-policiespractices" target="_blank" rel="noopener noreferrer" class="reading-link">↗ EEOC: Prohibited Employment Policies/Practices — plain-language guidance distinguishing disparate treatment from disparate impact</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="explainer-footer">
+      <div class="explainer-footer-label">Also in this series</div>
+      <div class="coming-soon-pills">
+        <a href="#explainer-proxy" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Proxy Variables</a>
+        <a href="#explainer-sampling" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Sampling Bias</a>
+        <a href="#explainer-shap" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ SHAP Values</a>
+        <a href="#explainer-equalized-odds" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Equalized Odds</a>
+        <a href="#explainer-disparate-impact" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Disparate Impact</a>
+        <a href="#explainer-metric-conflicts" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Metric Conflicts</a>
+        <a href="#explainer-calibration" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Calibration</a>
+        <a href="#explainer-demographic-parity" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Demographic Parity</a>
+        <a href="#explainer-feedback-loop" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Feedback Loop Bias</a>
       </div>
     </div>
   </div>
@@ -4504,6 +4791,13 @@
       <div>
         <div class="roadmap-name">Explainer: Feedback Loop Bias</div>
         <div class="roadmap-meta">Predictive policing case · retraining amplification · drift detection code · mitigation strategies</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-status done"></div>
+      <div>
+        <div class="roadmap-name">Explainer: Disparate Treatment</div>
+        <div class="roadmap-meta">Title VII · feature set audit · two-stage treatment → impact check · proxy detection · McDonnell Douglas</div>
       </div>
     </div>
     <div class="roadmap-item">
