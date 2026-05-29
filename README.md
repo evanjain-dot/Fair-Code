@@ -115,6 +115,7 @@ Fair-Code/
 │   ├── sampling-bias.md              # What is sampling bias? (concept + simulation + mitigation)
 │   ├── shap-values.md                # What are SHAP values? (explainability + bias auditing)
 │   ├── disparate-impact.md           # What is disparate impact? (the 80% rule + legal threshold)
+│   ├── disparate-treatment.md        # What is disparate treatment? (intentional discrimination + proxy detection)
 │   ├── fairness-metric-conflicts.md  # Why fairness metrics conflict (impossibility proof + COMPAS case)
 │   ├── calibration.md                # What is calibration? (differential calibration + COMPAS case)
 │   ├── demographic-parity.md         # What is demographic parity? (the 80% rule baseline + detection code)
@@ -419,6 +420,7 @@ features = [
 | [What is Sampling Bias?](explainers/sampling-bias.md) | Why your AI works great in the lab and fails on the people who need it most |
 | [What Are SHAP Values?](explainers/shap-values.md) | How to see exactly what drove an AI decision — and use that to catch bias |
 | [What is Disparate Impact (The 80% Rule)?](explainers/disparate-impact.md) | The legal threshold under US employment law that flags an AI hiring or lending decision as discriminatory |
+| [What is Disparate Treatment?](explainers/disparate-treatment.md) | Intentional discrimination — when a protected attribute or its proxy is a direct input to the model, and how to detect and remove it |
 | [Why Fairness Metrics Conflict](explainers/fairness-metric-conflicts.md) | The proven mathematical impossibility of satisfying demographic parity, equalized odds, and predictive parity at the same time |
 | [What is Calibration?](explainers/calibration.md) | Why a model can be equally accurate for everyone and still treat them unequally — and how differential calibration played out in COMPAS |
 | [What is Demographic Parity?](explainers/demographic-parity.md) | The foundational fairness metric that requires equal positive prediction rates across groups — what it catches, what it misses, and when to use it |
@@ -546,6 +548,7 @@ Or open any `.ipynb` file directly in VS Code, JupyterLab, or Google Colab.
 - [x] Explainer: Sampling Bias
 - [x] Explainer: SHAP Values
 - [x] Explainer: Disparate Impact (The 80% Rule)
+- [x] Explainer: Disparate Treatment
 - [x] Explainer: Why Fairness Metrics Conflict
 - [x] Explainer: Calibration
 - [x] Explainer: Demographic Parity
@@ -566,7 +569,7 @@ The full project is published as an interactive website at **[fair-code-five.ver
 It includes everything in this repo — presented visually:
 
 - **All five bias audits** with before/after terminal outputs, bias bar charts, and key insights
-- **All five explainers** — Proxy Variables, Sampling Bias, SHAP Values, Equalized Odds, Disparate Impact, Calibration, Fairness Metric Conflicts, Demographic Parity, and Feedback Loop Bias — with real-world proof, detection code, and further reading
+- **All five explainers** — Proxy Variables, Sampling Bias, SHAP Values, Equalized Odds, Disparate Impact, Disparate Treatment, Calibration, Fairness Metric Conflicts, Demographic Parity, and Feedback Loop Bias — with real-world proof, detection code, and further reading
 - **Search and filter** across all audits and explainers
 - **Copy buttons** on every code block and terminal output
 - **Share buttons** per audit — links directly to each experiment
