@@ -106,6 +106,7 @@ Fair-Code/
 ├── LICENSE
 ├── SECURITY.md
 ├── CITATION.cff
+├── CHANGELOG.md
 ├── index.html                       # live at fair-code-five.vercel.app
 └── requirements.txt
 ```
