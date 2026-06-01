@@ -1572,7 +1572,7 @@
       overflow: hidden;
       transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .mobile-nav.open { max-height: 700px; }
+    .mobile-nav.open { max-height: calc(100vh - 52px); overflow-y: auto; }
     .mobile-nav-inner {
       padding: 8px 0 16px;
     }
