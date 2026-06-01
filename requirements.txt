@@ -10,10 +10,10 @@ numpy>=2.4.4           # Numerical ops (pandas/sklearn dependency)
 scikit-learn>=1.8.0    # RandomForestClassifier, train/test split, metrics
 
 # ── Statistical testing ───────────────────────────────────────────────────
-scipy>=1.17.1          # chi2_contingency for proxy variable detection
+scipy>=1.15.3          # chi2_contingency for proxy variable detection
 
 # ── Explainability ────────────────────────────────────────────────────────
-shap>=0.51.0           # SHAP values — feature attribution & bias auditing
+shap>=0.52.0           # SHAP values — feature attribution & bias auditing
 
 # ── Fairness metrics ──────────────────────────────────────────────────────
 fairlearn>=0.13.0      # MetricFrame, equalized odds, demographic parity ratio
