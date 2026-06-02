@@ -102,7 +102,8 @@ Fair-Code/
 │   ├── demographic-parity.md
 │   ├── feedback-loop-bias.md
 │   ├── label-bias.md
-│   └── individual-fairness.md
+│   ├── individual-fairness.md
+│   └── counterfactual-fairness.md
 │
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
@@ -384,6 +385,7 @@ features = [
 | [What is Feedback Loop Bias?](explainers/feedback-loop-bias.md) | Why AI systems don't just reflect historical bias — they actively amplify it across retraining cycles |
 | [What is Label Bias?](explainers/label-bias.md) | Why a model trained on historical decisions inherits the prejudice of the humans who made them — even when the features look clean |
 | [What is Individual Fairness?](explainers/individual-fairness.md) | Why treating groups equally in aggregate is not enough — and what it means to treat similar people similarly |
+| [What is Counterfactual Fairness?](explainers/counterfactual-fairness.md) | Why removing a protected attribute isn't enough — and what it means for a model's decision to be causally free of demographic influence |
 
 ---
 
@@ -486,6 +488,7 @@ Or open any `.ipynb` directly in VS Code, JupyterLab, or Google Colab.
 - [x] Explainer: Feedback Loop Bias
 - [x] Explainer: Label Bias
 - [x] Explainer: Individual Fairness
+- [x] Explainer: Counterfactual Fairness
 - [ ] Facial recognition accuracy gaps (MIT Gender Shades methodology)
 - [ ] HMDA mortgage lending bias
 - [ ] LLM bias audit
