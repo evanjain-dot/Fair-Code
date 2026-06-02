@@ -28,10 +28,12 @@ Every audit lives in its own top-level folder named after the domain, not the da
 Fair-Code/
 ├── .github/
 │   ├── PULL_REQUEST_TEMPLATE.md         ← fill this out when opening a PR
-│   └── ISSUE_TEMPLATE/
-│       ├── bug_report.yml               ← report a broken script or wrong result
-│       ├── new_audit.yml                ← claim a new audit before you start
-│       └── new_explainer.yml            ← claim a new explainer before you start
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.yml               ← report a broken script or wrong result
+│   │   ├── new_audit.yml                ← claim a new audit before you start
+│   │   └── new_explainer.yml            ← claim a new explainer before you start
+│   └── workflows/
+│       └── audits.yml                   ← CI: runs all audit scripts on push and PR
 │
 ├── COMPAS/                              ← existing
 ├── AI Fair Recruitment/                 ← existing
@@ -278,7 +280,28 @@ Add your explainer to the Explainers table in `README.md`:
 
 ---
 
-## Submitting
+## CI — Automated Audit Checks
+
+Every push and pull request automatically runs all audit scripts via `.github/workflows/audits.yml`. The workflow executes both `unfair.py` and `fair.py` for all five existing audits and will include any new audit you add.
+
+**What this means for contributors:**
+
+- Your scripts must run without errors from the repository root. The CI runs from root — not from inside the audit folder.
+- Dataset paths must be resolved relative to the script's own location, not relative to the working directory. Use `pathlib` or `os.path`:
+
+```python
+import os
+import pandas as pd
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+df = pd.read_csv(os.path.join(BASE_DIR, 'your-dataset.csv'))
+```
+
+- If your script fails CI, the PR will not be merged. Check the Actions tab on your PR for the error output.
+
+---
+
+
 
 ### An audit
 
