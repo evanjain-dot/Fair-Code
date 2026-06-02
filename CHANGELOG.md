@@ -12,7 +12,19 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.8.0] — 2 Jun 2026
+## [0.8.1] — 2 Jun 2026
+### Added
+- Explainer: Counterfactual Fairness — `counterfactual-fairness.md` created by evanjain-dot (PR #31), added to `index.html`, `README.md`, and `CONTRIBUTING.md`
+  - Full explainer with SCM formal definition, COMPAS policing causal chain proof, detection code (biased model → counterfactual audit → fair model fix), IF vs CF comparison table, limitations, and further reading
+  - Nav dropdown, mobile nav, and roadmap updated on website
+### Changed
+- `README.md` updated: counterfactual fairness added to explainers table, repository structure tree, and What's Next checklist
+- `CONTRIBUTING.md` updated: counterfactual fairness added to existing explainers table and blocked concepts list
+- `index.html`: CI badge added to README (commit 63c49cd8); CONTRIBUTING.md CI audit checks documented (commit 37f960c6); README formatting fixes (commit 646a3560)
+
+---
+
+## [0.8.0] — 2 Jun 2026
 ### Added
 - CI pipeline: `.github/workflows/audits.yml` — runs all audit scripts (`unfair.py` and `fair.py`) automatically on every push and pull request (PR by Anjali Tiwari)
 ### Changed
@@ -20,7 +32,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.7.0] — 1 Jun 2026
+## [0.7.0] — 1 Jun 2026
 ### Added
 - Explainer: Individual Fairness — added to index.html, README, and concepts covered
 ### Fixed
@@ -34,7 +46,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.6.0] — 31 May 2026
+## [0.6.0] — 31 May 2026
 ### Added
 - Explainer: Label Bias — added to index.html, explainers directory, and CONTRIBUTING.md
 ### Changed
@@ -42,14 +54,14 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.5.1] — 30 May 2026
+## [0.5.1] — 30 May 2026
 ### Changed
 - CONTRIBUTING.md revised for improved instructions
 - README refactored for clarity and formatting
 
 ---
 
-## [1.5.0] — 28–29 May 2026
+## [0.5.0] — 28–29 May 2026
 ### Added
 - Explainer: Disparate Treatment — added to index.html, README, and CONTRIBUTING.md
 - Explainer: Feedback Loop Bias — added to index.html, README, and CONTRIBUTING.md
@@ -59,7 +71,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.4.2] — 26–27 May 2026
+## [0.4.2] — 26–27 May 2026
 ### Added
 - Explainer: Demographic Parity — added to index.html and CONTRIBUTING.md
 - Star History section added to README
@@ -69,7 +81,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.4.1] — 24 May 2026
+## [0.4.1] — 24 May 2026
 ### Added
 - GitHub Issue Templates: bug report, new audit proposal, new explainer proposal (YAML)
 - Pull request template
@@ -79,7 +91,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.4.0] — 21–23 May 2026
+## [0.4.0] — 21–23 May 2026
 ### Added
 - Explainer: Calibration — `calibration.md`, added to index.html, README, CONTRIBUTING.md
 - Explainer: Fairness Metric Conflicts — `fairness-metric-conflicts.md`
@@ -91,7 +103,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.3.0] — 22 May 2026
+## [0.3.0] — 22 May 2026
 ### Added
 - Audit 05: Benefits Denial (UCI Adult Census Income, 48,842 records)
   - `fair.py` and `unfair.py` for welfare eligibility bias
@@ -103,7 +115,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.2.2] — 21 May 2026
+## [0.2.2] — 21 May 2026
 ### Added
 - All five Jupyter notebooks added (`01` through `05`)
 - `CITATION.cff` for project citation guidelines
@@ -116,7 +128,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.2.1] — 19–20 May 2026
+## [0.2.1] — 19–20 May 2026
 ### Added
 - Explainer: Disparate Impact (80% Rule) — added to index.html, README, CONTRIBUTING.md
 - Explainer: Equalized Odds — merged via PR #13 (TanishGoyal-Dev)
@@ -131,7 +143,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.2.0] — 18–19 May 2026
+## [0.2.0] — 18–19 May 2026
 ### Added
 - Audit 04: Insurance Denial (Kaggle, 1,340 records)
   - `fair.py`, `unfair.py`, dataset, and proof images
@@ -145,7 +157,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.1.0] — 17–18 May 2026
+## [0.1.0] — 17–18 May 2026
 ### Added
 - Audit 03: German Credit Lending Bias — merged via PR #1 (Aarav Sharma)
   - Random Forest model, dataset, `fair.py` / `unfair.py`
@@ -158,7 +170,7 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [1.0.0] — 13–16 May 2026
+## [0.0.0] — 13–16 May 2026
 ### Added
 - Audit 01: COMPAS Criminal Justice Bias (ProPublica, 70k+ records)
   - `fair.py`, `unfair.py`, dataset, proof images
