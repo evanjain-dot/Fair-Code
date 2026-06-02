@@ -4,14 +4,6 @@ All notable changes to Fair Code are documented here.
 
 ---
 
-## [Unreleased]
-- Facial recognition accuracy gaps (MIT Gender Shades methodology)
-- HMDA mortgage lending bias audit
-- LLM bias audit
-- Fairness audit web dashboard
-
----
-
 ## [0.8.1] — 2 Jun 2026
 ### Added
 - Explainer: Counterfactual Fairness — `counterfactual-fairness.md` created by evanjain-dot (PR #31), added to `index.html`, `README.md`, and `CONTRIBUTING.md`
