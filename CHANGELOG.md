@@ -4,6 +4,19 @@ All notable changes to Fair Code are documented here.
 
 ---
 
+## [1.0.1] — 4 Jun 2026
+### Added
+- Explainer: What Happens Inside a Neural Network — `neural-networks.md` created, added to `index.html`, `README.md`, and `CONTRIBUTING.md` (commits 4ff97866, c1023432, d372c002, f997fc52)
+  - Full explainer covering forward pass, weights, loss function, backpropagation, and the three-part training loop
+  - Real-world proof using the AI Fair Recruitment dataset: 20.9% → 0.1% gender gap after removing gender + age proxy
+  - SHAP inspection code, what-each-component-does table, limitations table, and further reading
+  - Nav dropdown (desktop + mobile), ticker, roadmap, and counterfactual fairness footer pills updated on website
+### Changed
+- `README.md`: neural-networks.md added to explainers table, repository structure tree, and What's Next checklist
+- `CONTRIBUTING.md`: neural-networks.md added to existing explainers table, folder structure tree, and blocked concepts list
+
+---
+
 ## [0.8.1] — 2 Jun 2026
 ### Added
 - Explainer: Counterfactual Fairness — `counterfactual-fairness.md` created by evanjain-dot (PR #31), added to `index.html`, `README.md`, and `CONTRIBUTING.md`
