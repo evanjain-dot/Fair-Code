@@ -28,6 +28,7 @@ Every audit lives in its own top-level folder named after the domain, not the da
 Fair-Code/
 ├── .github/
 │   ├── PULL_REQUEST_TEMPLATE.md         ← fill this out when opening a PR
+│   ├── dependabot.yml
 │   ├── ISSUE_TEMPLATE/
 │   │   ├── bug_report.yml               ← report a broken script or wrong result
 │   │   ├── new_audit.yml                ← claim a new audit before you start
@@ -302,9 +303,20 @@ df = pd.read_csv(os.path.join(BASE_DIR, 'your-dataset.csv'))
 
 - If your script fails CI, the PR will not be merged. Check the Actions tab on your PR for the error output.
 
+## Branch Protection
+
+`main` is a protected branch. The following rules are enforced:
+
+- **PRs required** — no direct pushes to `main`. All changes go through a pull request.
+- **CI must pass** — the `run-audits` check must be green before a PR can be merged. If your audit script errors out, the PR is blocked.
+- **Force pushes blocked** — you cannot rewrite history on `main`.
+- **Deletions restricted** — the branch cannot be deleted.
+
+If you're working on a fix and CI is failing, push a new commit to your branch — the check will re-run automatically.
+
 ---
 
-
+## How to Submit
 
 ### An audit
 
@@ -314,6 +326,7 @@ df = pd.read_csv(os.path.join(BASE_DIR, 'your-dataset.csv'))
 4. Add your notebook to `notebooks/` (if you wrote one)
 5. Update `README.md`
 6. Open a PR titled: `Audit: HMDA Mortgage Lending Bias`
+7. Confirm the `run-audits` CI check passes — the PR cannot be merged until it does
 
 Include in the PR description: dataset source, bias type, before/after fairness gap numbers, proxy variables found and why you dropped them, and whether you included a notebook.
 
@@ -324,6 +337,7 @@ Include in the PR description: dataset source, bias type, before/after fairness 
 3. Add your `.md` file to `explainers/`
 4. Update the Explainers table in `README.md`
 5. Open a PR titled: `Explainer: Predictive Parity`
+6. Confirm the `run-audits` CI check passes (existing scripts must still run cleanly)
 
 Include in the PR description: what concept you're explaining and why it's worth adding.
 
