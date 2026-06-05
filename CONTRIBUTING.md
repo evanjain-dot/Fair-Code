@@ -34,7 +34,9 @@ Fair-Code/
 │   │   ├── new_audit.yml                ← claim a new audit before you start
 │   │   └── new_explainer.yml            ← claim a new explainer before you start
 │   └── workflows/
-│       └── audits.yml                   ← CI: runs all audit scripts on push and PR
+│       ├── audits.yml                   ← CI: runs all audit scripts on push and PR
+│       ├── first.interaction.yml        ← Greets first-time issue/PR contributors
+│       └── update-changelog.yml         ← Auto-updates CHANGELOG.md daily
 │
 ├── COMPAS/                              ← existing
 ├── AI Fair Recruitment/                 ← existing
