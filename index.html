@@ -1993,6 +1993,7 @@
         <li role="none"><a href="#explainer-counterfactual-fairness" role="menuitem">13 — Counterfactual Fairness</a></li>
         <li role="none"><a href="#explainer-neural-networks" role="menuitem">14 — Neural Networks</a></li>
         <li role="none"><a href="#explainer-ai-hallucinations" role="menuitem">15 — Why AI Hallucinates</a></li>
+        <li role="none"><a href="#explainer-reinforcement-learning" role="menuitem">16 — Reinforcement Learning</a></li>
       </ul>
     </li>
     <li><a href="#impact">Impact</a></li>
@@ -2036,6 +2037,7 @@
     <a href="#explainer-counterfactual-fairness" class="mobile-link mobile-sub">13 — Counterfactual Fairness</a>
     <a href="#explainer-neural-networks" class="mobile-link mobile-sub">14 — Neural Networks</a>
     <a href="#explainer-ai-hallucinations" class="mobile-link mobile-sub">15 — Why AI Hallucinates</a>
+    <a href="#explainer-reinforcement-learning" class="mobile-link mobile-sub">16 — Reinforcement Learning</a>
     <a href="#impact" class="mobile-link">Impact</a>
     <a href="#roadmap" class="mobile-link">Roadmap</a>
     <div class="mobile-social-row">
@@ -2110,6 +2112,8 @@
     <span class="ticker-item"><span class="dot"></span>WEIGHTS ENCODE BIAS FROM TRAINING DATA</span>
     <span class="ticker-item red"><span class="dot"></span>AI HALLUCINATION</span>
     <span class="ticker-item"><span class="dot"></span>HIGH CONFIDENCE · ZERO EVIDENCE · SPARSE REGIONS</span>
+    <span class="ticker-item red"><span class="dot"></span>REINFORCEMENT LEARNING</span>
+    <span class="ticker-item"><span class="dot"></span>REWARD FUNCTION IS POLITICAL · NOT TECHNICAL</span>
     <!-- dupe for infinite scroll -->
     <span class="ticker-item red"><span class="dot"></span>COMPAS CRIMINAL JUSTICE</span>
     <span class="ticker-item"><span class="dot"></span>AI HIRING DISCRIMINATION</span>
@@ -2140,6 +2144,8 @@
     <span class="ticker-item"><span class="dot"></span>WEIGHTS ENCODE BIAS FROM TRAINING DATA</span>
     <span class="ticker-item red"><span class="dot"></span>AI HALLUCINATION</span>
     <span class="ticker-item"><span class="dot"></span>HIGH CONFIDENCE · ZERO EVIDENCE · SPARSE REGIONS</span>
+    <span class="ticker-item red"><span class="dot"></span>REINFORCEMENT LEARNING</span>
+    <span class="ticker-item"><span class="dot"></span>REWARD FUNCTION IS POLITICAL · NOT TECHNICAL</span>
   </div>
 </div>
 
@@ -6001,6 +6007,263 @@
         <a href="#explainer-sampling-bias" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Sampling Bias</a>
         <a href="#explainer-neural-networks" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Neural Networks</a>
         <a href="#explainer-label-bias" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Label Bias</a>
+        <a href="#explainer-reinforcement-learning" class="coming-pill" style="text-decoration:none; cursor:pointer;">↓ Reinforcement Learning</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLAINER 16: REINFORCEMENT LEARNING -->
+  <div id="explainer-reinforcement-learning" style="position:relative; top:-80px; visibility:hidden;"></div>
+  <div class="explainer-card reveal" style="margin-top: 2px;" data-explainer-tags="data detection metrics" data-explainer-text="reinforcement learning RL reward function reward hacking agent policy state action credit assignment parole COMPAS YouTube recommendation watch time proxy reward misspecification feedback loop fairness bias criminal justice content recommendation proxy variable feedback loop bias disparate impact">
+    <div class="explainer-header">
+      <div class="explainer-meta">
+        <div class="explainer-num">EXPLAINER — 16</div>
+        <h3 class="explainer-title">WHAT IS REINFORCEMENT LEARNING?</h3>
+        <p class="explainer-tagline">The reason an algorithm can lock someone up longer, flood your feed with outrage, and never once be told it did anything wrong.</p>
+      </div>
+      <div class="explainer-definition">
+        <div class="explainer-def-label">One-Sentence Definition</div>
+        <p class="explainer-def-text">Reinforcement learning is a training approach where an agent learns to make decisions by receiving numerical rewards or penalties based on the outcomes of its actions, rather than from labelled examples — and in high-stakes domains, whoever defines the reward function decides whose outcomes count.</p>
+      </div>
+    </div>
+
+    <div class="explainer-body">
+      <div class="explainer-block">
+        <div class="explainer-block-label">Why This Matters</div>
+        <p class="explainer-block-text">Most ML explainers treat reinforcement learning as a curiosity: robots learning to walk, agents beating chess engines. That framing misses where RL is actually deployed. Parole boards use risk-score systems that function like RL policies — learned mappings from defendant profiles to release or hold decisions, shaped by feedback from observed reoffense rates. Content recommendation engines serving billions of users are trained with RL, optimising watch time as the reward signal. Credit and insurance pricing increasingly uses RL-style optimisation to set individualised rates based on behavioural feedback.</p>
+        <p class="explainer-block-text" style="margin-top: 12px;">In every one of these cases, the reward function was written by a person who had to decide what "good" means. That decision is not technical. It is political. And once the reward function is fixed, the agent will do whatever it takes to maximise it — including exploiting demographic proxies, amplifying historical patterns, and hacking the metric in ways the designer never anticipated. You can't audit what you don't understand.</p>
+      </div>
+
+      <div class="explainer-block">
+        <div class="explainer-block-label">The Three-Part Loop Every RL System Runs</div>
+        <p class="explainer-block-text">Every reinforcement learning system — from a toy grid-world to a production-scale parole risk model — runs the same fundamental loop:</p>
+        <div class="code-block" style="margin-top: 16px;">
+          <div class="code-block-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            rl_loop.py
+          </div>
+          <div class="code-block-body" style="font-size: 11px;">
+            <span class="c"># The core RL loop — same structure from chess to parole</span><br>
+            <span class="c">#</span><br>
+            <span class="c">#   Observe state  →  Take action  →  Receive reward  →  Update policy</span><br><br>
+            <span class="c"># In a parole decision system:</span><br>
+            state = {<br>
+            &nbsp;&nbsp;<span class="v">"age"</span>: <span class="v">27</span>,<br>
+            &nbsp;&nbsp;<span class="v">"prior_arrests"</span>: <span class="v">3</span>,<br>
+            &nbsp;&nbsp;<span class="v">"custody_status"</span>: <span class="v">"pretrial"</span>,  <span class="c"># proxy for race via over-policing</span><br>
+            &nbsp;&nbsp;<span class="v">"zip_code"</span>: <span class="v">"60619"</span>,           <span class="c"># proxy for race via redlining</span><br>
+            &nbsp;&nbsp;<span class="v">"employment"</span>: <span class="v">"part-time"</span><br>
+            }<br><br>
+            ACTIONS = [<span class="v">"recommend_release"</span>, <span class="v">"recommend_hold"</span>]<br><br>
+            <span class="k">def</span> <span class="v">policy</span>(state, weights):<br>
+            &nbsp;&nbsp;<span class="c">"""A learned function that maps states → action probabilities."""</span><br>
+            &nbsp;&nbsp;score = np.dot(encode_state(state), weights)<br>
+            &nbsp;&nbsp;p_hold = sigmoid(score)<br>
+            &nbsp;&nbsp;<span class="k">return</span> {<span class="v">"recommend_hold"</span>: p_hold, <span class="v">"recommend_release"</span>: <span class="v">1</span> - p_hold}
+          </div>
+        </div>
+      </div>
+
+      <div class="explainer-block">
+        <div class="explainer-block-label">Part 2 — The Reward Function</div>
+        <p class="explainer-block-text">The reward function is the most consequential design decision in any RL system. It is also the most politically loaded.</p>
+        <div class="code-block" style="margin-top: 16px;">
+          <div class="code-block-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            parole_reward.py
+          </div>
+          <div class="code-block-body" style="font-size: 11px;">
+            <span class="k">def</span> <span class="v">parole_reward</span>(action, outcome):<br>
+            &nbsp;&nbsp;<span class="c">"""Every number here is a value judgment."""</span><br>
+            &nbsp;&nbsp;<span class="k">if</span> action == <span class="v">"recommend_release"</span> <span class="k">and</span> outcome == <span class="v">"no_reoffense"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> <span class="v">+1.0</span>   <span class="c"># correct release — rewarded</span><br>
+            &nbsp;&nbsp;<span class="k">elif</span> action == <span class="v">"recommend_hold"</span> <span class="k">and</span> outcome == <span class="v">"would_have_reoffended"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> <span class="v">+0.5</span>   <span class="c"># correct hold — rewarded</span><br>
+            &nbsp;&nbsp;<span class="k">elif</span> action == <span class="v">"recommend_release"</span> <span class="k">and</span> outcome == <span class="v">"reoffense"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> <span class="v">-2.0</span>   <span class="c"># false release — penalised heavily (political cost)</span><br>
+            &nbsp;&nbsp;<span class="k">elif</span> action == <span class="v">"recommend_hold"</span> <span class="k">and</span> outcome == <span class="v">"would_not_have_reoffended"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> <span class="v">-0.1</span>   <span class="c"># false hold — penalised lightly (low political cost)</span><br>
+            &nbsp;&nbsp;<span class="c"># The asymmetry is not neutral.</span><br>
+            &nbsp;&nbsp;<span class="c"># It encodes the judgment that wrongful incarceration costs five times</span><br>
+            &nbsp;&nbsp;<span class="c"># less than a reoffense — a value choice, not a mathematical truth.</span>
+          </div>
+        </div>
+        <div class="explainer-callout" style="margin-top: 16px;">This asymmetry has a direct consequence: the agent will hold defendants at the margin more aggressively. Who lives "at the margin"? Whoever the state already treated as high-risk. The reward function launders that judgment as optimisation.</div>
+      </div>
+
+      <div class="explainer-proof">
+        <div class="explainer-block-label" style="margin-bottom: 24px;">Real-World Proof: COMPAS as an RL-Adjacent System</div>
+        <p class="explainer-block-text" style="margin-bottom: 20px;">COMPAS is deployed in 46 US states. While trained with supervised methods, it exhibits the structural features of an RL policy: it maps defendant profiles to risk scores that determine detention, calibrated on historical reoffense data generated by a selectively enforcing system. ProPublica's 2016 analysis shows what a biased reward signal produces.</p>
+        <div class="proof-steps">
+          <div class="proof-step">
+            <div class="proof-step-num">STEP 01</div>
+            <div class="proof-step-label">Biased policy — state includes race and its proxy</div>
+            <div class="terminals-grid" style="margin-top: 12px;">
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">unfair.py — BIASED POLICY</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head">--- BIASED POLICY RESULTS ---</div>
+                  <div class="t-bad">Black defendants high-risk rate: 87.16%</div>
+                  <div class="t-normal">White defendants high-risk rate: 0.40%</div>
+                  <div class="t-bad">Fairness gap: 86.77%</div>
+                  <div class="t-head" style="margin-top: 6px;"># Features: race + CustodyStatus + priors</div>
+                </div>
+              </div>
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                  <span class="terminal-label">fair.py — MITIGATED POLICY</span>
+                </div>
+                <div class="terminal-body">
+                  <div class="t-head">--- MITIGATED RESULTS ---</div>
+                  <div class="t-good">Black defendants high-risk rate: 84.71%</div>
+                  <div class="t-good">White defendants high-risk rate: 69.02%</div>
+                  <div class="t-accent">New fairness gap: 15.69% — 71% reduction</div>
+                  <div class="t-head" style="margin-top: 6px;"># Features: priors + charge degree only</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proof-step" style="margin-top: 24px;">
+            <div class="proof-step-num">STEP 02</div>
+            <div class="proof-step-label">Fairness gap audit — demographic parity</div>
+            <div class="code-block" style="margin-top: 12px;">
+              <div class="code-block-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                fairness_gap.py
+              </div>
+              <div class="code-block-body" style="font-size: 11px;">
+                <span class="k">def</span> <span class="v">fairness_gap</span>(model, X_test, df_test, protected_col, group_a, group_b):<br>
+                &nbsp;&nbsp;<span class="c">"""Measure positive prediction rate difference across groups."""</span><br>
+                &nbsp;&nbsp;preds = model.predict(X_test)<br>
+                &nbsp;&nbsp;df_eval = df_test.copy()<br>
+                &nbsp;&nbsp;df_eval[<span class="v">"prediction"</span>] = preds<br>
+                &nbsp;&nbsp;rate_a = df_eval[df_eval[protected_col] == group_a][<span class="v">"prediction"</span>].mean()<br>
+                &nbsp;&nbsp;rate_b = df_eval[df_eval[protected_col] == group_b][<span class="v">"prediction"</span>].mean()<br>
+                &nbsp;&nbsp;<span class="k">return</span> abs(rate_a - rate_b), rate_a, rate_b<br><br>
+                <span class="c"># Proxy check — chi-squared test</span><br>
+                <span class="k">from</span> <span class="v">scipy.stats</span> <span class="k">import</span> <span class="v">chi2_contingency</span><br>
+                contingency = pd.crosstab(df[<span class="v">"custody_status"</span>], df[<span class="v">"race"</span>])<br>
+                chi2, p, dof, _ = chi2_contingency(contingency)<br>
+                <span class="c"># p = 0.0001 → CustodyStatus is a race proxy → remove it</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proxy-table-wrap">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">Results — Biased vs. Mitigated Policy</div>
+        <div class="proxy-table">
+          <div class="proxy-row proxy-row-head">
+            <span>Approach</span>
+            <span>Fairness Gap</span>
+            <span>Reduction</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Biased policy</code></span>
+            <span style="color: var(--accent2); font-weight: 500;">86.77%</span>
+            <span style="color: var(--muted);">—</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Remove race only</code></span>
+            <span style="color: var(--accent2);">~60%</span>
+            <span style="color: var(--muted);">Partial</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Remove race + CustodyStatus</code></span>
+            <span style="color: var(--accent3); font-weight: 500;">15.69%</span>
+            <span style="color: var(--accent3); font-weight: 500;">71%</span>
+          </div>
+        </div>
+        <div class="explainer-callout" style="margin-top: 16px;">The policy architecture did not change. The training procedure did not change. Only the state representation changed — and most of the discriminatory behaviour disappeared.</div>
+      </div>
+
+      <div class="explainer-block" style="margin-top: 32px;">
+        <div class="explainer-block-label">Second Case: Recommendation Systems and Feedback Loops</div>
+        <p class="explainer-block-text">YouTube's recommendation engine is trained with RL using watch time as the primary reward signal. This creates a well-documented dynamic where the agent learns to recommend whatever maximises engagement — regardless of accuracy, health, or fairness.</p>
+        <div class="code-block" style="margin-top: 16px;">
+          <div class="code-block-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            recommendation_reward.py
+          </div>
+          <div class="code-block-body" style="font-size: 11px;">
+            <span class="k">def</span> <span class="v">recommendation_reward</span>(user_action, content_type):<br>
+            &nbsp;&nbsp;<span class="k">if</span> user_action == <span class="v">"watched_to_completion"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> video_length_seconds  <span class="c"># longer watch = higher reward</span><br>
+            &nbsp;&nbsp;<span class="k">elif</span> user_action == <span class="v">"clicked"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> <span class="v">5.0</span><br>
+            &nbsp;&nbsp;<span class="k">elif</span> user_action == <span class="v">"reported_harmful"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> <span class="v">0.0</span>  <span class="c"># harmful content is not penalised</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># it is only not rewarded</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># the agent cannot distinguish the two</span><br><br>
+            <span class="c"># The agent's optimal policy: recommend content that provokes strong</span><br>
+            <span class="c"># emotional responses — outrage, fear, tribalism are high-reward states.</span><br>
+            <span class="c"># The agent has no fairness objective. It has one objective: watch time.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="proxy-table-wrap">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">Limitations of RL in High-Stakes Domains</div>
+        <div class="proxy-table">
+          <div class="proxy-row proxy-row-head">
+            <span>Limitation</span>
+            <span>The Problem</span>
+            <span>What to Do</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Reward misspecification</code></span>
+            <span class="proxy-attr">The agent optimises the specified reward, not the intended objective</span>
+            <span>Audit reward function for demographic asymmetries before deployment</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Credit assignment</code></span>
+            <span class="proxy-attr">Delayed harms — wrongful denial, wrongful hold — may never be attributed to the decision that caused them</span>
+            <span>Extend feedback windows; audit delayed outcome rates by group</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Proxy exploitation</code></span>
+            <span class="proxy-attr">The state representation encodes protected-class signal via correlated features</span>
+            <span>Run proxy detection audit on all state features — see Explainer 01</span>
+          </div>
+          <div class="proxy-row">
+            <span><code class="inline-code">Reward is political</code></span>
+            <span class="proxy-attr">Every penalty asymmetry (false release vs. wrongful hold) encodes a value judgment about whose safety matters</span>
+            <span>Document reward function choices in model card; require stakeholder review</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explainer-takeaway">
+        <div class="explainer-block-label">The Bigger Picture</div>
+        <p class="explainer-block-text">RL is rarely deployed explicitly in high-stakes settings — the COMPAS case is RL-adjacent, not pure RL. But the patterns that make RL dangerous — reward misspecification, credit assignment failure, proxy exploitation — appear across supervised and RL systems alike. The RL frame makes them most legible.</p>
+        <p class="explainer-block-text" style="margin-top: 14px;">The reward function is not neutral. Defining what counts as success — watch time, no reoffense at 6 months, loan repayment — is a political act that determines whose outcomes count and whose harms are invisible. Whoever writes the reward function is making a moral argument encoded in a number. The agent will maximise it faithfully, with no concept of fairness or justice, to the exact extent that those values were or weren't built into the reward.</p>
+        <div class="explainer-callout">The bias is not in the weights. It's in the reward signal that shaped them. Audit the reward function before you audit the model.</div>
+      </div>
+
+      <div class="explainer-reading">
+        <div class="explainer-block-label" style="margin-bottom: 16px;">Further Reading</div>
+        <div class="reading-links">
+          <a href="https://www.science.org/doi/10.1126/sciadv.aao5580" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Dressel &amp; Farid: The Accuracy, Fairness, and Limits of Predicting Recidivism (Science Advances, 2018)</a>
+          <a href="http://incompleteideas.net/book/the-book-2nd.html" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Sutton &amp; Barto: Reinforcement Learning: An Introduction (MIT Press, 2018) — free online</a>
+          <a href="https://deepmind.google/discover/blog/specification-gaming-the-flip-side-of-ai-ingenuity/" target="_blank" rel="noopener noreferrer" class="reading-link">↗ Krakovna et al.: Specification Gaming — the canonical catalogue of reward hacking cases (DeepMind, 2020)</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="explainer-footer">
+      <div class="explainer-footer-label">Also in this series</div>
+      <div class="coming-soon-pills">
+        <a href="#explainer-proxy" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Proxy Variables</a>
+        <a href="#explainer-feedback-loop" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Feedback Loop Bias</a>
+        <a href="#explainer-label-bias" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Label Bias</a>
+        <a href="#explainer-neural-networks" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Neural Networks</a>
+        <a href="#explainer-ai-hallucinations" class="coming-pill" style="text-decoration:none; cursor:pointer;">↑ Why AI Hallucinates</a>
       </div>
     </div>
   </div>
