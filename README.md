@@ -78,7 +78,7 @@ Each audit ships as both a pair of Python scripts (`unfair.py` / `fair.py`) for 
 | 05 | [Welfare](#05--benefits-denial--welfare-eligibility-bias) | Sex, Race, Origin, Age | Relationship, Marital Status, Hours, Occupation | Sex: 18.00% → 8.52% | **53%** |
 | ↳  | | | | Race: 12.75% → 6.90% | **46%** |
 | ↳  | | | | Origin: 4.40% → 0.52% | **88%** |
-| 06 | [Healthcare Readmission](#06--healthcare-readmission--clinical-bias) | Race, Gender, Age | Payer Code, Discharge Disposition, Medical Specialty, Prior Inpatient | Gender: 0.07% → 0.04% | **43%** |
+| 06 | [Healthcare Readmission](#06--healthcare-readmission--clinical-bias) | Race, Gender, Age | Payer Code, Discharge Disposition, Medical Specialty, Prior Inpatient | Gender: 0.02% → 0.04% | **+100% ↑** |
 | ↳  | | | | Race: 0.08% → 0.06% | **25%** |
 | ↳  | | | | Age: 0.28% → 0.09% | **68%** |
 
@@ -419,7 +419,7 @@ Trained with race, gender, and age directly, plus four proxy variables that carr
 |-------|:-------------------:|
 | Male patients | 0.22% |
 | Female patients | 0.24% |
-| **Fairness Gap (Gender)** | **0.07%** |
+| **Fairness Gap (Gender)** | **0.02%** |
 
 | Group | High-Risk Flag Rate |
 |-------|:-------------------:|
@@ -481,13 +481,13 @@ features = [
 ]
 ```
 
-| Gap | Before | After | Reduction |
+| Gap | Before | After | Change |
 |-----|:------:|:-----:|:---------:|
-| Gender | 0.07% | 0.04% | **43%** |
-| Race | 0.08% | 0.06% | **25%** |
-| Age | 0.28% | 0.09% | **68%** |
+| Gender | 0.02% | 0.04% | **+100% ↑** |
+| Race | 0.08% | 0.06% | **25% reduction** |
+| Age | 0.28% | 0.09% | **68% reduction** |
 
-**Result: 43% reduction in gender gap. 25% reduction in race gap. 68% reduction in age gap.**
+**Result: Gender gap increased from 0.02% to 0.04% (proxy removal worsened this gap slightly). 25% reduction in race gap. 68% reduction in age gap.**
 
 > **Key insight:** Healthcare readmission models don't need race or gender to discriminate by them. Payer code, discharge destination, and prior inpatient visits are the `occupation` and `relationship` of clinical AI — variables that look like neutral operational data but encode structural inequalities in insurance, geography, and access to preventive care. The causal direction matters: lower SNF access creates readmission risk. The patient does not bring the risk to the gap — the gap creates the risk.
 
