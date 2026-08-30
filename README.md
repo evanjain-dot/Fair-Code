@@ -1068,7 +1068,7 @@ its own.
 
 **The current reference snapshot is tagged.** `paper/results-frozen/` carries the
 [`v1.0-paper`](https://github.com/yakew7/Fair-Code/releases/tag/v1.0-paper) tag (commit `bbef2ba`),
-published as a GitHub release and deliberately kept off "Latest" so it never displaces `v2.0.0`. It's
+published as a GitHub release and deliberately kept off "Latest" so it never displaces the current release. It's
 kept as historical reference, not as evidence for a live publication - see [CLAUDE.md](CLAUDE.md).
 
 ---

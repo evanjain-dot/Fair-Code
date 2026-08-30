@@ -3,8 +3,8 @@
 # Changelog
 
 ![Keep a Changelog](https://img.shields.io/badge/Keep%20a%20Changelog-1.1.0-e05735?style=flat-square)
-![SemVer](https://img.shields.io/badge/SemVer-2.0.0-blue?style=flat-square)
-![Latest](https://img.shields.io/badge/Latest-v2.0.0-brightgreen?style=flat-square)
+![SemVer](https://img.shields.io/badge/SemVer-2.1.0-blue?style=flat-square)
+![Latest](https://img.shields.io/badge/Latest-v2.1.0-brightgreen?style=flat-square)
 
 All notable changes to Fair Code are documented here, newest first.
 
@@ -15,11 +15,31 @@ All notable changes to Fair Code are documented here, newest first.
 > **Paper freeze lifted.** The manuscript this repo's results were being frozen for was never
 > actually submitted this cycle - the real paper, with fresh results, is now planned for next year.
 > `paper/results-frozen/` (tag [`v1.0-paper`](https://github.com/yakew7/Fair-Code/releases/tag/v1.0-paper))
-> is kept as a historical reference snapshot. The `2.0.1` through `2.0.12` entries below were all
-> additive while the freeze held and remain untagged for now; development (including a benchmark
-> re-run and new audits) is open again. See [CLAUDE.md](CLAUDE.md).
+> is kept as a historical reference snapshot. See [CLAUDE.md](CLAUDE.md).
 
-## [2.0.12] - 25 Aug 2026 *(pending - will be tagged after the paper is published)*
+## [2.1.0] - 30 Aug 2026
+
+The first tagged release since `v2.0.0`. Everything in the `2.0.1` through `2.0.12` entries below
+accumulated untagged while the paper freeze held; this release ties them all off under one real,
+tagged version, plus the freeze-lift itself.
+
+### Changed
+- **Paper freeze lifted** - see [CLAUDE.md](CLAUDE.md). The manuscript this repo's results were
+  frozen for was never actually submitted; the real paper, with fresh results, is now planned for
+  next year. All previously frozen files and parameters (`faircode/` core, `results/`, audit
+  manifests, dataset CSVs, `requirements-lock.txt`) are open to normal development again. Removed
+  the freeze-enforcement CI (`frozen-files.yml` reduced to a no-op - kept only because
+  `check-frozen-files` is a required branch-protection status check; `results-drift.yml` deleted
+  outright) and the freeze banners across `CLAUDE.md`, `README.md`, `CONTRIBUTING.md`,
+  `CONTRIBUTORS.md`, `ROADMAP.md`, the PR/issue templates, and the website. `paper/results-frozen/`
+  (tag `v1.0-paper`) stays in place as a kept historical reference snapshot, not actively enforced.
+
+### Added (everything below, now tagged together)
+- MCP server (`faircode-mcp`), `provenance` metadata on both the CLI and web profiler's JSON
+  exports, `--proxy-hints-with` held-out-column proxy detection, 6 new explainers, and the full
+  list of profiler/CLI/report bug fixes recorded in `2.0.1` through `2.0.12` below.
+
+## [2.0.12] - 25 Aug 2026 *(folded into `v2.1.0`)*
 ### Added
 - **MCP server (`faircode-mcp`)** - `faircode/mcp_server.py` exposes `profile_dataset`, `compare_datasets`, and `proxy_hints` as [MCP](https://modelcontextprotocol.io) tools over stdio, so an MCP-aware agent can call the profiler directly instead of shelling out to the CLI and parsing text. Thin adapter over the existing `profile()`/`compare()`/`proxy_hints()` functions `cli.py` already wraps - no new analysis logic, same local-only trust boundary as the CLI (stdio, no network listener, no auth). `profile_dataset`/`compare_datasets` return the same shape `--json` does, with the new `provenance` block attached by default. `proxy_hints` returns `{"hints": [...]}` rather than a bare list, since the MCP SDK splits a list return value into one content block per element (a 98-hint result became 98 separate blocks in testing) and turns an empty list into zero blocks - indistinguishable from an error. An anticipated failure (bad path, unknown `overrides` column, `proxy_hints` without the `proxy` extra) is converted to a client-visible `ToolError` at the tool boundary; anything else is treated as a crash and withheld, per the MCP SDK's own design. New optional `mcp` extra (`pip install faircode[mcp]`) and `faircode-mcp` console script. Documented as new SPEC.md section 11. Phase 1 of the plan discussed for #327-#329; Phase 2 (read-only lookups against `paper/results-frozen/` and `explainers/`) is a follow-up.
 - **`provenance` block on the web profiler's "Copy as JSON" export** (closes #329, by [@lovishmenaria14-gif](https://github.com/lovishmenaria14-gif), [#339](https://github.com/yakew7/Fair-Code/pull/339), first merged PR) - mirrors #330's Python-side shape (`faircode_version`, `engine: "js"`, `dataset_hash`, `params`, `overrides`) computed client-side via `crypto.subtle.digest`, so a CLI report and a browser report of the same upload are recognisably the same measurement without sharing code. A follow-up fix (not part of the PR) closed a real gap the review caught: the uploaded `File` object was cached once in `readFile()` and never updated afterward, so loading the sample dataset or the `?demo` link after a real upload left the exported hash pointing at the old file while the profile itself reflected the sample data. The file now flows through `runText()`/`runTable()` as an explicit parameter instead of a side effect, so it can't go stale.
@@ -44,7 +64,7 @@ All notable changes to Fair Code are documented here, newest first.
 - **ROADMAP.md and README.md disagreed on whether the LLM bias audit is done** (closes #309) - ROADMAP had it checked off; README's own "What's Next" section, and ROADMAP's own "7 of 9 audits" count, both say it isn't. There's no LLM audit folder or code anywhere in the repo.
 - **`faircode compare` never reports ignored `.xlsx` sheets, `bug_report.yml`'s audit dropdown missing two domains, README's stale "five audits" wording, `CODEOWNERS` missing `profiler.css`** (closes #300, #307, #308, #310, by [@propcgamer20-png](https://github.com/propcgamer20-png), [#314](https://github.com/yakew7/Fair-Code/pull/314)) - a bundled four-issue PR; `compare` silently profiled sheet 0 of each workbook with no indication others existed, mirroring the fix already made for `profile`.
 
-## [2.0.11] - 14 Aug 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.11] - 14 Aug 2026 *(folded into `v2.1.0`)*
 ### Fixed
 - **`to_html()`/web profiler HTML reports drop imbalance/missing/skew and the reference section** (closes #283 and #272, by [@AnayDhawan](https://github.com/AnayDhawan), [#294](https://github.com/yakew7/Fair-Code/pull/294); follow-up by [@Shreyash0712](https://github.com/Shreyash0712), [#295](https://github.com/yakew7/Fair-Code/pull/295)) - `faircode/report.py`'s `to_html()` now renders the same `imbalance {ratio}x  missing {pct}%  skew {value}` meta line `to_terminal()` already did, and the web profiler's downloadable report (`buildHtmlReport()`) now includes both that meta line and the reference-baseline comparison section that the live on-page view and the CLI's own `--html` output already had.
 - **`--min-group-size` no longer hardcodes `default=100`** (closes #299, by [@VedantMadane](https://github.com/VedantMadane), [#312](https://github.com/yakew7/Fair-Code/pull/312), first merged PR) - it now defers to `profiler.MIN_GROUP_SIZE` like its four sibling threshold flags already do.
@@ -98,7 +118,7 @@ All notable changes to Fair Code are documented here, newest first.
 - **`Build Explainers` CI failing on `main` after #262 merged** - the PR added five new explainers without running `make build-explainers` first, so the committed `.html` pages, their OG images, and `sitemap.xml` didn't match a fresh build. Verified Pillow was pinned to CI's exact version (`11.1.0`) before regenerating, so this reproduces CI's output rather than introducing a second mismatch.
 - **`scripts/build_explainers.py`'s `resolve_link_target()` silently broke every generic cross-repo-root link in an explainer** - found while fixing #253 above: rebuilding after the notebook-link fix showed the generated `.html` still pointing at the old broken path. Its fallback branch stripped a leading `../` from any relative link that wasn't a known explainer `.md` or a recognized project folder, even though `explainers/*.md` and the `.html` generated from it live in the same directory, so a plain relative link needs no rewriting at all. This wasn't just the notebook link - `disparate-impact.md`'s links to `unfair.py`/`fair.py` in `AI Fair Recruitment/` had the exact same bug, already live on the deployed site. Also removed a `PROJECT_ANCHORS` entry that hardcoded the misspelled `"Ai Fair Recrutment Dataset"` folder name as a redirect target - a band-aid for the exact typo fixed at the source above, now dead code.
 
-## [2.0.10] - 12 Aug 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.10] - 12 Aug 2026 *(folded into `v2.1.0`)*
 ### Added
 - **Both light and dark OG/social-preview images now offered per page** - follow-up to the light-theme image generation below: `index.html`, `profiler.html`, and `build_explainers.py`'s `PAGE_TEMPLATE` (all 39 explainer pages) now declare a second `og:image` pointing at the matching `assets/og-light/` card, right after the existing dark one, each with its own `og:image:width/height/type/alt`. This doesn't make the image switch with the viewer's theme - OG has no `prefers-color-scheme` equivalent - it offers a second image some consuming platforms (e.g. Facebook's share composer) let the person sharing pick between. `twitter:image` is untouched and stays dark-only, since Twitter Cards support exactly one image. The missing-OG-image build guard now checks `assets/og-light/` too, not just `assets/og/`.
 - **README: collapsible sections for the biggest content blocks** - the file had grown to 1000+ lines, most of it seven full audit write-ups (dataset, before/after tables, code, key insight - 60-90 lines each), a 125-line repository tree, a 39-row explainer table, and a 44-item completed-work checklist, all rendered inline regardless of whether a reader wanted that detail. Each of the 7 "## Projects" audits, "## Repository Structure"'s tree, "## Explainers"'s full table, and "## What's Next"'s completed checkmarks now collapse behind a `<details>/<summary>` toggle, so the page reads as headings and one-line hooks first, full detail on click. "## What's Next" also now surfaces the 3 actually-open items (facial recognition, HMDA, LLM audit) above the fold instead of buried after 41 checked-off ones. Every heading stays a real markdown heading outside the `<summary>` tag, so `#projects`, `#explainers`, `#01--compas--criminal-justice-bias`, and every other anchor this file and others link to still resolves unchanged - no prose, numbers, or links were altered.
@@ -173,7 +193,7 @@ All notable changes to Fair Code are documented here, newest first.
 - **`icon-512.png` isn't wired into any page** - it's sized for GitHub's repo/org avatar and social-card profile picture, both of which are uploaded through Settings, not linked from HTML. Recommend uploading it by hand: Settings → General → repo icon (or the org's avatar settings).
 - The new `check-frozen-files` job (like `Build Explainers` before it) is not yet a *required* branch-protection status check, so a PR that fails it can still be merged - I attempted to add it to the ruleset and the action was blocked by this session's permission settings as too sensitive to change autonomously. Recommend doing this by hand: Settings → Rules → "Protect main" → add `check-frozen-files` to the required status checks alongside `run-audits`.
 
-## [2.0.8] - 04 Aug 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.8] - 04 Aug 2026 *(folded into `v2.1.0`)*
 ### Added
 - **SEO/GEO: FAQPage structured data + sitemap `<lastmod>`** - every explainer's schema.org block gained a `FAQPage` entry (question/answer pairs drawn from the explainer's own definition and "why it matters" text) alongside the existing `DefinedTerm`, so AI answer engines and search can extract Q&A directly; `sitemap.xml` gained a per-URL `<lastmod>` dated from each file's last commit. Regenerated by `scripts/build_explainers.py`.
 - **SEO/GEO: `llms-full.txt`** - the full explainer corpus in one file (the `llms.txt` convention's "complete text" companion to the existing index), generated from `explainers/*.md` and linked from `llms.txt`, so LLM crawlers can ground on every explainer in a single fetch.
@@ -191,18 +211,18 @@ All notable changes to Fair Code are documented here, newest first.
 - `.github/workflows/build-explainers.yml` pushed its regenerated-files commit straight to `main`; once the repo's branch-protection ruleset started requiring PRs, `github-actions[bot]` (not in the ruleset's bypass list) could no longer push and the job failed outright. Converted it to a check that fails if `explainers/*.html`, `assets/explainers-data.js`, `sitemap.xml`, `llms-full.txt`, or `assets/og/*.png` are out of sync with their sources, matching the `make build-explainers` step `CONTRIBUTING.md` already documents - no bot commits, no new secrets.
 - The JSON web-profiler PR (#144) had two bugs: `parseJSON()`'s records-orientation branch derived columns from only the first record, silently dropping any column that first appeared in a later one (`pandas.read_json` unions keys across every record - a JSON file with inconsistent per-record keys produced a genuinely different, incomplete audit in the browser than the CLI reported for the same file); and `profiler-ui.js`'s `reportBaseName()` used an unanchored regex (`/\.csv|\.tsv|\.json$/i`) that could strip the wrong substring from filenames containing `.csv`/`.tsv` before the real extension, producing a malformed download name. Fixed both, and added `test_python_js_json_parity_inconsistent_keys` (via `scripts/profile-json-js.js`) to catch the first one again.
 
-## [2.0.7] - 04 Aug 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.7] - 04 Aug 2026 *(folded into `v2.1.0`)*
 ### Added
 - **Contributor task runner** (#114, by [@propcgamer20-png](https://github.com/propcgamer20-png)) - a `Makefile` (`setup`, `test`, `build-explainers`, `lint`, `check`) and a `.pre-commit-config.yaml` that mirror CI, so `make check` reproduces the em-dash lint plus the full test suite locally, and the git hooks run the fast checks on commit with the test suite on push. Documented in a new "Local setup and checks" section of `CONTRIBUTING.md`.
 - **Per-audit reproducibility READMEs** (#86) - each of the seven audit folders now has a `README.md` with a reproducibility checklist (pinned `random_state=42`, `requirements-lock.txt`, stratified 80/20 split, and the exact `unfair.py` / `fair.py` commands) plus the published before/after fairness numbers copied verbatim from the main results table (paper-aligned, not re-run). Standardised in `CONTRIBUTING.md` (folder layout + a rule) so future audits ship one too.
 
-## [2.0.6] - 02 Aug 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.6] - 02 Aug 2026 *(folded into `v2.1.0`)*
 ### Added
 - **Profiler: configurable small-subgroup warnings** (#124, by [@ahmdkaml](https://github.com/ahmdkaml)) - every group now carries a `small_group` flag (raw count below `min_group_size`, default 100), shown as a "small group" warning in the terminal report, the HTML report, and the web UI, and tunable via `faircode profile --min-group-size N` or `opts.min_group_size`. Below that size a share and its confidence interval are noisy enough that a gap is a lead to investigate, not a confirmed finding.
 ### Fixed
 - Restored Python/JS parity for the feature. The merged PR added `small_group` to `faircode/profiler.py` only; mirrored it into the browser engine `assets/profiler-engine.js`, documented it in `faircode/SPEC.md` (sections 3, 6, 7), and wired the warning into the web UI (`assets/profiler-ui.js` live view + downloaded report, `assets/profiler.css`) so the CLI and the web tool return identical results per the SPEC parity rule. Also normalised a couple of PEP8 nits in the Python change.
 
-## [2.0.5] - 31 Jul 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.5] - 31 Jul 2026 *(folded into `v2.1.0`)*
 ### Added
 - **Profiler: 95% confidence intervals on every group share** (#83) - a deterministic Wilson score interval per group, so a share read off a small sample carries its sampling uncertainty. Implemented identically in `faircode/profiler.py` and the JS port `assets/profiler-engine.js` (parity preserved - Wilson is deterministic, no resampling), documented in `faircode/SPEC.md` section 3, and surfaced in the terminal report, the HTML report, JSON, and the web UI.
 - **Profiler: shareable HTML / PDF report** (#85) - the generated report is print-optimised so it saves straight to PDF from the browser, alongside the existing `faircode profile --html` and web "Download report" export.
@@ -215,7 +235,7 @@ All notable changes to Fair Code are documented here, newest first.
 - `scripts/check_em_dash.py` no longer flagged its own source - the em-dash character is referenced by code point so the file contains no literal em dash.
 - Normalised the `--fail-under` equality test to PEP8 (blank lines before the new function, trailing newline).
 
-## [2.0.4] - 28 Jul 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.4] - 28 Jul 2026 *(folded into `v2.1.0`)*
 ### Added
 - **Explainer: Why Accuracy Is Not Enough in Healthcare AI** (`accuracy-not-enough-healthcare-ai.md`, closes #64) - the accuracy paradox on rare clinical outcomes (a "predict nothing" model scoring 97% while catching zero at-risk patients), why one aggregate score masks per-group recall / false-negative gaps, anchored to the Healthcare Readmission audit (Audit 06) and Obermeyer et al. (2019), with per-group accuracy-vs-recall detection code. Repo figures use the frozen `paper/results-frozen/` numbers per the freeze.
 ### Changed
@@ -226,7 +246,7 @@ All notable changes to Fair Code are documented here, newest first.
 - Metric targets revised in `METRICS.md`: explainers `30+ → 60+`, forks `15+ → 20+`, watching `15+ → 12+`, social reach `10K/mo → 40K+`.
 - Roadmap pivot for the freeze: added a planned **healthcare-explainer** track (race correction in clinical algorithms, the Obermeyer cost-as-proxy case, underdiagnosis bias, clinical-score miscalibration, EHR missing-data bias, medical-imaging representation gaps) to `ROADMAP.md` Phase 2, the `README.md` healthcare section, and the `index.html` roadmap - the freeze-safe way to keep the healthcare focus moving while new audits are on hold.
 
-## [2.0.3] - 28 Jul 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.3] - 28 Jul 2026 *(folded into `v2.1.0`)*
 ### Added
 - **Four explainers** contributed by [@Shreyash0712](https://github.com/Shreyash0712) (PR #102), from the topics requested in issues #98 / #96 / #99 / #100:
   - **What Is a Protected Attribute?** (`protected-attribute.md`) - what a protected attribute is, which ones the law recognizes, and why removing them outright just hides the bias behind proxies.
@@ -240,7 +260,7 @@ All notable changes to Fair Code are documented here, newest first.
 - `llms.txt` Explainers list: added the four new explainers plus the previously-missing `automation-bias` and `roc-curve-auc` (`robots.txt` needs no change - it allows all crawlers and points at `sitemap.xml`, which already lists every page).
 - Paper-freeze notice surfaced at the point of contribution: the issue forms (`new_audit.yml` audit-hold banner, `new_explainer.yml` frozen-numbers rule), `PULL_REQUEST_TEMPLATE.md` (don't-touch paths + flag-don't-fix), and `llms.txt` (status line for AI crawlers).
 
-## [2.0.2] - 27 Jul 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.2] - 27 Jul 2026 *(folded into `v2.1.0`)*
 ### Added
 - **Explainer: What Is a ROC Curve and AUC?** - `explainers/roc-curve-auc.md` + generated page, registry entry in `assets/explainers-data.json`, and sitemap. Covers what a ROC curve and AUC actually measure (ranking quality), and why a single threshold-free number hides the two things fairness depends on: where the decision threshold sits, and whether ranking quality is equal across groups. Anchored to COMPAS's ordinary **0.68** baseline AUC (quoted from `paper/results-frozen/`, per the freeze) sitting on top of a large racial false-positive gap; includes per-group AUC / overlaid-ROC detection code. Brings the explainer count to **31**.
 ### Fixed
@@ -250,7 +270,7 @@ All notable changes to Fair Code are documented here, newest first.
 - `CONTRIBUTING.md`: new **"Contributing during the paper freeze"** section spelling out what is open (explainers, docs, website, captions) vs. on hold (new audits, frozen-results changes), plus the frozen-numbers rule for explainers (closes #97).
 - Explainer count `30 → 31` across `README.md`, `ROADMAP.md`, and `METRICS.md`.
 
-## [2.0.1] - 27 Jul 2026 *(pending - will be tagged after the paper is published)*
+## [2.0.1] - 27 Jul 2026 *(folded into `v2.1.0`)*
 ### Added
 - **`CLAUDE.md`** - standing paper-freeze policy for AI agents and contributors: the DO-NOT-TOUCH list (`paper/results-frozen/`, `results/`, the `faircode/` core, every `audit.yaml` and dataset CSV, the `v1.0-paper` tag), the parameters that must not change (`random_state=42`, `test_size=0.2` stratified, `EXPONENTIATED_GRADIENT_MAX_ITER=50`, DemographicParity, the six metrics, bootstrap/permutation counts), the no-new-audits-on-`main` rule, the flag-don't-silently-fix escape hatch, and what happens when the freeze lifts.
 - **`ROADMAP.md` Phase 6 - Research Paper and Publication**: makes the paper a tracked goal and explicitly gates `v3.0.0` on publication; freeze notice + version/release-gate block added under "Where We Are".
