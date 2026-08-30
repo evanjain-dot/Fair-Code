@@ -8,7 +8,7 @@
 
 </div>
 
-> **Before opening a PR, read [CLAUDE.md](CLAUDE.md)** — the repo is under a paper freeze and some changes are on hold until publication.
+> **Before opening a PR, read [CLAUDE.md](CLAUDE.md)** for the current project policy.
 
 Thanks for contributing. Fair Code accepts two kinds of additions:
 
@@ -19,25 +19,15 @@ Consistency matters here. It is what makes the repo credible and easy to review.
 
 ---
 
-## Contributing during the paper freeze
+## Contributing right now
 
-Fair Code's benchmark results are cited in a research paper currently in peer review, so the repo is under a **paper freeze**. This changes *what* you can contribute right now, not *whether* you can — most of the project is still wide open.
+The repo's earlier paper freeze has lifted (see [CLAUDE.md](CLAUDE.md)) - development is fully open:
 
-**✅ Open now — merges as usual:**
+- **Audits** merge to `main` as usual, same as any other contribution.
+- **Everything else** - explainers, website content, documentation, `faircode/` changes, tests, tooling - is open too.
+- **`requirements-lock.txt`** no longer needs special handling; Dependabot's version-bump PRs against it can be reviewed and merged like any other dependency update.
 
-- **Explainers** — new `.md` files in `explainers/`
-- **Website content** and `assets/*.json` entries
-- **Documentation** — README prose, this guide, `CHANGELOG.md`
-- **Typo and clarity fixes** in prose
-- **Social media caption files**
-
-**⏸️ On hold until the paper is published:**
-
-- **New audits** — the paper covers exactly seven domains, so new audits cannot merge into `main` yet. This is a **timing hold, not a rejection**: open a PR anyway (it will be parked on a branch or labeled `post-paper`) and it merges once the freeze lifts.
-- **Any change to the frozen results** or the reproducibility parameters (`random_state`, split, iteration counts, the fairness constraint or metrics). If you think you found a bug in the analysis code, **flag it in an issue — do not silently fix it.**
-- **`requirements-lock.txt`** — this is a fixed `pip freeze` snapshot, not a normal dependency file. Dependabot doesn't know that and will keep opening version-bump PRs against it; **please close those without merging**, even though they look like routine, safe updates. See [CLAUDE.md](CLAUDE.md) §1.
-
-**One rule for explainers:** if your explainer quotes a Fair Code result, use the frozen numbers in [`paper/results-frozen/`](paper/results-frozen/) — never re-run your own.
+**One rule for explainers:** if your explainer quotes a Fair Code result, say which source it's from - `results/` (current) or [`paper/results-frozen/`](paper/results-frozen/) (an earlier reference snapshot, kept for comparison) - so a reader isn't left guessing which numbers are live.
 
 Full policy: [CLAUDE.md](CLAUDE.md).
 

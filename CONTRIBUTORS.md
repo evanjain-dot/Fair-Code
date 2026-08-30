@@ -297,7 +297,7 @@ and excluded from the avatar grid above.
 
 | Bot | Merged PRs | What it does |
 |-----|:---------:|--------------|
-| [dependabot](https://github.com/apps/dependabot) | 24 | Dependency and GitHub Actions version bumps, configured in [`.github/dependabot.yml`](.github/dependabot.yml). **Note:** its `pip` scan also targets [`requirements-lock.txt`](requirements-lock.txt), which is frozen - those bumps get reverted, not merged. See [CLAUDE.md §1](CLAUDE.md). |
+| [dependabot](https://github.com/apps/dependabot) | 24 | Dependency and GitHub Actions version bumps, configured in [`.github/dependabot.yml`](.github/dependabot.yml), including `requirements-lock.txt` - no longer under any special freeze handling, see [CLAUDE.md](CLAUDE.md). |
 | [vercel](https://github.com/apps/vercel) | 2 | Web Analytics and Speed Insights wiring for the deployed site. |
 
 ---
@@ -344,14 +344,10 @@ listed at all, open an issue or a one-line PR against this file. It gets merged,
    [Contributors](#contributors) in first-merged order, with links to the files you touched.
 4. When it merges, you're in.
 
-**During the paper freeze, read [CLAUDE.md](CLAUDE.md) before you start.** The short version:
-
-| Contribution | Status during the freeze |
-|--------------|--------------------------|
-| Explainers, docs, prose, website content, contributor tooling | ✅ Open - this is where the work is |
-| Profiler features, tests, CI, loaders | ✅ Open, provided `results/` and the frozen files don't move |
-| **New audits** | ⏸️ **Not merged to `main`** - the paper states exactly seven domains. Your PR gets parked on a branch or labeled `post-paper` and merged after publication. This is a timing hold, not a rejection, and you are credited either way. |
-| Anything under `paper/results-frozen/`, `results/`, the core `faircode/` analysis modules, any `audit.yaml`, any dataset CSV, or `requirements-lock.txt` | ❌ Frozen. Found a genuine bug in the analysis code? [Open an issue](https://github.com/yakew7/Fair-Code/issues) - do not silently fix it. |
+**Read [CLAUDE.md](CLAUDE.md) before you start** for the current project policy. The earlier paper
+freeze has lifted - audits, the `faircode/` analysis core, `results/`, and everything else are all
+open to normal contribution. `paper/results-frozen/` is kept as a historical reference snapshot, not
+actively protected.
 
 ---
 

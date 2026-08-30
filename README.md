@@ -37,7 +37,7 @@
 - [Getting Started](#getting-started)
 - [Open Dataset Profiler](#open-dataset-profiler)
 - [Benchmark Harness](#benchmark-harness)
-- [Reproducibility & Paper Freeze](#reproducibility--paper-freeze)
+- [Reproducibility & Results History](#reproducibility--results-history)
 - [Tech Stack](#tech-stack)
 - [Traction](#traction)
 - [Contributors](#contributors)
@@ -137,10 +137,9 @@ Fair-Code/
 │       ├── codeowners-access.yml        # weekly: catches a CODEOWNER whose repo access has lapsed
 │       ├── codeql.yml                   # CodeQL static analysis
 │       ├── first.interaction.yml        # Greets first-time issue/PR contributors
-│       ├── frozen-files.yml             # blocks edits to paper-frozen paths (see CLAUDE.md)
+│       ├── frozen-files.yml             # no-op (paper freeze lifted) - kept as a required status check
 │       ├── lint.yml                     # em-dash / broken-links / ruff checks
 │       ├── pr-review-ping.yml           # comments @-mentioning CODEOWNERS on every new PR
-│       ├── results-drift.yml            # diffs results/ against the frozen paper snapshot
 │       └── validate-workflow.yml        # YAML-lints every file in this workflows/ folder
 │
 ├── COMPAS/                              # each audit folder has the same structure:
@@ -213,7 +212,7 @@ Fair-Code/
 │   ├── summary.csv
 │   └── figures/*.png
 ├── paper/
-│   └── results-frozen/                  # FROZEN snapshot - what a paper actually cites
+│   └── results-frozen/                  # kept reference snapshot from an earlier analysis pass
 │       ├── MANIFEST.md                  #   git commit, package versions, exact audit.yaml list
 │       ├── results_fairness.csv
 │       ├── results_performance.csv
@@ -1034,45 +1033,43 @@ measured every audit identically" a true statement rather than an assertion.
 
 ---
 
-## Reproducibility & Paper Freeze
+## Reproducibility & Results History
 
-The repo keeps changing - new audits, new strategies, reruns with more resamples. A paper cites
-specific numbers. These have to be kept separate, or "seven domains" quietly becomes "whatever was
-in the repo the week someone read the PDF."
+The repo keeps changing - new audits, new strategies, reruns with more resamples - so reproducing a
+specific past result means pinning down exactly what produced it, not just re-running whatever's
+currently in `results/`.
 
 **The randomness is pinned.** All seven manifests use `random_state: 42`. Every model family
 (`faircode/models.py`), every train/test split (stratified), and every bootstrap resample /
 permutation shuffle (`faircode/significance.py`, `faircode/metrics.py`) takes that seed explicitly -
 nothing reads numpy's global random state, so two runs of the same manifest against the same data
-are bit-for-bit identical. **Do not change a manifest's `random_state`** on a run whose numbers are
-cited anywhere.
+are bit-for-bit identical.
 
-**The environment is pinned.** [`requirements-lock.txt`](requirements-lock.txt) is an exact
-`pip freeze` of the environment that produced the committed `results/` - not the loose version
-ranges in `requirements.txt`, which drift over time. Reproduce it with
-`pip install -r requirements-lock.txt`. At freeze time this repo used **Python 3.13.2**,
-**scikit-learn 1.8.0**, **fairlearn 0.14.0**, **pandas 3.0.2**.
+**The environment can be pinned.** [`requirements-lock.txt`](requirements-lock.txt) is an exact
+`pip freeze` of the environment that produced a past run of `results/` - not the loose version
+ranges in `requirements.txt`, which drift over time. Reproduce that exact environment with
+`pip install -r requirements-lock.txt`.
 
-**The cited results are frozen, separately from the live ones.** `results/` at the repo root is
-live - it changes every time someone reruns the harness or a new audit lands. `paper/results-frozen/`
-does not. When the numbers you're about to cite are final:
+**A results snapshot can be frozen for later comparison.** `results/` at the repo root is live - it
+changes every time someone reruns the harness or a new audit lands. `paper/results-frozen/` is a
+kept snapshot from an earlier analysis pass, useful as a point of comparison while the repo keeps
+moving:
 
 ```bash
-python3 scripts/freeze_paper_results.py --tag v1.0-paper
+python3 scripts/freeze_paper_results.py --tag <some-tag>
 ```
 
-This copies `results/` into `paper/results-frozen/` alongside a `MANIFEST.md` recording the exact
-git commit, the Python/scikit-learn/fairlearn/pandas/numpy versions, and the exact list of
-`audit.yaml` manifests included - so "seven domains" is a defined, reproducible set tied to a
-specific commit, not an informal count. It prints (but never runs) the `git tag` /
-`git push --tags` command needed to actually tag the release, since tagging is a deliberate,
-public action this script shouldn't take on its own. A paper cites `paper/results-frozen/`;
-future contributed audits change `results/` but never that snapshot.
+This copies `results/` into a snapshot alongside a `MANIFEST.md` recording the exact git commit, the
+Python/scikit-learn/fairlearn/pandas/numpy versions, and the exact list of `audit.yaml` manifests
+included - so a given snapshot is a defined, reproducible set tied to a specific commit, not an
+informal count. It prints (but never runs) the `git tag` / `git push --tags` command needed to
+actually tag the release, since tagging is a deliberate, public action this script shouldn't take on
+its own.
 
-**The snapshot is tagged.** The current frozen results carry the [`v1.0-paper`](https://github.com/yakew7/Fair-Code/releases/tag/v1.0-paper)
-tag (commit `bbef2ba`), published as a GitHub release and deliberately kept off "Latest" so it
-never displaces `v2.0.0`. Under the freeze it stays fixed until the paper is published - see
-[CLAUDE.md](CLAUDE.md).
+**The current reference snapshot is tagged.** `paper/results-frozen/` carries the
+[`v1.0-paper`](https://github.com/yakew7/Fair-Code/releases/tag/v1.0-paper) tag (commit `bbef2ba`),
+published as a GitHub release and deliberately kept off "Latest" so it never displaces `v2.0.0`. It's
+kept as historical reference, not as evidence for a live publication - see [CLAUDE.md](CLAUDE.md).
 
 ---
 

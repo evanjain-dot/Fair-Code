@@ -12,13 +12,12 @@ All notable changes to Fair Code are documented here, newest first.
 
 ---
 
-> **Paper freeze in effect.** The benchmark results are cited in a research paper under peer review
-> and are frozen at the [`v1.0-paper`](https://github.com/yakew7/Fair-Code/releases/tag/v1.0-paper)
-> tag below. The `2.0.1` / `2.0.2` / `2.0.3` / `2.0.4` / `2.0.5` / `2.0.6` / `2.0.7` / `2.0.8` / `2.0.9` / `2.0.10` / `2.0.11` / `2.0.12` entries that follow are additive (explainers, docs, governance)
-> and do **not** touch the frozen results, so they are safe under the freeze - but no new version is
-> tagged while the freeze holds. They are numbered here for clarity and **will be tagged once the
-> paper is published.** The next *major* release (`v3.0.0`, re-run benchmark + new audits) is gated
-> on publication. See [CLAUDE.md](CLAUDE.md).
+> **Paper freeze lifted.** The manuscript this repo's results were being frozen for was never
+> actually submitted this cycle - the real paper, with fresh results, is now planned for next year.
+> `paper/results-frozen/` (tag [`v1.0-paper`](https://github.com/yakew7/Fair-Code/releases/tag/v1.0-paper))
+> is kept as a historical reference snapshot. The `2.0.1` through `2.0.12` entries below were all
+> additive while the freeze held and remain untagged for now; development (including a benchmark
+> re-run and new audits) is open again. See [CLAUDE.md](CLAUDE.md).
 
 ## [2.0.12] - 25 Aug 2026 *(pending - will be tagged after the paper is published)*
 ### Added
@@ -291,7 +290,7 @@ research paper built on this repo would cite. Nothing about the existing audits 
   - Verified and documented that every model, split, bootstrap resample, and permutation shuffle already takes an explicit `random_state` (all seven manifests default to 42); a defense-in-depth global seed added in `benchmark.py`; the "don't change `random_state` on a cited run" invariant stated in `faircode/MANIFEST_SPEC.md`
   - `requirements-lock.txt` - an exact `pip freeze` of the environment that produced the committed `results/` (Python 3.13.2, scikit-learn 1.8.0, fairlearn 0.14.0, pandas 3.0.2)
   - `scripts/freeze_paper_results.py` - snapshots `results/` into `paper/results-frozen/` with a `MANIFEST.md` recording the git commit, package versions, and the exact list of `audit.yaml` manifests included; prints (never runs) the `git tag` / `git push --tags` command, since tagging is a deliberate public action
-  - New README.md section: [Reproducibility & Paper Freeze](README.md#reproducibility--paper-freeze)
+  - New README.md section: [Reproducibility & Paper Freeze](README.md#reproducibility--results-history) (later renamed "Reproducibility & Results History" once the freeze lifted)
 - **Test suite for the benchmark harness** (50 new tests, 108 total, ~10s)
   - `tests/test_metrics.py` - all six fairness metrics hand-computed against a worked tiny example, plus a regression test reproducing COMPAS's published 86.77% headline gap from reconstructed rate arrays
   - `tests/test_manifest.py` - manifest loading/validation, malformed YAML and missing-field failures, parametrized over all seven shipped manifests

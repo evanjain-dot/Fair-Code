@@ -29,12 +29,16 @@ Fair Code is an open-source responsible AI platform explaining algorithmic bias,
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | 47 | 18 | 23 | 8 | 30K+ | 18 | 7 | 47 | ✅ every push/PR |
 
-> 🔒 **Paper freeze active.** The benchmark results are cited in a research paper under peer review and are frozen at tag `v1.0-paper` (commit `bbef2ba`). No results-affecting change ships until the paper is published. See [CLAUDE.md](CLAUDE.md) for the full policy.
+> The earlier paper freeze has lifted - the real paper, with fresh results, is now planned for next
+> year. `paper/results-frozen/` (tag `v1.0-paper`, commit `bbef2ba`) is kept as a reference snapshot.
+> See [CLAUDE.md](CLAUDE.md) for the current policy.
 
 **Version & release gate:**
 
 - Current release: **v2.0.0**
-- **v3.0.0 is blocked until the paper is published.** The next major version bundles re-run benchmarks and new audits - both frozen right now - so the version cannot move until Phase 6 completes.
+- The next major version can now bundle a re-run benchmark and new audits without waiting on a
+  publication gate - Phase 6 below reflects the earlier plan and will be revisited alongside next
+  year's real paper submission.
 
 ---
 
@@ -87,9 +91,9 @@ Build the foundational vocabulary and explain core fairness concepts clearly eno
 
 ## Phase 2 - Healthcare AI Bias Examples ✅ / 🔄 In Progress
 
-**Status: Audits complete - the healthcare push has shifted to explainers during the paper freeze**
+**Status: Audits complete - healthcare explainers shipped alongside them**
 
-Publish healthcare-specific bias audits and explainers that show how AI discrimination shows up in clinical and insurance contexts. New audits are frozen until the paper publishes (see [CLAUDE.md](CLAUDE.md)), so this phase's active work is now **healthcare explainers** - fully freeze-safe, and where the deepest real-world harm lives anyway.
+Publish healthcare-specific bias audits and explainers that show how AI discrimination shows up in clinical and insurance contexts.
 
 - [x] Insurance Denial bias audit
 - [x] Benefits Denial bias audit
@@ -107,15 +111,15 @@ Publish healthcare-specific bias audits and explainers that show how AI discrimi
 - [x] Explainer: The Obermeyer Case - When Cost Becomes a Proxy for Health Need - a dedicated case study of the 2019 algorithm that under-referred sicker Black patients
 - [x] Explainer: Underdiagnosis Bias - When the Label Itself Is Sicker for One Group - why historical care gaps make the training target unequal before modeling starts
 
-No further healthcare explainers are currently planned - the freeze-safe backlog from this phase is now fully shipped.
+No further healthcare explainers are currently planned - the backlog from this phase is now fully shipped.
 
 ---
 
 ## Phase 3 - Code Audits 🔄 In Progress
 
-**Status: 7 of 9 planned audits published - new audits on hold for the paper freeze**
+**Status: 7 of 9 planned audits published - the remaining two are open to contribute**
 
-Each audit follows the same pipeline: train a biased model → measure the fairness gap → remove proxies → retrain → measure again. The paper covers exactly these seven domains, so the two remaining audits are parked until publication (a timing hold, not a rejection - see [CLAUDE.md](CLAUDE.md)).
+Each audit follows the same pipeline: train a biased model → measure the fairness gap → remove proxies → retrain → measure again. New audits now merge to `main` as usual (see [CLAUDE.md](CLAUDE.md)).
 
 - [x] COMPAS - Criminal Justice Bias
 - [x] AI Fair Recruitment - Hiring Bias
@@ -125,8 +129,8 @@ Each audit follows the same pipeline: train a biased model → measure the fairn
 - [x] Healthcare Readmission - Clinical Bias
 - [x] Tenant Screening - Rental Application Bias
 - [ ] LLM bias audit
-- [ ] HMDA Mortgage Lending Bias *(post-paper)*
-- [ ] Facial Recognition Accuracy Gaps (MIT Gender Shades methodology) *(post-paper)*
+- [ ] HMDA Mortgage Lending Bias
+- [ ] Facial Recognition Accuracy Gaps (MIT Gender Shades methodology)
 
 ---
 
@@ -167,19 +171,23 @@ Go deeper on measurement - fairness dashboards, interactive notebooks, and stati
 
 ---
 
-## Phase 6 - Research Paper and Publication 🔄 In Progress
+## Phase 6 - Research Paper and Publication - Paused, Retargeted for Next Year
 
-**Status: Results frozen - paper in peer review**
+**Status: Freeze lifted - the manuscript was never actually submitted this cycle**
 
-Publish a peer-reviewed paper on the cross-domain fairness benchmark. This phase gates the whole analysis side of the project: the results stay frozen and the version stays at v2.0.0 until it completes.
+The original plan was to publish a peer-reviewed paper on the cross-domain fairness benchmark and
+freeze the repo's results against it. The manuscript submission step never actually happened, so
+freezing development ahead of it was premature - the freeze has been lifted (see
+[CLAUDE.md](CLAUDE.md)), and this phase is retargeted for a real submission **next year**, built on
+a fresh run of results.
 
-- [x] Freeze benchmark results at tag `v1.0-paper` (commit `bbef2ba`)
-- [x] `CLAUDE.md` paper-freeze policy for the benchmark and audits
-- [ ] Submit manuscript to peer review
-- [ ] Address reviewer feedback (may require a re-run + re-freeze - flag, never silently patch)
+- [x] Freeze benchmark results at tag `v1.0-paper` (commit `bbef2ba`) - kept as a reference snapshot
+- [x] `CLAUDE.md` paper-freeze policy for the benchmark and audits - lifted; will be re-established for next year's real submission
+- [ ] Submit manuscript to peer review (next year, with fresh results)
+- [ ] Address reviewer feedback
 - [ ] Paper accepted and published
 - [ ] Add citation and DOI to [README.md](README.md) and [CITATION.cff](CITATION.cff)
-- [ ] Lift the freeze: re-run the benchmark, merge parked audits, cut **v3.0.0** (`paper/results-frozen/` stays untouched as the permanent record)
+- [x] Development reopened: `results/`, audits, and the analysis core are unfrozen; `paper/results-frozen/` stays untouched as the historical reference for this earlier snapshot
 
 ---
 
@@ -199,7 +207,7 @@ Publish a peer-reviewed paper on the cross-domain fairness benchmark. This phase
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) to claim an open issue or propose a new audit or explainer.
 
-New audits are welcome, but during the paper freeze they cannot be merged into `main` - they'll be parked on a branch or held with a `post-paper` label until publication (a timing hold, not a rejection). Explainers, docs, and website content are unaffected and merge as usual. See [CLAUDE.md](CLAUDE.md) before opening a PR.
+New audits are welcome and merge into `main` like any other contribution - the earlier freeze on new audits has lifted. Explainers, docs, and website content merge as usual too. See [CLAUDE.md](CLAUDE.md) before opening a PR.
 
 ---
 

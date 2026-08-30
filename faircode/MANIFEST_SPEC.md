@@ -38,8 +38,8 @@ All seven shipped manifests use `random_state: 42` - this is a hard convention, 
 Every model family, train/test split, bootstrap resample, and permutation shuffle takes its seed
 from this one value (see `faircode/benchmark.py`'s module docstring), so two runs of the same
 manifest against the same data are bit-for-bit identical. **Do not change a manifest's
-`random_state` on a run whose numbers are cited anywhere** - see "Reproducibility & Paper Freeze" in
-[README.md](../README.md#reproducibility--paper-freeze) before regenerating `results/` for a citation.
+`random_state` on a run whose numbers are cited anywhere** - see "Reproducibility & Results History" in
+[README.md](../README.md#reproducibility--results-history) before regenerating `results/` for a citation.
 
 ## `row_filters` (optional)
 
