@@ -212,6 +212,10 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "profile":
+        if args.proxy_hints_with and not args.proxy_hints:
+            print("error: --proxy-hints-with needs --proxy-hints", file=sys.stderr)
+            return 2
+
         df = _read_or_exit(args.csv)
 
         sheet_info = get_xlsx_sheet_info(args.csv)
