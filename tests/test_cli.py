@@ -393,6 +393,18 @@ def test_proxy_hints_with_row_count_mismatch_returns_2_with_clean_error(tmp_path
     assert "rows must align 1:1" in captured.err
 
 
+def test_proxy_hints_with_without_proxy_hints_returns_2_with_clean_error(tmp_path, capsys):
+    path = tmp_path / "a.csv"
+    path.write_text("sex\nM\nF\n", encoding="utf-8")
+
+    exit_code = main(["profile", str(path),
+                      "--proxy-hints-with", "/nonexistent/file.csv=race"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 2
+    assert "--proxy-hints-with needs --proxy-hints" in captured.err
+
+
 requires_scipy = pytest.mark.skipif(
     importlib.util.find_spec("scipy") is None,
     reason="optional 'proxy' extra not installed",
