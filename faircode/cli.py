@@ -253,7 +253,7 @@ def main(argv: list[str] | None = None) -> int:
         _check_map_columns(overrides, df.columns)
         result = profile(df, overrides, opts)
 
-        if args.proxy_hints:
+        if args.proxy_hints or args.proxy_hints_with:
             held_out = _build_held_out(args.proxy_hints_with, df)
             try:
                 result["proxy_hints"] = proxy_hints(df, result["dimensions"], held_out=held_out)
