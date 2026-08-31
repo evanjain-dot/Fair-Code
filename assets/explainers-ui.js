@@ -14,11 +14,11 @@
   const projectAnchors = {
     'COMPAS': 'project-compas',
     'AI Fair Recruitment': 'project-hiring',
-    'Ai Fair Recrutment Dataset': 'project-hiring',
     'German Credit Lending': 'project-credit',
     'Insurance Denial': 'project-insurance',
     'Benefits Denial': 'project-benefits',
     'Healthcare Readmission': 'project-readmission',
+    'Tenant Screening': 'project-tenant',
   };
 
   function escapeHtml(value) {

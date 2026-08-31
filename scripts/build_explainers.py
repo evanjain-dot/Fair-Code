@@ -42,6 +42,7 @@ PROJECT_ANCHORS = {
     "Insurance Denial": "project-insurance",
     "Benefits Denial": "project-benefits",
     "Healthcare Readmission": "project-readmission",
+    "Tenant Screening": "project-tenant",
 }
 
 
