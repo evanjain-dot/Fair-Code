@@ -17,6 +17,12 @@ All notable changes to Fair Code are documented here, newest first.
 > `paper/results-frozen/` (tag [`v1.0-paper`](https://github.com/yakew7/Fair-Code/releases/tag/v1.0-paper))
 > is kept as a historical reference snapshot. See [CLAUDE.md](CLAUDE.md).
 
+## [Unreleased]
+
+### Fixed
+- **`PROJECT_ANCHORS`/`projectAnchors` maps were missing Tenant Screening** (closes #350, by [@propcgamer20-png](https://github.com/propcgamer20-png), [#357](https://github.com/yakew7/Fair-Code/pull/357)) - both `scripts/build_explainers.py`'s Python map and `assets/explainers-ui.js`'s JS map listed six of the seven audits, so the `[Tenant Screening/](../Tenant%20Screening/)` related-project link in `equal-opportunity.html` and `fairness-through-unawareness.html` never resolved to `../index.html#project-tenant` the way every other audit link does. Also dropped a dead, misspelled legacy JS key (`'Ai Fair Recrutment Dataset'`) that had no Python-side counterpart.
+- **`faircode profile --proxy-hints-with` silently no-oped without `--proxy-hints`** (closes #347, by [@evanjain-dot](https://github.com/evanjain-dot), [#359](https://github.com/yakew7/Fair-Code/pull/359)) - `_build_held_out` was only ever called inside `if args.proxy_hints:`, so a typo'd invocation (forgetting `--proxy-hints`) exited 0 with a normal profile report instead of surfacing the mistake. Now errors immediately with `--proxy-hints-with needs --proxy-hints`, matching the CLI's existing style of erroring loudly on likely-typo'd flag combinations (`--map`, `--cross`). Also merged [@ahmdkaml](https://github.com/ahmdkaml)'s independently-submitted fix for the same issue ([#358](https://github.com/yakew7/Fair-Code/pull/358)), which instead makes `--proxy-hints-with` imply `--proxy-hints`; with #359's explicit-error check merged first, that branch is now unreachable in the `profile` command but is harmless.
+
 ## [2.1.0] - 30 Aug 2026
 
 The first tagged release since `v2.0.0`. Everything in the `2.0.1` through `2.0.12` entries below

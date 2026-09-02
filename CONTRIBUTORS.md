@@ -34,7 +34,7 @@ ordered by merged PR count, most first - ties broken by commit count, then by ea
 date. Within each entry, the PR numbers link the claim to the actual diff, so nothing here is an
 unverifiable "thanks to".
 
-**Snapshot:** 2026-08-30, covering everything merged through **PR #356**.
+**Snapshot:** 2026-08-31, covering everything merged through **PR #359**.
 Anything merged after that date is real and welcome, but is not yet reflected here - the
 [contributors graph](https://github.com/yakew7/Fair-Code/graphs/contributors) is always the live
 source of truth, and the `contrib.rocks` grid above regenerates from it automatically.
@@ -67,7 +67,7 @@ People carrying sustained ownership of an area, reflected in [`.github/CODEOWNER
 
 ### Ahmed Mohamed Abdelhady Kamel - [@ahmdkaml](https://github.com/ahmdkaml)
 
-**39 merged PRs · 55 commits · first merged 2026-07-31**
+**40 merged PRs · 56 commits · first merged 2026-07-31**
 
 Co-code-owner of `.github/workflows/`, `.github/CODEOWNERS`, `scripts/`, `tests/`, `profiler.html`,
 and the three `assets/profiler-*.js` engines. The single largest external contribution to the
@@ -77,7 +77,7 @@ project by volume, concentrated in two areas:
 - Parquet and JSON loaders for the CLI ([#127](https://github.com/yakew7/Fair-Code/pull/127)), client-side JSON support in the web profiler ([#144](https://github.com/yakew7/Fair-Code/pull/144)), documented JSON orientations ([#155](https://github.com/yakew7/Fair-Code/pull/155))
 - Lazy-loaded SheetJS for XLSX profiling ([#192](https://github.com/yakew7/Fair-Code/pull/192)), CDN pin kept in sync ([#193](https://github.com/yakew7/Fair-Code/pull/193)), XLSX edge cases ([#194](https://github.com/yakew7/Fair-Code/pull/194)), ignored-sheet reporting in both the web UI ([#197](https://github.com/yakew7/Fair-Code/pull/197)) and the CLI ([#198](https://github.com/yakew7/Fair-Code/pull/198)), documented `--proxy-hints` on the web profiler landing copy ([#236](https://github.com/yakew7/Fair-Code/pull/236))
 - Standalone HTML report for `faircode compare` ([#128](https://github.com/yakew7/Fair-Code/pull/128)), configurable `--min-group-size` warnings ([#124](https://github.com/yakew7/Fair-Code/pull/124)), `--reference` help-text fix ([#145](https://github.com/yakew7/Fair-Code/pull/145))
-- JS/Python profiler parity tests ([#126](https://github.com/yakew7/Fair-Code/pull/126)), HTML report smoke tests ([#172](https://github.com/yakew7/Fair-Code/pull/172)), `--fail-under` equality test ([#123](https://github.com/yakew7/Fair-Code/pull/123)), XLSX tests in CI ([#200](https://github.com/yakew7/Fair-Code/pull/200)), favicon/OG image generator coverage ([#234](https://github.com/yakew7/Fair-Code/pull/234)), a locked-vs-declared dependency version test ([#233](https://github.com/yakew7/Fair-Code/pull/233), restored and its scikit-learn drift fixed in [#256](https://github.com/yakew7/Fair-Code/pull/256)), and test coverage for `cli.py`'s `benchmark` subcommand - the import-error fallback, paper-drift warning, no-manifests error, and a full success run ([#288](https://github.com/yakew7/Fair-Code/pull/288), closing issue #270)
+- JS/Python profiler parity tests ([#126](https://github.com/yakew7/Fair-Code/pull/126)), HTML report smoke tests ([#172](https://github.com/yakew7/Fair-Code/pull/172)), `--fail-under` equality test ([#123](https://github.com/yakew7/Fair-Code/pull/123)), XLSX tests in CI ([#200](https://github.com/yakew7/Fair-Code/pull/200)), favicon/OG image generator coverage ([#234](https://github.com/yakew7/Fair-Code/pull/234)), a locked-vs-declared dependency version test ([#233](https://github.com/yakew7/Fair-Code/pull/233), restored and its scikit-learn drift fixed in [#256](https://github.com/yakew7/Fair-Code/pull/256)), and test coverage for `cli.py`'s `benchmark` subcommand - the import-error fallback, paper-drift warning, no-manifests error, and a full success run ([#288](https://github.com/yakew7/Fair-Code/pull/288), closing issue #270). Most recently, a fix for `--proxy-hints-with` silently no-opping without `--proxy-hints` ([#358](https://github.com/yakew7/Fair-Code/pull/358), closing issue #347), submitted independently of [@evanjain-dot](https://github.com/evanjain-dot)'s [#359](https://github.com/yakew7/Fair-Code/pull/359) for the same issue; both were merged, with #359's earlier-executing check leaving #358's alternate fix unreachable but harmless
 
 **CI, supply chain & freeze safety**
 - CI enforcement of the frozen files ([#157](https://github.com/yakew7/Fair-Code/pull/157)) - the guardrail that makes the paper freeze in [CLAUDE.md](CLAUDE.md) mechanical rather than a matter of trust
@@ -113,7 +113,7 @@ Ordered by merged PR count, most first (ties broken by commit count, then by ear
 
 ### Evan Jain - [@evanjain-dot](https://github.com/evanjain-dot)
 
-**8 merged PRs · 32 commits · first merged 2026-05-18**
+**9 merged PRs · 34 commits · first merged 2026-05-18**
 
 Author of the second PR ever merged into the repo. Three explainers plus a CI check:
 [Sampling Bias](explainers/sampling-bias.md) ([#2](https://github.com/yakew7/Fair-Code/pull/2)),
@@ -131,13 +131,15 @@ Readmission's real 11.2% base rate rather than an invented one. Most recently, f
 for every previously-untested `--map`/`--cross`/`--reference`/`--proxy-hints`/`--html` error branch
 ([#277](https://github.com/yakew7/Fair-Code/pull/277), closing issues #268 and #269), and added the
 `benchmark` extra's missing `matplotlib` package to the CLI docstring and README
-([#279](https://github.com/yakew7/Fair-Code/pull/279), closing issue #244).
+([#279](https://github.com/yakew7/Fair-Code/pull/279), closing issue #244). Most recently, made
+`faircode profile --proxy-hints-with` error clearly when passed without `--proxy-hints` instead of
+silently no-opping ([#359](https://github.com/yakew7/Fair-Code/pull/359), closing issue #347).
 
 ### [@propcgamer20-png](https://github.com/propcgamer20-png)
 
-**7 merged PRs · 20 commits · first merged 2026-07-06**
+**8 merged PRs · 21 commits · first merged 2026-07-06**
 
-The [Predictive Parity](explainers/predictive-parity.md) explainer ([#72](https://github.com/yakew7/Fair-Code/pull/72)) - the ProPublica vs. Northpointe dispute as two correct fairness checks that cannot both hold. Then the contributor tooling: [`Makefile`](Makefile), [`.pre-commit-config.yaml`](.pre-commit-config.yaml), and the local-setup section of [CONTRIBUTING.md](CONTRIBUTING.md) ([#125](https://github.com/yakew7/Fair-Code/pull/125), closing issue #114). Later refactored the first-interaction workflow to find a contributor's genuinely earliest issue/PR ([#227](https://github.com/yakew7/Fair-Code/pull/227)), and added proper `<th scope="col">`/`<caption>` markup to `faircode/report.py`'s HTML report tables ([#260](https://github.com/yakew7/Fair-Code/pull/260), closing issue #254). Then test coverage for `generate_favicons.py`'s malformed-`logo.svg` error paths ([#278](https://github.com/yakew7/Fair-Code/pull/278), closing issue #245), and the missing `proxy` extra in `audits.yml`'s profiler job install line ([#311](https://github.com/yakew7/Fair-Code/pull/311), closing issue #298). Most recently, a bundled four-issue PR: `faircode compare` reporting ignored `.xlsx` sheets, the stale "five audits" README wording, the `bug_report.yml` audit dropdown missing two domains, and `CODEOWNERS` missing `profiler.css` ([#314](https://github.com/yakew7/Fair-Code/pull/314), closing issues #300, #308, #307, and #310).
+The [Predictive Parity](explainers/predictive-parity.md) explainer ([#72](https://github.com/yakew7/Fair-Code/pull/72)) - the ProPublica vs. Northpointe dispute as two correct fairness checks that cannot both hold. Then the contributor tooling: [`Makefile`](Makefile), [`.pre-commit-config.yaml`](.pre-commit-config.yaml), and the local-setup section of [CONTRIBUTING.md](CONTRIBUTING.md) ([#125](https://github.com/yakew7/Fair-Code/pull/125), closing issue #114). Later refactored the first-interaction workflow to find a contributor's genuinely earliest issue/PR ([#227](https://github.com/yakew7/Fair-Code/pull/227)), and added proper `<th scope="col">`/`<caption>` markup to `faircode/report.py`'s HTML report tables ([#260](https://github.com/yakew7/Fair-Code/pull/260), closing issue #254). Then test coverage for `generate_favicons.py`'s malformed-`logo.svg` error paths ([#278](https://github.com/yakew7/Fair-Code/pull/278), closing issue #245), and the missing `proxy` extra in `audits.yml`'s profiler job install line ([#311](https://github.com/yakew7/Fair-Code/pull/311), closing issue #298). Then a bundled four-issue PR: `faircode compare` reporting ignored `.xlsx` sheets, the stale "five audits" README wording, the `bug_report.yml` audit dropdown missing two domains, and `CODEOWNERS` missing `profiler.css` ([#314](https://github.com/yakew7/Fair-Code/pull/314), closing issues #300, #308, #307, and #310). Most recently, added Tenant Screening to the `PROJECT_ANCHORS`/`projectAnchors` anchor maps that turn a related-project Markdown link into a homepage anchor, fixing the one audit missing from both ([#357](https://github.com/yakew7/Fair-Code/pull/357), closing issue #350).
 
 ### Anay Dhawan - [@AnayDhawan](https://github.com/AnayDhawan)
 
