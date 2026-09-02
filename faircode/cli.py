@@ -212,6 +212,10 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "profile":
+        if args.proxy_hints_with and not args.proxy_hints:
+            print("error: --proxy-hints-with needs --proxy-hints", file=sys.stderr)
+            return 2
+
         df = _read_or_exit(args.csv)
 
         sheet_info = get_xlsx_sheet_info(args.csv)
@@ -253,7 +257,7 @@ def main(argv: list[str] | None = None) -> int:
         _check_map_columns(overrides, df.columns)
         result = profile(df, overrides, opts)
 
-        if args.proxy_hints:
+        if args.proxy_hints or args.proxy_hints_with:
             held_out = _build_held_out(args.proxy_hints_with, df)
             try:
                 result["proxy_hints"] = proxy_hints(df, result["dimensions"], held_out=held_out)
