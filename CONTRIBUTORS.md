@@ -34,7 +34,7 @@ ordered by merged PR count, most first - ties broken by commit count, then by ea
 date. Within each entry, the PR numbers link the claim to the actual diff, so nothing here is an
 unverifiable "thanks to".
 
-**Snapshot:** 2026-09-06, covering everything merged through **PR #456**.
+**Snapshot:** 2026-09-07, covering everything merged through **PR #476**.
 Anything merged after that date is real and welcome, but is not yet reflected here - the
 [contributors graph](https://github.com/yakew7/Fair-Code/graphs/contributors) is always the live
 source of truth, and the `contrib.rocks` grid above regenerates from it automatically.
@@ -87,7 +87,7 @@ project by volume, concentrated in two areas:
 
 ### Shreyash Swami - [@Shreyash0712](https://github.com/Shreyash0712)
 
-**6 merged PRs · 10 commits · first merged 2026-06-05**
+**7 merged PRs · 11 commits · first merged 2026-06-05**
 
 Co-code-owner of `explainers/`. The most prolific explainer author after the maintainer - ten
 explainers across three PRs, plus workflow maintenance and a citation cleanup pass:
@@ -103,7 +103,7 @@ Later, five more in one PR ([#262](https://github.com/yakew7/Fair-Code/pull/262)
 [Race Correction in Clinical Algorithms](explainers/race-correction-clinical-algorithms.md),
 [What Is Reject Inference?](explainers/reject-inference.md), and
 [Underdiagnosis Bias in Healthcare AI](explainers/underdiagnosis-bias.md).
-Added reference hyperlinks to six explainers' previously plain-text citations ([#276](https://github.com/yakew7/Fair-Code/pull/276)): [The "AI Is Objective" Myth](explainers/ai-objectivity-myth.md), [What Is the Base Rate Fallacy?](explainers/base-rate-fallacy.md), [False Positives vs. False Negatives](explainers/false-positives-vs-false-negatives.md), [What Is a Precision-Recall Curve?](explainers/precision-recall-curve.md), [What Is Predictive Parity?](explainers/predictive-parity.md), and [ROC Curve and AUC](explainers/roc-curve-auc.md). Most recently, extended the web profiler's downloadable HTML report's imbalance/missing/skew meta line to the reference-baseline comparison section ([#295](https://github.com/yakew7/Fair-Code/pull/295)), a follow-up to [@AnayDhawan](https://github.com/AnayDhawan)'s [#294](https://github.com/yakew7/Fair-Code/pull/294).
+Added reference hyperlinks to six explainers' previously plain-text citations ([#276](https://github.com/yakew7/Fair-Code/pull/276)): [The "AI Is Objective" Myth](explainers/ai-objectivity-myth.md), [What Is the Base Rate Fallacy?](explainers/base-rate-fallacy.md), [False Positives vs. False Negatives](explainers/false-positives-vs-false-negatives.md), [What Is a Precision-Recall Curve?](explainers/precision-recall-curve.md), [What Is Predictive Parity?](explainers/predictive-parity.md), and [ROC Curve and AUC](explainers/roc-curve-auc.md). Extended the web profiler's downloadable HTML report's imbalance/missing/skew meta line to the reference-baseline comparison section ([#295](https://github.com/yakew7/Fair-Code/pull/295)), a follow-up to [@AnayDhawan](https://github.com/AnayDhawan)'s [#294](https://github.com/yakew7/Fair-Code/pull/294). Most recently, scoped `codeowners-access.yml` to `github.repository == 'yakew7/Fair-Code'` ([#475](https://github.com/yakew7/Fair-Code/pull/475)), so the scheduled/push-triggered CODEOWNERS access check stops running (and failing) under a fork's own repo context.
 
 ---
 
@@ -323,6 +323,16 @@ the index; break ties on square shapes by type-homogeneity" - still silently tra
 shapes its own tests didn't cover (a wide columns-oriented export, and a square all-string export).
 Fixed directly (not part of the PR): the heuristic was replaced with a hard failure - any ambiguous
 dict-of-dicts JSON now raises a clear error pointing at `orient="split"` instead of guessing.
+
+### [@AchieverSana](https://github.com/AchieverSana)
+
+**1 merged PR · 1 commit · first merged 2026-09-07**
+
+Fixed `scripts/render_terminal_png.py` leaking a raw `FileNotFoundError` traceback for a missing
+input file instead of failing cleanly ([#476](https://github.com/yakew7/Fair-Code/pull/476), closing
+issue #460). The `except FileNotFoundError` only covered a missing/moved path; broadened directly
+(not part of the PR) to `except OSError` after finding a directory path still leaked a traceback via
+the sibling `IsADirectoryError`, and added the test coverage the PR itself didn't include.
 
 ---
 
