@@ -83,3 +83,30 @@ def test_main_wrong_arg_count_exits_2(capsys, monkeypatch):
 
     assert exc_info.value.code == 2
     assert "usage:" in capsys.readouterr().err
+
+
+def test_main_missing_input_file_fails_cleanly(capsys, monkeypatch, tmp_path):
+    # Used to leak a raw FileNotFoundError traceback instead of failing like
+    # the wrong-arg-count case above (#460).
+    script = _script()
+    missing = tmp_path / "nonexistent.txt"
+    monkeypatch.setattr("sys.argv", ["render_terminal_png.py", str(missing), str(tmp_path / "out.png")])
+
+    with pytest.raises(SystemExit) as exc_info:
+        script.main()
+
+    assert exc_info.value.code == 2
+    assert f"error: {missing}: No such file or directory" in capsys.readouterr().err
+
+
+def test_main_directory_as_input_fails_cleanly(capsys, monkeypatch, tmp_path):
+    # A directory raises IsADirectoryError, not FileNotFoundError - a narrow
+    # except FileNotFoundError still leaks a traceback for this case.
+    script = _script()
+    monkeypatch.setattr("sys.argv", ["render_terminal_png.py", str(tmp_path), str(tmp_path / "out.png")])
+
+    with pytest.raises(SystemExit) as exc_info:
+        script.main()
+
+    assert exc_info.value.code == 2
+    assert f"error: {tmp_path}: Is a directory" in capsys.readouterr().err

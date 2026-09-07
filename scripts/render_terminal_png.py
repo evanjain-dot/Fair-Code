@@ -69,8 +69,8 @@ def main():
         raise SystemExit(2)
     try:
         text = Path(sys.argv[1]).read_text()
-    except FileNotFoundError:
-        print(f"error: {sys.argv[1]} not found", file=sys.stderr)
+    except OSError as exc:
+        print(f"error: {sys.argv[1]}: {exc.strerror or exc}", file=sys.stderr)
         raise SystemExit(2)
     render(text, sys.argv[2])
 
