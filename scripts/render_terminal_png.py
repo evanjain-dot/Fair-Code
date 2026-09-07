@@ -67,7 +67,11 @@ def main():
     if len(sys.argv) != 3:
         print(f"usage: {sys.argv[0]} <input.txt> <output.png>", file=sys.stderr)
         raise SystemExit(2)
-    text = Path(sys.argv[1]).read_text()
+    try:
+        text = Path(sys.argv[1]).read_text()
+    except FileNotFoundError:
+        print(f"error: {sys.argv[1]} not found", file=sys.stderr)
+        raise SystemExit(2)
     render(text, sys.argv[2])
 
 
