@@ -27,6 +27,7 @@ permissions:
 
 jobs:
   check-write-access:
+    if: github.repository == 'yakew7/Fair-Code'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
